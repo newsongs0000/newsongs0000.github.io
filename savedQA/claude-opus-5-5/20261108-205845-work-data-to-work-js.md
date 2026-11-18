@@ -4,11 +4,11 @@
 
 Move the data of a work of an artist into a Javascript file under the directory corresponding to the folder under
 assets; for example, data of work id: "chinese-requiem" (lines 19 - 101) should be in a JS file under
-assets/AnlunHuang/ChineseRequiem
+assets/HuangAnlun/ChineseRequiem
 
 ## Answer
 
-### New file: `assets/AnlunHuang/ChineseRequiem/work.js`
+### New file: `assets/HuangAnlun/ChineseRequiem/work.js`
 
 It holds the Chinese Requiem work object (id, title, year, description, the 8 movements …), moved as-is, wrapped in one
 call:
@@ -31,7 +31,7 @@ with `diff`).
 - The artist entry keeps `id`, `name`, `nameSort` and `bio`. Its `works: [ ... ]` is replaced by a list of work files:
   ```js
   workFiles: [
-    "assets/AnlunHuang/ChineseRequiem/work.js"
+    "assets/HuangAnlun/ChineseRequiem/work.js"
   ]
   ```
 - New **WORK FILES** section: `loadWorks()` loads every listed `work.js` (in parallel, each via a `<script>` tag),
@@ -43,7 +43,7 @@ with `diff`).
 - The APP DATA header comment explains where work data now lives.
 
 Movement `audio` / `thumbnail` paths are unchanged (still relative to `index.html`, e.g.
-`assets/AnlunHuang/ChineseRequiem/Chapter1.mp3`), so `.timing.js` lookup, Save and Export behave as before.
+`assets/HuangAnlun/ChineseRequiem/Chapter1.mp3`), so `.timing.js` lookup, Save and Export behave as before.
 
 ### To add a work
 

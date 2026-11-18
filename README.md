@@ -82,7 +82,7 @@ To check that a server supports Range requests, ask it for part of an MP3. It sh
 
 ```bash
 curl -s -o /dev/null -w '%{http_code}\n' -H 'Range: bytes=0-99' \
-  http://localhost:8080/assets/AnlunHuang/ChineseRequiem/Chapter1.mp3
+  http://localhost:8080/assets/HuangAnlun/ChineseRequiem/Chapter1.mp3
 ```
 
 Passing this check is not enough on its own: the Ruby server above passes it and still fails in Chrome. Play an MP3,
@@ -335,7 +335,7 @@ Only the `.timing.js` file beside the MP3 goes into the project. A browser recor
 ## Flow: modifying lyrics
 
 A movement's lyrics exist in only one place: the `.timing.js` file next to its MP3, e.g.
-`assets/AnlunHuang/ChineseRequiem/Chapter1.timing.js`. The app has no other copy. Files such as `Lyrics.txt` are
+`assets/HuangAnlun/ChineseRequiem/Chapter1.timing.js`. The app has no other copy. Files such as `Lyrics.txt` are
 source material only, and the app does not read them.
 
 1. Edit the text in the `.timing.js` file. Each lyric line is one row:
@@ -391,7 +391,7 @@ onePageMp3Artist({
   nameSort: "Huang, An-Lun",      // tree sort key (optional; defaults to name)
   bio: "黄安伦（1949–），加拿大华人作曲家。",  // kept with the data; not displayed yet
   workFiles: [
-    "assets/AnlunHuang/ChineseRequiem/work.js"
+    "assets/HuangAnlun/ChineseRequiem/work.js"
   ]
 });
 ```
@@ -421,8 +421,8 @@ onePageMp3Work({
       subtitleTranslation: "Psalm 116:7,9",  // translation column's heading (optional)
       voicing: "合唱",             // lyrics heading, second line (optional)
       voicingTranslation: "Chorus",          // translation column's heading (optional)
-      audio: "assets/AnlunHuang/ChineseRequiem/Chapter1.mp3",
-      thumbnail: "assets/AnlunHuang/ChineseRequiem/Chapter1.jpg"   // optional
+      audio: "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
+      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter1.jpg"   // optional
     }
   ]
 });
@@ -455,7 +455,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch1",
-  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter1.mp3",
+  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
   "lines": [
     {"time":null,"text":"first line"},
     {"time":null,"text":"second line"}

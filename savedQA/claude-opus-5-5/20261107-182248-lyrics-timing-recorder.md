@@ -12,7 +12,7 @@ Added a **LYRICS TIMING** panel at the bottom of the left pane (`index.html`), w
 | Button | What it does |
 |---|---|
 | **● Rec / ■ Stop** | Arms recording and switches to Manual mode. While the audio **plays**, each line you advance to (↓ / → key, or clicking a later line) gets the current audio time as its start time. Moving back (↑ / ←, or clicking an earlier line) is a correction and records nothing; advancing again overwrites the time. Switching to Auto stops recording. A red "● REC" marker also shows in the lyrics area, so it stays visible when the panel is maximized. |
-| **Save** | Writes the current movement's timing to `<audio name>.timing.json`, e.g. `Chapter1.timing.json`. In Chrome/Edge a save dialog opens so you can save it straight into `assets/AnlunHuang/ChineseRequiem/`. Other browsers download it. |
+| **Save** | Writes the current movement's timing to `<audio name>.timing.json`, e.g. `Chapter1.timing.json`. In Chrome/Edge a save dialog opens so you can save it straight into `assets/HuangAnlun/ChineseRequiem/`. Other browsers download it. |
 | **Load** | Reads one or more `.timing.json` files. Each file names its own movement. |
 | **Clear** | Discards the timing recorded in this browser for the current movement (asks for confirmation). |
 
@@ -43,7 +43,7 @@ The status area shows the movement, how many lines are timed (e.g. `4 / 54 lines
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch1",
-  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter1.mp3",
+  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
   "saved": "2026-11-08T00:22:22.629Z",
   "lines": [
     {"time":0.398,"text":"求主"},
@@ -84,7 +84,7 @@ into a folder the user picks. So I added a full-width **Export N to MP3 folders*
 Clicking it:
 
 1. Opens a folder picker (Chrome / Edge). Pick the **app folder** (the one containing `index.html`). Picking the MP3
-   folder itself (e.g. `assets/AnlunHuang/ChineseRequiem`) also works. The folder is remembered for the rest of the session.
+   folder itself (e.g. `assets/HuangAnlun/ChineseRequiem`) also works. The folder is remembered for the rest of the session.
 2. For every movement with timing in localStorage, writes `ChapterN.timing.json` into the folder of `ChapterN.mp3`.
    As a check, it writes only where it actually finds that MP3.
 3. Shows a summary of the files written and any it couldn't write. If nothing was written (wrong folder), the folder is

@@ -16,7 +16,7 @@ onePageMp3Artist({
   nameSort: "Huang, An-Lun",
   bio: "黄安伦（1949–），加拿大华人作曲家。",
   workFiles: [
-    "assets/AnlunHuang/ChineseRequiem/work.js"
+    "assets/HuangAnlun/ChineseRequiem/work.js"
   ]
 });
 ```
@@ -48,8 +48,8 @@ The artist object is moved as-is. It follows the same approach as `work.js` and 
 ```
 app.js                                   APP_DATA.artistFiles → artist.js files
 assets/AnlunHuang/artist.js              artist info + workFiles → work.js files
-assets/AnlunHuang/ChineseRequiem/work.js work info + movements (audio, thumbnail)
-assets/AnlunHuang/ChineseRequiem/ChapterN.timing.js   lyrics + timing per movement
+assets/HuangAnlun/ChineseRequiem/work.js work info + movements (audio, thumbnail)
+assets/HuangAnlun/ChineseRequiem/ChapterN.timing.js   lyrics + timing per movement
 ```
 
 All paths inside these files are relative to `index.html`.

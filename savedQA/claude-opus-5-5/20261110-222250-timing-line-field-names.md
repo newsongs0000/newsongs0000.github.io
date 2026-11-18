@@ -4,7 +4,7 @@
 
 In line 10, are "time", "text", "translation" field names of a JavaScript object?
 
-(Line 10 of `assets/AnlunHuang/ChineseRequiem/Chapter1.timing.js`:
+(Line 10 of `assets/HuangAnlun/ChineseRequiem/Chapter1.timing.js`:
 `{"time":0.1,"text":" ( 以祷告的心 )", "translation": " ( Prayerfully )"},`)
 
 ## Answer

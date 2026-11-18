@@ -62,8 +62,8 @@ A self-contained HTML5/CSS3/JavaScript application with no external dependencies
 ### Data
 
 - All 7 movements of *Chinese Requiem (Op.63)* by 黄安伦 (An-Lun Huang) included
-- Movement VII (`永远照耀`) references the existing MP3 at `assets/AnlunHuang/ChineseRequiem/manualWorkInProgress/Chapter7.mp3`
-- Movements I–VI reference `assets/AnlunHuang/ChineseRequiem/Chapter1.mp3` etc. (to be generated from AllChapters.mp4)
+- Movement VII (`永远照耀`) references the existing MP3 at `assets/HuangAnlun/ChineseRequiem/manualWorkInProgress/Chapter7.mp3`
+- Movements I–VI reference `assets/HuangAnlun/ChineseRequiem/Chapter1.mp3` etc. (to be generated from AllChapters.mp4)
 
 ### Next Steps
 

@@ -3,7 +3,7 @@
 ## Ask
 
 > I deleted local storage for file:///Users/weiping/sharing/one-page-mp3/index.html,
-> /Users/weiping/sharing/one-page-mp3/assets/AnlunHuang/ChineseRequiem/Chapter1.timing.json should be select to time
+> /Users/weiping/sharing/one-page-mp3/assets/HuangAnlun/ChineseRequiem/Chapter1.timing.json should be select to time
 > the selection of Chapter1 lyrics, but looks like it was not
 
 ## Answer
@@ -21,7 +21,7 @@ in a single `onePageMp3Timing( ... );` call, so the app can load it with a `<scr
   in this browser (localStorage) still takes priority over the file.
 - Save / Export now write `.timing.js` (same layout: one lyric line per row, easy to hand-edit).
 - Load accepts `.timing.js` and older `.timing.json` files.
-- `assets/AnlunHuang/ChineseRequiem/Chapter1.timing.js` was generated from the existing `Chapter1.timing.json`
+- `assets/HuangAnlun/ChineseRequiem/Chapter1.timing.js` was generated from the existing `Chapter1.timing.json`
   (verified identical content). The `.json` file is no longer read automatically and can be deleted.
 
 **Verified** in headless Chrome, both `file://` and `http://`: with empty localStorage, selecting Chapter 1 shows

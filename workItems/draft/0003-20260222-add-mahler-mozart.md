@@ -15,7 +15,7 @@ Add Mahler and Mozart (an `artist.js` per artist and a `work.js` per work, in th
 
 1. Populate `assets/Mahler/` and `assets/Mozart/` with MP3 files
 2. For each work, create `work.js` in its assets folder (e.g. `assets/Mozart/<Work>/work.js`), following
-   `assets/AnlunHuang/ChineseRequiem/work.js`:
+   `assets/HuangAnlun/ChineseRequiem/work.js`:
    ```js
    onePageMp3Work({
      id: "...",

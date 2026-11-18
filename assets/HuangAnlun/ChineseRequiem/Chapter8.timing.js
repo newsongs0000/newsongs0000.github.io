@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch8",
-  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter8.mp3",
+  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter8.mp3",
   "saved": "2026-11-09T05:47:11.431Z",
   "lines": [
     {"time":0.942,"text":"耶和华是我的牧者，"},

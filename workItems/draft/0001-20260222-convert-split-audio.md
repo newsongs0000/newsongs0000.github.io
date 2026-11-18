@@ -37,7 +37,7 @@ Total duration: 3773.9s (1:02:53).
 
 ## Output Files
 
-All files under `assets/AnlunHuang/ChineseRequiem/`:
+All files under `assets/HuangAnlun/ChineseRequiem/`:
 - `Chapter1.mp3` … `Chapter8.mp3` — audio
 - `Chapter1.jpg` … `Chapter8.jpg` — thumbnail screenshots at chapter midpoints
 
@@ -50,7 +50,7 @@ All files under `assets/AnlunHuang/ChineseRequiem/`:
 ## ffmpeg Commands
 
 ```bash
-OUT="assets/AnlunHuang/ChineseRequiem"
+OUT="assets/HuangAnlun/ChineseRequiem"
 
 # Chapter 1
 ffmpeg -i AllChapters.mp4 -ss 0       -to 431.055  -q:a 0 -map a "$OUT/Chapter1.mp3"
@@ -87,7 +87,7 @@ ffmpeg -i AllChapters.mp4 -ss 3550.6   -vframes 1   "$OUT/Chapter8.jpg"
 
 ## Acceptance Criteria
 
-- 8 MP3 files at `assets/AnlunHuang/ChineseRequiem/Chapter1.mp3` through `Chapter8.mp3`
-- 8 JPEG thumbnails at `assets/AnlunHuang/ChineseRequiem/Chapter1.jpg` through `Chapter8.jpg`
+- 8 MP3 files at `assets/HuangAnlun/ChineseRequiem/Chapter1.mp3` through `Chapter8.mp3`
+- 8 JPEG thumbnails at `assets/HuangAnlun/ChineseRequiem/Chapter1.jpg` through `Chapter8.jpg`
 - Each chapter plays the correct portion of the recording with no missing audio and no overlap
 - `index.html` updated to reference all 8 chapters and their thumbnails

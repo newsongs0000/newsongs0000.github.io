@@ -2,7 +2,7 @@
 
 ## Ask
 
-I added translation in assets/AnlunHuang/ChineseRequiem/Chapter1.timing.js, but the song started playing, then
+I added translation in assets/HuangAnlun/ChineseRequiem/Chapter1.timing.js, but the song started playing, then
 stopped immediately
 
 ## Answer

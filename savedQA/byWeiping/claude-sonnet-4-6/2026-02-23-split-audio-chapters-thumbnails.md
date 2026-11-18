@@ -105,8 +105,8 @@ Updated `workItems/draft/0001-20260222-convert-split-audio.md` with exact ffmpeg
 > wait, I want to also take a screenshot at the middle of each Chapter, I will want to add functionality to display this screenshot before play the corresponding chapter
 
 Work item 0001 updated to include thumbnail extraction. Midpoint timestamps calculated for each chapter. Output files:
-- `assets/AnlunHuang/ChineseRequiem/Chapter{N}.mp3` (audio)
-- `assets/AnlunHuang/ChineseRequiem/Chapter{N}.jpg` (thumbnail at chapter midpoint)
+- `assets/HuangAnlun/ChineseRequiem/Chapter{N}.mp3` (audio)
+- `assets/HuangAnlun/ChineseRequiem/Chapter{N}.jpg` (thumbnail at chapter midpoint)
 
 ---
 

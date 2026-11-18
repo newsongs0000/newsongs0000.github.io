@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch4",
-  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter4.mp3",
+  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter4.mp3",
   "saved": "2026-11-08T22:46:50.164Z",
   "lines": [
     {"time":null,"text":"全能的神，"},

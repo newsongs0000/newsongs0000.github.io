@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch1",
-  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter1.mp3",
+  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
   "saved": "2026-11-08T20:32:40.799Z",
   "lines": [
     {"time":0.1,"text":" ( 以祷告的心 )", "translation": " ( Prayerfully )"},
