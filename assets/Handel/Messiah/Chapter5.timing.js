@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch5",
-  "audio": "assets/Handel/Messiah/Chapter5.mp3",
+  "audio": "Chapter5.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 20 · Chorus [John 1:29]","translation":"第20首 · 合唱 [约翰福音1:29]"},

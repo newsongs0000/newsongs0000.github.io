@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch3",
-  "audio": "assets/Mozart/Requiem/Chapter3.mp3",
+  "audio": "Chapter3.mp3",
   "lines": [
     {"time":0,"text":"No. 9 · Hostias (chorus)","translation":"第9首 · 祭献（合唱）"},
     {"time":null,"text":"Hostias et preces tibi, Domine,","translation":"主啊，我们向你"},

@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch1",
-  "audio": "assets/Mozart/Requiem/Chapter1.mp3",
+  "audio": "Chapter1.mp3",
   "lines": [
     {"time":0,"text":"No. 1 · Introitus: Requiem aeternam (chorus, soprano)","translation":"第1首 · 进台经：永远的安息（合唱，女高音）"},
     {"time":null,"text":"Requiem aeternam dona eis, Domine,","translation":"主啊，求你赐他们永远的安息，"},

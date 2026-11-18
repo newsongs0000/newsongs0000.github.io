@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch6",
-  "audio": "assets/Mozart/Requiem/Chapter6.mp3",
+  "audio": "Chapter6.mp3",
   "lines": [
     {"time":0,"text":"No. 12 · Agnus Dei (chorus)","translation":"第12首 · 羔羊经（合唱）"},
     {"time":null,"text":"Agnus Dei, qui tollis peccata mundi,","translation":"神的羔羊，除去世人罪孽的，"},

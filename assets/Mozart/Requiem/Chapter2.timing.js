@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch2",
-  "audio": "assets/Mozart/Requiem/Chapter2.mp3",
+  "audio": "Chapter2.mp3",
   "lines": [
     {"time":0,"text":"No. 8 · Offertorium: Domine Jesu (chorus, soloists)","translation":"第8首 · 奉献经：主耶稣（合唱，独唱）"},
     {"time":null,"text":"Domine Jesu Christe, Rex gloriae,","translation":"主耶稣基督，荣耀的君王，"},

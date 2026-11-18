@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch8",
-  "audio": "assets/Handel/Messiah/Chapter8.mp3",
+  "audio": "Chapter8.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 43 · Air (soprano) [Job 19:25–26; 1 Corinthians 15:20]","translation":"第43首 · 咏叹调（女高音）[约伯记19:25–26；哥林多前书15:20]"},

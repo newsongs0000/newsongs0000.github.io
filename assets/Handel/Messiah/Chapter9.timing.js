@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch9",
-  "audio": "assets/Handel/Messiah/Chapter9.mp3",
+  "audio": "Chapter9.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 45 · Recitative (bass) [1 Corinthians 15:51–52]","translation":"第45首 · 宣叙调（男低音）[哥林多前书15:51–52]"},

@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch7",
-  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter7.mp3",
+  "audio": "Chapter7.mp3",
   "saved": "2026-11-08T22:46:50.164Z",
   "lines": [
     {"time":null,"text":"Hallelujah, Hallelujah!"},

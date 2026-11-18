@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch4",
-  "audio": "assets/Handel/Messiah/Chapter4.mp3",
+  "audio": "Chapter4.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 16 · Air (soprano) [Zechariah 9:9–10]","translation":"第16首 · 咏叹调（女高音）[撒迦利亚书9:9–10]"},

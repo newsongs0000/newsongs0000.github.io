@@ -910,6 +910,9 @@ function lyricLineStartTime(movement, idx) {
           in its MP3's folder (Chromium: folder access; others: downloads)
    Recordings persist in localStorage and override the file's times
    (never its text or translations) until Clear.
+   The file's "audio" is named relative to the file itself, which sits next
+   to its MP3, so it is just the MP3's name ("audio": "Chapter1.mp3"). It
+   is informational: the app finds the file from the movement's audio.
    The file is the timing JSON wrapped in one onePageMp3Timing(...)
    call, so a <script> can load it when the page is opened as file://
    (fetch can't).
@@ -944,6 +947,11 @@ function timingFileName(movement) {
   return timingFileUrl(movement).split('/').pop();
 }
 
+// The movement's audio named relative to its .timing.js file, which sits next to the MP3
+function timingFileAudio(movement) {
+  return movement.audio?.split('/').pop();
+}
+
 // Start time (seconds or null) of each lyric line, or null if the movement has no timing
 function lyricTimes(movement) {
   return timing.byKey[movementKey(movement)]?.times ?? null;
@@ -971,7 +979,7 @@ function timingDoc(movement) {
     composer: e.composer.id,
     work:     e.work.id,
     movement: movement.id,
-    audio:    movement.audio,
+    audio:    timingFileAudio(movement),
     saved:    new Date().toISOString(),
     // A line without a translation has no "translation" key (JSON drops undefined)
     lines:    movement.lyrics.map((l, i) => ({ time: times[i] ?? null, text: l.text,

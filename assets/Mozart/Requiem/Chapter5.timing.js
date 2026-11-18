@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch5",
-  "audio": "assets/Mozart/Requiem/Chapter5.mp3",
+  "audio": "Chapter5.mp3",
   "lines": [
     {"time":0,"text":"No. 11 · Benedictus (soloists, chorus)","translation":"第11首 · 降福经（独唱，合唱）"},
     {"time":null,"text":"(Soloists) Benedictus qui venit","translation":"（独唱）奉主名来的"},

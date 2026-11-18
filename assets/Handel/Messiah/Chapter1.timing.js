@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch1",
-  "audio": "assets/Handel/Messiah/Chapter1.mp3",
+  "audio": "Chapter1.mp3",
   "saved": "2026-11-18T02:05:53.645Z",
   "lines": [
     {"time":0.227,"text":"Sinfony (Overture) · Grave","translation":"序曲 · 庄板"},

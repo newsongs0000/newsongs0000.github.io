@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch6",
-  "audio": "assets/Handel/Messiah/Chapter6.mp3",
+  "audio": "Chapter6.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 22 · Chorus [Isaiah 53:4–5]","translation":"第22首 · 合唱 [以赛亚书53:4–5]"},

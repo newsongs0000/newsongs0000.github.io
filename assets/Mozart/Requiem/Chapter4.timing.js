@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mozart",
   "work": "mozart-requiem",
   "movement": "ch4",
-  "audio": "assets/Mozart/Requiem/Chapter4.mp3",
+  "audio": "Chapter4.mp3",
   "lines": [
     {"time":0,"text":"No. 10 · Sanctus (chorus)","translation":"第10首 · 圣哉经（合唱）"},
     {"time":null,"text":"Sanctus, Sanctus, Sanctus,","translation":"圣哉！圣哉！圣哉！"},

@@ -370,8 +370,9 @@ source material only, and the app does not read them.
 ## Flow: adding an artist, work or movement
 
 The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `workFiles` in an
-`artist.js` file are relative to that `artist.js` file, and a movement's `audio` and `thumbnail` in a `work.js` file
-are relative to that `work.js` file, so they are short when the files sit next to each other.
+`artist.js` file are relative to that `artist.js` file, a movement's `audio` and `thumbnail` in a `work.js` file
+are relative to that `work.js` file, and the `audio` in a `.timing.js` file is relative to that `.timing.js` file, so
+they are short when the files sit next to each other.
 
 ### 1. Put the media in place
 
@@ -457,13 +458,16 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch1",
-  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
+  "audio": "Chapter1.mp3",
   "lines": [
     {"time":null,"text":"first line"},
     {"time":null,"text":"second line"}
   ]
 });
 ```
+
+`"audio"` is the MP3's name, relative to the `.timing.js` file beside it. It is for information only: the app finds
+the `.timing.js` file from the movement's `audio` in `work.js`.
 
 > **The three ids must match exactly.** `"composer"`, `"work"` and `"movement"` must equal the `id` in `artist.js`,
 > the `id` in `work.js` and the movement's `id`. If any of them differs, the app ignores the file, shows **no

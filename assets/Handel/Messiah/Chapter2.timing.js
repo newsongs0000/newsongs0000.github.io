@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch2",
-  "audio": "assets/Handel/Messiah/Chapter2.mp3",
+  "audio": "Chapter2.mp3",
   "saved": "2026-11-18T04:12:21.402Z",
   "lines": [
     {"time":0.021,"text":"No. 1 · Recitative (tenor) [Isaiah 40:1–3]","translation":"第1首 · 宣叙调（男高音）[以赛亚书40:1–3]"},

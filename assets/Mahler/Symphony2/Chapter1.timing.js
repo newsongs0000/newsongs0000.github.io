@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "mahler",
   "work": "mahler-symphony2",
   "movement": "ch1",
-  "audio": "assets/Mahler/Symphony2/Chapter1.mp3",
+  "audio": "Chapter1.mp3",
   "saved": "2026-11-08T20:32:40.799Z",
   "lines": [
     {"time":0.1,"text":" ( Prayerfully 以祷告的心 )"},

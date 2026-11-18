@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch3",
-  "audio": "assets/Handel/Messiah/Chapter3.mp3",
+  "audio": "Chapter3.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 7 · Recitative (contralto) [Isaiah 7:14; Matthew 1:23]","translation":"第7首 · 宣叙调（女低音）[以赛亚书7:14；马太福音1:23]"},

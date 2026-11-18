@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "anlun-huang",
   "work": "chinese-requiem",
   "movement": "ch6",
-  "audio": "assets/HuangAnlun/ChineseRequiem/Chapter6.mp3",
+  "audio": "Chapter6.mp3",
   "saved": "2026-11-08T22:46:50.164Z",
   "lines": [
     {"time":null,"text":"求主释放我得自由，"},

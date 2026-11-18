@@ -4,7 +4,7 @@ onePageMp3Timing({
   "composer": "handel",
   "work": "messiah",
   "movement": "ch7",
-  "audio": "assets/Handel/Messiah/Chapter7.mp3",
+  "audio": "Chapter7.mp3",
   "saved": "2026-11-17T05:52:37.216Z",
   "lines": [
     {"time":0,"text":"No. 35 · Chorus [Psalm 68:11]","translation":"第35首 · 合唱 [诗篇68:11]"},
