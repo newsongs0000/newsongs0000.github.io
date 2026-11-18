@@ -5,6 +5,6 @@ onePageMp3Artist({
   nameSort: "Mozart, Wolfgang Amadeus",
   bio: "沃尔夫冈·阿马德乌斯·莫扎特（1756–1791），奥地利作曲家。",
   workFiles: [
-    "assets/Mozart/Symphony40/work.js"
+    "Symphony40/work.js"
   ]
 });

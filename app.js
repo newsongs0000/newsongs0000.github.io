@@ -36,8 +36,10 @@ const APP_DATA = {
    An artist.js file holds one artist (name, bio, workFiles, ...) wrapped
    in one onePageMp3Artist(...) call; a work.js file holds one work
    (title, description, movements, ...) wrapped in one onePageMp3Work(...)
-   call. A movement's audio and thumbnail are named relative to its work.js
-   file (audio: "Chapter1.mp3"). So a <script> can load them when the page is opened as file://
+   call. An artist's workFiles are named relative to its artist.js file
+   (workFiles: ["Messiah/work.js"]), a movement's audio and thumbnail relative
+   to its work.js file (audio: "Chapter1.mp3"); only artistFiles are relative
+   to index.html. So a <script> can load them when the page is opened as file://
    (fetch of local files is blocked).
 ================================================================ */
 const ARTIST_CALLBACK = 'onePageMp3Artist';  // what an artist.js file calls
@@ -65,16 +67,28 @@ function loadDataFile(url, callback) {
       if (loaded?.callback !== callback) console.warn(`${url} did not call ${callback}(...)`);
       const data = loaded?.callback === callback ? loaded.data : null;
       if (data && callback === WORK_CALLBACK) resolveWorkPaths(data, url);
+      if (data && callback === ARTIST_CALLBACK) resolveArtistPaths(data, url);
       resolve(data);
     };
     document.head.append(script);
   });
 }
 
+// The folder of a data file's URL, with its trailing slash
+function dirOf(url) {
+  return url.slice(0, url.lastIndexOf('/') + 1);
+}
+
+// An artist's workFiles are named relative to its artist.js file
+function resolveArtistPaths(artist, artistUrl) {
+  const dir = dirOf(artistUrl);
+  artist.workFiles = (artist.workFiles ?? []).map(file => dir + file);
+}
+
 // A work's movement files (audio, thumbnail) are named relative to its work.js file:
 // make them relative to index.html, as the rest of app.js uses them
 function resolveWorkPaths(work, workUrl) {
-  const dir = workUrl.slice(0, workUrl.lastIndexOf('/') + 1);
+  const dir = dirOf(workUrl);
   (work.movements ?? []).forEach(movement => {
     ['audio', 'thumbnail'].forEach(key => {
       if (movement[key]) movement[key] = dir + movement[key];

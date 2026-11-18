@@ -369,9 +369,9 @@ source material only, and the app does not read them.
 
 ## Flow: adding an artist, work or movement
 
-The paths to `artist.js` and `work.js` files (in `artistFiles` and `workFiles`) are relative to `index.html`. A
-movement's `audio` and `thumbnail` in a `work.js` file are relative to that `work.js` file, so they are just file names
-when the media sits next to it.
+The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `workFiles` in an
+`artist.js` file are relative to that `artist.js` file, and a movement's `audio` and `thumbnail` in a `work.js` file
+are relative to that `work.js` file, so they are short when the files sit next to each other.
 
 ### 1. Put the media in place
 
@@ -393,7 +393,7 @@ onePageMp3Artist({
   nameSort: "Huang, An-Lun",      // tree sort key (optional; defaults to name)
   bio: "黄安伦（1949–），加拿大华人作曲家。",  // kept with the data; not displayed yet
   workFiles: [
-    "assets/HuangAnlun/ChineseRequiem/work.js"
+    "ChineseRequiem/work.js"
   ]
 });
 ```

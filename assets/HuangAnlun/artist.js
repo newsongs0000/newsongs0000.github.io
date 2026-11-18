@@ -6,6 +6,6 @@ onePageMp3Artist({
   bio: "黄安伦（1949–），加拿大华人作曲家。",
   commercialProduction: "http://dragons-music.net/index.php?route=product/product&product_id=423&search=%E9%BB%83%E5%AE%89%E5%80%AB",
   workFiles: [
-    "assets/HuangAnlun/ChineseRequiem/work.js"
+    "ChineseRequiem/work.js"
   ]
 });
