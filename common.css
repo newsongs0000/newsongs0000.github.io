@@ -11,7 +11,7 @@
   --lyrics-current-color: #ffffff;
   --lyrics-current-bg: rgba(201, 162, 39, 0.12);
   --lyrics-current-border: #c9a227;
-  --lyrics-chinese-width: 40%;   /* bilingual lyrics: the Chinese column (default; drag the divider to change) */
+  --lyrics-chinese-width: 45%;   /* bilingual lyrics: the Chinese column (default; drag the divider to change) */
   --lyrics-original-width: var(--lyrics-chinese-width);  /* the left column (see "Bilingual lyrics" below) */
 
   --bg-primary:   #0d1117;
