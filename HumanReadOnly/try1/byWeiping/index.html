@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnePageMP3 — Classical Music Player</title>
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES (configuration via URL params)
+       URL params: ?above-color=%23aaa&above-bg=transparent
+                   &below-color=%23aaa&below-bg=transparent
+    ============================================================ */
+    :root {
+      --lyrics-above-color: #6e8199;
+      --lyrics-above-bg: transparent;
+      --lyrics-below-color: #6e8199;
+      --lyrics-below-bg: transparent;
+      --lyrics-current-color: #ffffff;
+      --lyrics-current-bg: rgba(201, 162, 39, 0.12);
+      --lyrics-current-border: #c9a227;
+
+      --bg-primary:   #0d1117;
+      --bg-secondary: #161b22;
+      --bg-nav:       #0a0e15;
+      --accent:       #c9a227;
+      --accent-light: #e8c547;
+      --text-primary:   #e6edf3;
+      --text-secondary: #8b949e;
+      --text-muted:     #484f58;
+      --border:         #21262d;
+      --nav-hover:      #1c2128;
+      --nav-active:     #1f2937;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', 'Noto Serif SC', serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ============ APP GRID ============ */
+    #app {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: 100vh;
+    }
+
+    /* ============ LEFT PANE ============ */
+    #left-pane {
+      background: var(--bg-nav);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #left-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    #left-header h1 {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: normal;
+      letter-spacing: 0.08em;
+    }
+
+    #composer-tree {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 0;
+    }
+
+    /* Tree nodes */
+    .tree-composer-header,
+    .tree-work-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .tree-composer-header {
+      padding: 8px 14px;
+      font-size: 0.88rem;
+      color: var(--accent);
+    }
+
+    .tree-composer-header:hover { background: var(--nav-hover); }
+
+    .tree-work-header {
+      padding: 6px 14px 6px 24px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .tree-work-header:hover {
+      background: var(--nav-hover);
+      color: var(--text-primary);
+    }
+
+    .tree-toggle {
+      font-size: 0.65rem;
+      display: inline-block;
+      width: 10px;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+
+    .tree-works, .tree-movements {
+      display: none;
+    }
+
+    .tree-composer.open > .tree-works { display: block; }
+    .tree-work.open > .tree-movements { display: block; }
+    .tree-composer.open > .tree-composer-header .tree-toggle { transform: rotate(90deg); }
+    .tree-work.open > .tree-work-header .tree-toggle { transform: rotate(90deg); }
+
+    .tree-movement {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      padding: 5px 14px 5px 38px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tree-movement:hover {
+      background: var(--nav-hover);
+      color: var(--text-secondary);
+    }
+
+    .tree-movement.active {
+      background: var(--nav-active);
+      color: var(--accent);
+      border-left: 2px solid var(--accent);
+      padding-left: 36px;
+    }
+
+    /* ============ RIGHT PANE ============ */
+    #right-pane {
+      display: grid;
+      grid-template-rows: auto 1fr auto 100px;
+      overflow: hidden;
+    }
+
+    /* ─── Top Controls ─── */
+    #top-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    #now-playing {
+      flex: 1;
+      text-align: center;
+      min-width: 0;
+    }
+
+    #np-label {
+      font-size: 0.72rem;
+      color: var(--accent);
+      display: block;
+      letter-spacing: 0.04em;
+    }
+
+    #np-title {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ─── Song Display (lyrics area) ─── */
+    #song-display {
+      overflow: hidden;
+      position: relative;
+      background: var(--bg-primary);
+    }
+
+    #lyrics-container {
+      height: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding: 0 60px;
+    }
+
+    #lyrics-inner {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lyrics-spacer {
+      flex: 1;
+      min-height: 40px;
+    }
+
+    .lyric-meta {
+      font-size: 0.78rem;
+      font-style: italic;
+      color: var(--accent);
+      opacity: 0.7;
+      padding: 4px 12px;
+      line-height: 1.8;
+    }
+
+    .lyric-line {
+      padding: 10px 14px;
+      border-radius: 4px;
+      border-left: 3px solid transparent;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      cursor: pointer;
+      transition: color 0.4s ease, background 0.4s ease, font-size 0.3s ease, opacity 0.4s ease, border-color 0.3s ease;
+      margin: 1px 0;
+    }
+
+    .lyric-line.before {
+      color: var(--lyrics-above-color);
+      background: var(--lyrics-above-bg);
+      opacity: 0.75;
+    }
+
+    .lyric-line.current {
+      color: var(--lyrics-current-color);
+      background: var(--lyrics-current-bg);
+      font-size: 1.2rem;
+      border-left-color: var(--lyrics-current-border);
+    }
+
+    .lyric-line.after {
+      color: var(--lyrics-below-color);
+      background: var(--lyrics-below-bg);
+      opacity: 0.75;
+    }
+
+    .lyric-line.distant {
+      opacity: 0.28;
+    }
+
+    .no-song-msg {
+      color: var(--text-muted);
+      text-align: center;
+      font-style: italic;
+      font-size: 0.95rem;
+      margin-top: 40px;
+    }
+
+    /* ─── Bottom Controls ─── */
+    #bottom-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      border-radius: 4px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .ctrl-btn:hover {
+      background: var(--nav-hover);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #btn-play-pause {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-size: 1rem;
+      padding: 7px 16px;
+      min-width: 44px;
+    }
+
+    #btn-play-pause:hover {
+      background: var(--accent-light);
+      border-color: var(--accent-light);
+      color: #000;
+    }
+
+    #progress-bar {
+      flex: 1;
+      height: 4px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      min-width: 60px;
+    }
+
+    #time-display {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+      min-width: 90px;
+      text-align: right;
+    }
+
+    /* ─── Info Pane ─── */
+    #info-pane {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 12px 18px;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      overflow-y: auto;
+    }
+
+    #info-left {
+      flex-shrink: 0;
+      min-width: 180px;
+    }
+
+    #info-composer {
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+
+    #info-work {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    #info-dates {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    #info-description {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+    /* Top/Nav buttons */
+    #top-controls .ctrl-btn { padding: 7px 14px; font-size: 0.82rem; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════════════════════════════════
+       LEFT PANE — navigation tree
+  ═══════════════════════════════════════ -->
+  <aside id="left-pane">
+    <div id="left-header">
+      <h1>&#9835; OnePageMP3</h1>
+    </div>
+    <div id="composer-tree"></div>
+  </aside>
+
+  <!-- ══════════════════════════════════════
+       RIGHT PANE
+  ═══════════════════════════════════════ -->
+  <main id="right-pane">
+
+    <!-- Top control section -->
+    <div id="top-controls">
+      <button class="ctrl-btn" id="btn-prev">&#9664; Prev</button>
+      <div id="now-playing">
+        <span id="np-label"></span>
+        <span id="np-title">Select a movement to begin</span>
+      </div>
+      <button class="ctrl-btn" id="btn-next">Next &#9654;</button>
+    </div>
+
+    <!-- Song playing section -->
+    <div id="song-display">
+      <div id="lyrics-container">
+        <div id="lyrics-inner">
+          <div class="lyrics-spacer"></div>
+          <p class="no-song-msg">Select a movement from the left panel to begin.</p>
+          <div class="lyrics-spacer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom control section -->
+    <div id="bottom-controls">
+      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#9664;</button>
+      <button class="ctrl-btn" id="btn-rewind-15"    title="Rewind 15 seconds">&#8722;15s</button>
+      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;</button>
+      <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
+      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#9654;</button>
+      <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
+      <span   id="time-display">0:00 / 0:00</span>
+    </div>
+
+    <!-- Info pane -->
+    <div id="info-pane">
+      <div id="info-left">
+        <div id="info-composer">&#8212;</div>
+        <div id="info-work"></div>
+        <div id="info-dates"></div>
+      </div>
+      <div id="info-description">Select a song to see composer and work details.</div>
+    </div>
+
+  </main>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<script>
+/* ================================================================
+   APP DATA
+   Structure: composers[] > works[] > movements[] > lyrics[]
+   Lyrics entry: { text: "...", time: <seconds> }   (time optional)
+   When 'time' is present on all lyrics, auto-sync highlights.
+   Otherwise, linear interpolation is used for approximate sync.
+================================================================ */
+const APP_DATA = {
+  version: "1.0",
+  composers: [
+    {
+      id: "anlun-huang",
+      name: "黄安伦 (An-Lun Huang)",
+      nameSort: "Huang, An-Lun",
+      bio: "黄安伦（1949–），加拿大华人作曲家。",
+      works: [
+        {
+          id: "chinese-requiem",
+          title: "中文安魂曲 (Chinese Requiem)",
+          titleSort: "Chinese Requiem",
+          year: 2004,
+          opusNumber: "Op. 63",
+          premiered: "多伦多, 2004年5月",
+          description: "为男高音、女中音及无伴奏合唱而作的安魂曲（Op.63），共7个乐章，由香港圣乐团委约。词：唐佑之（根据圣经）。曲：黄安伦，2004年5月，多伦多。此曲被誉为迄今为止唯一的中文安魂曲。",
+          movements: [
+            {
+              id: "ch1",
+              number: "I",
+              title: "永远安息",
+              subtitle: "诗篇116:7,9",
+              voicing: "合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter1.mp3",
+              lyrics: [
+                { text: "求主赐他们永远安息，安息在您怀里!" },
+                { text: "唯有耶和华所亲爱的，必让他们安睡。" },
+                { text: "阳光永温煦地照耀，轻风常吹拂地爱抚，花香弥漫发放芳馨，天使歌咏轻快活泼。" },
+                { text: "求主赐他们永远安息，安息在您怀里！" }
+              ]
+            },
+            {
+              id: "ch2",
+              number: "II",
+              title: "深处祷告",
+              subtitle: "诗篇130，启示录21:4",
+              voicing: "女中音独唱与合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter2.mp3",
+              lyrics: [
+                { text: "主啊，我在深处求告，求主垂听我恳切的心声！愿您俯首倾耳静听。" },
+                { text: "您赦罪之宏恩大爱，只使我敬畏的心油然而生。" },
+                { text: "我心切实听候主叮咛，我灵隐秘如深渊，响应主恩。" },
+                { text: "夜正深沉，在这漫漫长夜里，我守望，我等候。" },
+                { text: "复活的黎明终将来临，永在您爱中，从今到永远，蒙恩惠，得安慰。" }
+              ]
+            },
+            {
+              id: "ch3",
+              number: "III",
+              title: "称颂耶稣",
+              subtitle: "腓立比书4:6-11；哥林多前书15:55-56；希伯来书11:13-16；12:1,2",
+              voicing: "合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter3.mp3",
+              lyrics: [
+                { text: "耶稣，耶稣，我称颂您！生命之主，永远怜悯，让他们安息，永远的安息，安息在您怀里！" },
+                { text: "耶稣，耶稣，我称颂您！奇妙的救赎，永世无穷，永在天家，永享福乐，永远国度，永远平安，永远歌唱，称颂永远。" }
+              ]
+            },
+            {
+              id: "ch4",
+              number: "IV",
+              title: "圣洁颂歌",
+              subtitle: "以赛亚书6:3；希伯来书12:2；启示录4:4",
+              voicing: "合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter4.mp3",
+              lyrics: [
+                { text: "全能的神，永在的父，慈悲的主！天上人间充满您大荣光，圣洁公义从地直达高天，惟独您！" },
+                { text: "以色列的至圣者！圣约之神，信心创始成终的主！圣约之民，虔诚忠信恒常，万民都要在您面前敬拜，圣哉！圣哉！圣哉！" }
+              ]
+            },
+            {
+              id: "ch5",
+              number: "V",
+              title: "羔羊赞颂",
+              subtitle: "启示录1:18；5:12-13；14:1-4；15:3-4",
+              voicing: "男高音、女中音领唱，合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter5.mp3",
+              lyrics: [
+                { text: "看哪！神的羔羊在宝座，他曾死过，现在又活了，直活到永永远远，拿着死亡和阴间的钥匙。" },
+                { text: "他曾受苦；为我们受罪刑；代我们替死亡；救我们出黑暗。神的羔羊，我们歌颂您，万主之主，万王之王！羔羊之歌不住洋溢在高空。" }
+              ]
+            },
+            {
+              id: "ch6",
+              number: "VI",
+              title: "永享自由",
+              subtitle: "启示录1:18；5:12-13；14:1-4；15:3-4；葛里高利圣咏639",
+              voicing: "男高音独唱，合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/Chapter6.mp3",
+              lyrics: [
+                { text: "求主释放我得自由，释放我肉身不受病痛，释放我心灵不再惧怕，释放我思想时空局限，您曾救我的眼免了眼泪；救我的脚免了跌倒；救我的命免了死亡。" },
+                { text: "今在自由中永与主相交，如鹰展翅上腾翱翔太空，如雁飞向南方结成群体，与亲爱的相聚永不分离。" },
+                { text: "葛里高利圣咏639《在天堂》：（意译）天使和殉道的圣徒都在天堂迎接他们，并把他们带到圣城耶路撒冷，在那里有天使的合唱。与昔日的丐者拉撒路，他们将得到永远的安息。" }
+              ]
+            },
+            {
+              id: "ch7",
+              number: "VII",
+              title: "永远照耀",
+              subtitle: "以赛亚书60:1-2；启示录15:13；帖撒罗尼迦前书4:15-18；诗篇23",
+              voicing: "男高音、女中音领唱，合唱",
+              audio: "assets/AnlunHuang/ChineseRequiem/manualWorkInProgress/Chapter7.mp3",
+              lyrics: [
+                { text: "Hallelujah! 主啊！愿永远的光照耀他们，在宁静高天传出喜讯：那在主里死的人有福了，他们息了地上一切劳苦，工作的果效随着他们。" },
+                { text: "愿永远的光照耀他们，在崇高天庭突有角声，主必亲自降临，角声中有天使长的声音，那在基督里死了的人必先复活，" },
+                { text: "还在地上存留的人必被提到云里，在空中与主相遇，主必永远同在。愿永远的光照耀他们，永远！永远！" },
+                { text: "《诗篇23》：耶和华是我的牧者，我必不至缺乏，他使我躺卧在青草地上，领我在可安歇的水边。他使我的灵魂苏醒，为自己的名引导我走义路。" },
+                { text: "我虽然行过死阴的幽谷，也不怕遭害，因为你与我同在。你的杖，你的竿，都安慰我。在我敌人面前，你为我摆设筵席，你用油膏了我的头，使我福杯满溢。" },
+                { text: "我一生一世必有恩惠慈爱随着我。我且要住在耶和华的殿中，直到永远。Amen." }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    /* Add more composers here following the same structure */
+  ]
+};
+
+/* ================================================================
+   CONFIGURATION — apply URL params to CSS custom properties
+   Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
+================================================================ */
+(function applyConfig() {
+  const params = new URLSearchParams(window.location.search);
+  const propMap = {
+    'above-color': '--lyrics-above-color',
+    'above-bg':    '--lyrics-above-bg',
+    'below-color': '--lyrics-below-color',
+    'below-bg':    '--lyrics-below-bg'
+  };
+  Object.entries(propMap).forEach(([param, prop]) => {
+    const val = params.get(param);
+    if (val) document.documentElement.style.setProperty(prop, val);
+  });
+})();
+
+/* ================================================================
+   STATE
+================================================================ */
+const state = {
+  composerIdx:  null,
+  workIdx:      null,
+  movementIdx:  null,
+  isPlaying:    false,
+  lastLyricIdx: -1,
+  allMovements: []  // flat list for prev/next
+};
+
+const audio = document.getElementById('audio');
+
+/* ================================================================
+   BUILD FLAT MOVEMENT LIST  (used for Prev/Next navigation)
+================================================================ */
+function buildFlatList() {
+  state.allMovements = [];
+  APP_DATA.composers.forEach((composer, ci) => {
+    composer.works.forEach((work, wi) => {
+      work.movements.forEach((movement, mi) => {
+        state.allMovements.push({ composerIdx: ci, workIdx: wi, movementIdx: mi,
+          data: movement, composer, work });
+      });
+    });
+  });
+}
+
+/* ================================================================
+   BUILD NAVIGATION TREE
+================================================================ */
+function buildTree() {
+  const tree = document.getElementById('composer-tree');
+  tree.innerHTML = '';
+
+  // Sort composers alphabetically
+  const composers = [...APP_DATA.composers].sort((a, b) =>
+    (a.nameSort || a.name).localeCompare(b.nameSort || b.name)
+  );
+
+  composers.forEach(composer => {
+    const composerEl = document.createElement('div');
+    composerEl.className = 'tree-composer open';
+
+    const composerHeader = document.createElement('div');
+    composerHeader.className = 'tree-composer-header';
+    composerHeader.innerHTML =
+      `<span class="tree-toggle">&#9658;</span><span>${escHtml(composer.name)}</span>`;
+    composerHeader.addEventListener('click', () => composerEl.classList.toggle('open'));
+
+    const worksEl = document.createElement('div');
+    worksEl.className = 'tree-works';
+
+    const works = [...composer.works].sort((a, b) =>
+      (a.titleSort || a.title).localeCompare(b.titleSort || b.title)
+    );
+
+    works.forEach(work => {
+      const workEl = document.createElement('div');
+      workEl.className = 'tree-work open';
+
+      const workHeader = document.createElement('div');
+      workHeader.className = 'tree-work-header';
+      workHeader.innerHTML =
+        `<span class="tree-toggle">&#9658;</span><span>${escHtml(work.title)}</span>`;
+      workHeader.addEventListener('click', () => workEl.classList.toggle('open'));
+
+      const movementsEl = document.createElement('div');
+      movementsEl.className = 'tree-movements';
+
+      work.movements.forEach(movement => {
+        const movEl = document.createElement('div');
+        movEl.className = 'tree-movement';
+        movEl.dataset.id = movement.id;
+        movEl.textContent = `${movement.number}. ${movement.title}`;
+        movEl.addEventListener('click', () => loadMovement(composer, work, movement));
+        movementsEl.appendChild(movEl);
+      });
+
+      workEl.appendChild(workHeader);
+      workEl.appendChild(movementsEl);
+      worksEl.appendChild(workEl);
+    });
+
+    composerEl.appendChild(composerHeader);
+    composerEl.appendChild(worksEl);
+    tree.appendChild(composerEl);
+  });
+}
+
+/* ================================================================
+   LOAD MOVEMENT
+================================================================ */
+function loadMovement(composer, work, movement, autoplay = false) {
+  // Update state
+  const flatEntry = state.allMovements.find(m => m.data.id === movement.id);
+  if (flatEntry) {
+    state.composerIdx  = flatEntry.composerIdx;
+    state.workIdx      = flatEntry.workIdx;
+    state.movementIdx  = flatEntry.movementIdx;
+  }
+  state.lastLyricIdx = -1;
+
+  // Highlight active tree node
+  document.querySelectorAll('.tree-movement').forEach(el => {
+    el.classList.toggle('active', el.dataset.id === movement.id);
+  });
+
+  // Update now-playing header
+  document.getElementById('np-label').textContent =
+    `${escHtml(composer.name)}  —  ${escHtml(work.title)}`;
+  document.getElementById('np-title').textContent =
+    `${movement.number}. ${movement.title}`;
+
+  // Update info pane
+  document.getElementById('info-composer').textContent = composer.name;
+  document.getElementById('info-work').textContent =
+    `${work.title}${work.opusNumber ? ' ' + work.opusNumber : ''}${work.year ? ' (' + work.year + ')' : ''}`;
+  document.getElementById('info-dates').textContent =
+    work.premiered ? `首演: ${work.premiered}` : '';
+  document.getElementById('info-description').textContent = work.description || '';
+
+  // Load audio
+  audio.src = movement.audio;
+  audio.load();
+  resetProgress();
+
+  // Render lyrics
+  renderLyrics(movement);
+  updateNavButtons();
+
+  if (autoplay) {
+    audio.play().catch(() => {});
+  }
+}
+
+/* ================================================================
+   RENDER LYRICS
+================================================================ */
+function renderLyrics(movement) {
+  const inner = document.getElementById('lyrics-inner');
+  inner.innerHTML = '';
+
+  const topSpacer = document.createElement('div');
+  topSpacer.className = 'lyrics-spacer';
+  inner.appendChild(topSpacer);
+
+  if (!movement.lyrics || movement.lyrics.length === 0) {
+    const msg = document.createElement('p');
+    msg.className = 'no-song-msg';
+    msg.textContent = 'No lyrics available for this movement.';
+    inner.appendChild(msg);
+  } else {
+    // Movement heading
+    const meta = document.createElement('div');
+    meta.className = 'lyric-meta';
+    meta.textContent =
+      `${movement.number}. ${movement.title}` +
+      (movement.subtitle ? ` [${movement.subtitle}]` : '') +
+      (movement.voicing  ? `\n${movement.voicing}` : '');
+    meta.style.whiteSpace = 'pre-line';
+    inner.appendChild(meta);
+
+    // Lyric lines
+    movement.lyrics.forEach((lyric, idx) => {
+      const el = document.createElement('div');
+      el.className = 'lyric-line';
+      el.dataset.index = idx;
+      el.textContent = lyric.text;
+      // If line has a timestamp, clicking seeks there
+      el.addEventListener('click', () => {
+        if (lyric.time !== undefined) {
+          audio.currentTime = lyric.time;
+        }
+      });
+      inner.appendChild(el);
+    });
+  }
+
+  const bottomSpacer = document.createElement('div');
+  bottomSpacer.className = 'lyrics-spacer';
+  inner.appendChild(bottomSpacer);
+
+  highlightLyricLine(0);
+}
+
+/* ================================================================
+   HIGHLIGHT LYRIC LINE
+================================================================ */
+function highlightLyricLine(idx) {
+  if (idx === state.lastLyricIdx) return;
+  state.lastLyricIdx = idx;
+
+  const lines = document.querySelectorAll('.lyric-line');
+  lines.forEach((el, i) => {
+    el.classList.remove('before', 'current', 'after', 'distant');
+    const diff = i - idx;
+    if (diff === 0)        el.classList.add('current');
+    else if (diff < 0)     el.classList.add(Math.abs(diff) <= 4 ? 'before' : 'distant');
+    else                   el.classList.add(diff <= 4 ? 'after' : 'distant');
+  });
+
+  // Scroll the current line to vertical center of container
+  const currentEl = document.querySelector('.lyric-line.current');
+  const container = document.getElementById('lyrics-container');
+  if (currentEl && container) {
+    const cRect = container.getBoundingClientRect();
+    const eRect = currentEl.getBoundingClientRect();
+    const desired = container.scrollTop + (eRect.top - cRect.top)
+                    - cRect.height / 2 + eRect.height / 2;
+    container.scrollTo({ top: desired, behavior: 'smooth' });
+  }
+}
+
+/* ================================================================
+   COMPUTE CURRENT LYRIC INDEX from audio time
+================================================================ */
+function getCurrentLyricIdx() {
+  const movement = currentMovement();
+  if (!movement || !movement.lyrics || movement.lyrics.length === 0) return 0;
+
+  const lyrics   = movement.lyrics;
+  const duration = isFinite(audio.duration) ? audio.duration : 1;
+  const t        = audio.currentTime;
+
+  // If all lyrics have time stamps — use them
+  if (lyrics[0].time !== undefined) {
+    let idx = 0;
+    for (let i = 0; i < lyrics.length; i++) {
+      if (lyrics[i].time <= t) idx = i;
+      else break;
+    }
+    return idx;
+  }
+
+  // Linear interpolation fallback
+  return Math.min(
+    Math.floor((t / duration) * lyrics.length),
+    lyrics.length - 1
+  );
+}
+
+/* ================================================================
+   AUDIO EVENTS
+================================================================ */
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration && isFinite(audio.duration)) {
+    const ratio = audio.currentTime / audio.duration;
+    document.getElementById('progress-bar').value = Math.round(ratio * 10000);
+    setTimeDisplay(audio.currentTime, audio.duration);
+  }
+
+  if (state.composerIdx !== null) {
+    highlightLyricLine(getCurrentLyricIdx());
+  }
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  setTimeDisplay(0, audio.duration);
+});
+
+audio.addEventListener('play', () => {
+  document.getElementById('btn-play-pause').innerHTML = '&#9646;&#9646;';
+  state.isPlaying = true;
+});
+
+audio.addEventListener('pause', () => {
+  document.getElementById('btn-play-pause').innerHTML = '&#9654;';
+  state.isPlaying = false;
+});
+
+audio.addEventListener('ended', () => {
+  // Auto-advance to next movement
+  const idx = currentFlatIdx();
+  if (idx >= 0 && idx < state.allMovements.length - 1) {
+    const next = state.allMovements[idx + 1];
+    loadMovement(next.composer, next.work, next.data, true);
+  }
+});
+
+audio.addEventListener('error', () => {
+  // Gracefully handle missing audio file — lyrics still display
+  console.warn('Audio file not found:', audio.src);
+});
+
+/* ================================================================
+   PLAYBACK CONTROLS
+================================================================ */
+document.getElementById('btn-play-pause').addEventListener('click', () => {
+  if (audio.src) {
+    audio.paused ? audio.play().catch(() => {}) : audio.pause();
+  }
+});
+
+document.getElementById('btn-rewind-start').addEventListener('click', () => {
+  audio.currentTime = 0;
+});
+
+document.getElementById('btn-rewind-15').addEventListener('click', () => {
+  audio.currentTime = Math.max(0, audio.currentTime - 15);
+});
+
+document.getElementById('btn-ff-15').addEventListener('click', () => {
+  if (isFinite(audio.duration)) {
+    audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
+  }
+});
+
+document.getElementById('btn-ff-end').addEventListener('click', () => {
+  if (isFinite(audio.duration)) audio.currentTime = audio.duration;
+});
+
+document.getElementById('progress-bar').addEventListener('input', e => {
+  if (isFinite(audio.duration)) {
+    audio.currentTime = (e.target.value / 10000) * audio.duration;
+  }
+});
+
+document.getElementById('btn-prev').addEventListener('click', () => {
+  const idx = currentFlatIdx();
+  if (idx > 0) {
+    const entry = state.allMovements[idx - 1];
+    loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
+  }
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  const idx = currentFlatIdx();
+  if (idx >= 0 && idx < state.allMovements.length - 1) {
+    const entry = state.allMovements[idx + 1];
+    loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
+  }
+});
+
+/* ================================================================
+   KEYBOARD SHORTCUTS
+   Space:       Play / Pause
+   Left/Right:  ±5 seconds
+   Shift+Left/Right: ±15 seconds
+================================================================ */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  switch (e.code) {
+    case 'Space':
+      e.preventDefault();
+      if (audio.src) audio.paused ? audio.play().catch(() => {}) : audio.pause();
+      break;
+    case 'ArrowLeft':
+      e.preventDefault();
+      audio.currentTime = Math.max(0, audio.currentTime - (e.shiftKey ? 15 : 5));
+      break;
+    case 'ArrowRight':
+      e.preventDefault();
+      if (isFinite(audio.duration))
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + (e.shiftKey ? 15 : 5));
+      break;
+  }
+});
+
+/* ================================================================
+   HELPERS
+================================================================ */
+function currentMovement() {
+  if (state.composerIdx === null) return null;
+  return APP_DATA.composers[state.composerIdx]
+    ?.works[state.workIdx]
+    ?.movements[state.movementIdx] ?? null;
+}
+
+function currentFlatIdx() {
+  const m = currentMovement();
+  if (!m) return -1;
+  return state.allMovements.findIndex(e => e.data.id === m.id);
+}
+
+function updateNavButtons() {
+  const idx = currentFlatIdx();
+  document.getElementById('btn-prev').disabled = idx <= 0;
+  document.getElementById('btn-next').disabled = idx < 0 || idx >= state.allMovements.length - 1;
+}
+
+function resetProgress() {
+  document.getElementById('progress-bar').value = 0;
+  setTimeDisplay(0, 0);
+}
+
+function setTimeDisplay(current, duration) {
+  document.getElementById('time-display').textContent =
+    `${fmt(current)} / ${fmt(duration)}`;
+}
+
+function fmt(s) {
+  if (!isFinite(s) || isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+buildFlatList();
+buildTree();
+updateNavButtons();
+</script>
+</body>
+</html>

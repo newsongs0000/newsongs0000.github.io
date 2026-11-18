@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OnePageMP3</title>
+<style>
+/* =====================================================================
+   CSS CUSTOM PROPERTIES (configurable via JS)
+   ===================================================================== */
+:root {
+  --nav-width: 280px;
+  --nav-bg: #0d1117;
+  --main-bg: #0d1117;
+  --lyrics-bg: #161b22;
+  --border: #30363d;
+  --accent: #58a6ff;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #484f58;
+
+  /* Configurable lyric colors */
+  --above-color: #8b949e;
+  --above-bg: #161b22;
+  --current-color: #e6edf3;
+  --current-bg: #1f2d3d;
+  --below-color: #8b949e;
+  --below-bg: #161b22;
+}
+
+/* =====================================================================
+   RESET & BASE
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'PingFang SC',
+               'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--main-bg);
+  color: var(--text-primary);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* =====================================================================
+   LEFT NAVIGATION PANE
+   ===================================================================== */
+.nav-pane {
+  width: var(--nav-width);
+  min-width: var(--nav-width);
+  background: var(--nav-bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nav-header {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.nav-header-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  flex: 1;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 15px;
+  line-height: 1;
+  transition: background 0.12s, color 0.12s;
+}
+.icon-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-primary); }
+
+.nav-tree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 0 12px;
+}
+
+/* Tree items */
+.tree-composer-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  gap: 6px;
+  user-select: none;
+}
+.tree-composer-header:hover { background: rgba(255,255,255,0.04); }
+
+.tree-works, .tree-movements { overflow: hidden; }
+.tree-works.collapsed, .tree-movements.collapsed { display: none; }
+
+.tree-work-header {
+  display: flex;
+  align-items: flex-start;
+  padding: 5px 12px 5px 24px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-secondary);
+  gap: 6px;
+  user-select: none;
+  line-height: 1.4;
+}
+.tree-work-header:hover { background: rgba(255,255,255,0.04); }
+
+.tree-movement {
+  display: flex;
+  align-items: center;
+  padding: 5px 12px 5px 38px;
+  cursor: pointer;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  gap: 5px;
+  user-select: none;
+  transition: background 0.1s;
+  line-height: 1.4;
+}
+.tree-movement:hover { background: rgba(255,255,255,0.04); color: var(--text-primary); }
+.tree-movement.active { background: rgba(88,166,255,0.1); color: var(--accent); }
+.tree-movement.no-audio { opacity: 0.5; }
+
+.tree-caret {
+  display: inline-block;
+  font-size: 9px;
+  transition: transform 0.15s;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.tree-caret.closed { transform: rotate(-90deg); }
+
+/* =====================================================================
+   MAIN RIGHT PANE
+   ===================================================================== */
+.main-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Top song navigation bar */
+.song-nav-bar {
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.nav-arrow-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  flex-shrink: 0;
+}
+.nav-arrow-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(88,166,255,0.05); }
+.nav-arrow-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+.song-title-display {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =====================================================================
+   LYRICS AREA
+   ===================================================================== */
+.lyrics-area {
+  flex: 1;
+  background: var(--lyrics-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px 32px;
+  position: relative;
+}
+
+.lyrics-wrap {
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lyric-line {
+  padding: 10px 22px;
+  text-align: center;
+  line-height: 1.65;
+  border-radius: 7px;
+  transition: color 0.3s, background 0.3s, opacity 0.3s, font-size 0.3s;
+  border-left: 3px solid transparent;
+}
+
+.lyric-line.lyr-above {
+  color: var(--above-color);
+  background: var(--above-bg);
+  font-size: 14px;
+  opacity: 0.75;
+}
+.lyric-line.lyr-above.far { opacity: 0.4; font-size: 13px; }
+
+.lyric-line.lyr-current {
+  color: var(--current-color);
+  background: var(--current-bg);
+  font-size: 20px;
+  font-weight: 500;
+  border-left-color: var(--accent);
+  letter-spacing: 0.025em;
+}
+
+.lyric-line.lyr-below {
+  color: var(--below-color);
+  background: var(--below-bg);
+  font-size: 14px;
+  opacity: 0.75;
+}
+.lyric-line.lyr-below.far { opacity: 0.4; font-size: 13px; }
+
+.lyric-spacer { padding: 10px 22px; min-height: 38px; }
+
+.lyrics-placeholder {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+.no-audio-notice {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.kb-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* =====================================================================
+   PLAYBACK BAR
+   ===================================================================== */
+.playback-bar {
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border);
+  padding: 10px 20px 12px;
+  flex-shrink: 0;
+}
+
+.progress-container {
+  width: 100%;
+  height: 5px;
+  background: #21262d;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+  transition: height 0.1s;
+}
+.progress-container:hover { height: 7px; }
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  pointer-events: none;
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 11px;
+  height: 11px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.progress-container:hover .progress-fill::after { opacity: 1; }
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.time-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+}
+.time-label.right { text-align: right; }
+
+.ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 13px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12.5px;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  white-space: nowrap;
+}
+.ctrl-btn:hover { border-color: #8b949e; color: var(--text-primary); background: rgba(255,255,255,0.04); }
+.ctrl-btn:disabled { opacity: 0.3; cursor: default; }
+
+.ctrl-btn.play-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d1117;
+  font-size: 16px;
+  padding: 7px 20px;
+  font-weight: 700;
+  min-width: 54px;
+}
+.ctrl-btn.play-btn:hover { background: #79baff; border-color: #79baff; color: #0d1117; }
+
+/* =====================================================================
+   INFO PANE
+   ===================================================================== */
+.info-pane {
+  background: var(--nav-bg);
+  border-top: 1px solid var(--border);
+  padding: 8px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 20px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  min-height: 36px;
+}
+
+.info-field { display: flex; gap: 4px; }
+.info-field-label { color: var(--text-muted); }
+.info-field-full { flex-basis: 100%; }
+
+/* =====================================================================
+   SETTINGS PANEL
+   ===================================================================== */
+.settings-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+.settings-overlay.open { display: block; }
+
+.settings-panel {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 130px;
+  background: #161b22;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  z-index: 100;
+  width: 310px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+}
+.settings-panel.open { display: block; }
+
+.settings-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.settings-section-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 12px 0 6px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.setting-row label { flex: 1; }
+
+.setting-row input[type="number"] {
+  width: 54px;
+  background: #0d1117;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.setting-row input[type="color"] {
+  width: 36px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px;
+  background: transparent;
+}
+
+/* =====================================================================
+   SCROLLBAR
+   ===================================================================== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     LEFT NAVIGATION PANE
+     ================================================================ -->
+<nav class="nav-pane">
+  <div class="nav-header">
+    <span style="font-size:17px">♪</span>
+    <span class="nav-header-title">OnePageMP3</span>
+    <button class="icon-btn" id="settingsBtn" onclick="toggleSettings(event)" title="显示设置 (Settings)">⚙</button>
+  </div>
+  <div class="nav-tree" id="navTree">
+    <div style="padding:20px 16px; color:var(--text-muted); font-size:12px">加载中…</div>
+  </div>
+</nav>
+
+<!-- ================================================================
+     MAIN RIGHT PANE
+     ================================================================ -->
+<main class="main-pane">
+
+  <!-- Top song nav -->
+  <div class="song-nav-bar">
+    <button class="nav-arrow-btn" id="prevBtn" onclick="playPrevSong()" disabled>◀ 上一首</button>
+    <div class="song-title-display" id="songTitleDisplay">OnePageMP3</div>
+    <button class="nav-arrow-btn" id="nextBtn" onclick="playNextSong()" disabled>下一首 ▶</button>
+  </div>
+
+  <!-- Lyrics display -->
+  <div class="lyrics-area">
+    <div class="lyrics-wrap" id="lyricsWrap">
+      <div class="lyrics-placeholder">请从左侧选择曲目开始播放</div>
+    </div>
+    <div class="kb-hint">空格键 播放/暂停 &nbsp;·&nbsp; ← → 快退/快进15秒</div>
+  </div>
+
+  <!-- Playback controls -->
+  <div class="playback-bar">
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="controls-row">
+      <span class="time-label" id="timeElapsed">0:00</span>
+      <button class="ctrl-btn" onclick="seekToStart()" title="回到开头">⏮</button>
+      <button class="ctrl-btn" onclick="seekBack()" title="后退 15 秒">−15s</button>
+      <button class="ctrl-btn play-btn" id="playPauseBtn" onclick="togglePlay()">▶</button>
+      <button class="ctrl-btn" onclick="seekForward()" title="快进 15 秒">+15s</button>
+      <button class="ctrl-btn" onclick="seekToEnd()" title="跳到末尾">⏭</button>
+      <span class="time-label right" id="timeDuration">0:00</span>
+    </div>
+  </div>
+
+  <!-- Info pane -->
+  <div class="info-pane" id="infoPane">
+    <div class="info-field"><span class="info-field-label">作曲：</span><span id="infoComposer">—</span></div>
+    <div class="info-field"><span class="info-field-label">作品：</span><span id="infoWork">—</span></div>
+    <div class="info-field"><span class="info-field-label">年份：</span><span id="infoYear">—</span></div>
+    <div class="info-field info-field-full"><span class="info-field-label">简介：</span><span id="infoDesc">—</span></div>
+  </div>
+
+</main>
+
+<!-- ================================================================
+     SETTINGS PANEL
+     ================================================================ -->
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-title">⚙ 显示设置</div>
+
+  <div class="settings-section-label">歌词行数</div>
+  <div class="setting-row">
+    <label>上方显示行数</label>
+    <input type="number" id="cfgLinesAbove" min="0" max="5" value="2" onchange="applyConfig()">
+  </div>
+  <div class="setting-row">
+    <label>下方显示行数</label>
+    <input type="number" id="cfgLinesBelow" min="0" max="5" value="2" onchange="applyConfig()">
+  </div>
+
+  <div class="settings-section-label">上方歌词</div>
+  <div class="setting-row">
+    <label>文字颜色</label>
+    <input type="color" id="cfgAboveColor" value="#8b949e" onchange="applyConfig()">
+  </div>
+  <div class="setting-row">
+    <label>背景颜色</label>
+    <input type="color" id="cfgAboveBg" value="#161b22" onchange="applyConfig()">
+  </div>
+
+  <div class="settings-section-label">当前歌词</div>
+  <div class="setting-row">
+    <label>文字颜色</label>
+    <input type="color" id="cfgCurrentColor" value="#e6edf3" onchange="applyConfig()">
+  </div>
+  <div class="setting-row">
+    <label>背景颜色</label>
+    <input type="color" id="cfgCurrentBg" value="#1f2d3d" onchange="applyConfig()">
+  </div>
+
+  <div class="settings-section-label">下方歌词</div>
+  <div class="setting-row">
+    <label>文字颜色</label>
+    <input type="color" id="cfgBelowColor" value="#8b949e" onchange="applyConfig()">
+  </div>
+  <div class="setting-row">
+    <label>背景颜色</label>
+    <input type="color" id="cfgBelowBg" value="#161b22" onchange="applyConfig()">
+  </div>
+</div>
+
+<!-- Hidden audio element -->
+<audio id="audioEl" preload="metadata"></audio>
+
+<!-- ================================================================
+     APPLICATION SCRIPT
+     ================================================================ -->
+<script>
+'use strict';
+
+// ====================================================================
+// SONG DATA
+// Each lyric entry: { t: seconds_from_start, l: "lyric text" }
+// NOTE: Timestamps for movements I–VI are estimates (no MP3 yet).
+//       Chapter VII timestamps were manually estimated; adjust as needed.
+// ====================================================================
+const SONGS_DATA = {
+  composers: [
+    {
+      id: 'anlun-huang',
+      name: '黄安伦 (An-Lun Huang)',
+      born: '1949',
+      info: '中国作曲家，旅居加拿大。代表作包括《中国畅想曲》、《中国交响曲》等。',
+      works: [
+        {
+          id: 'requiem-op63',
+          title: '安魂曲 (Requiem)',
+          subtitle: '无伴奏混声合唱 · 作品第六十三号',
+          year: '2004',
+          place: 'Toronto',
+          description: '香港圣乐团委约。词：唐佑之（根据圣经）。共七个乐章，献给所有安息在上帝怀里的。',
+          movements: [
+            {
+              id: 'mv1',
+              title: 'I. 永远安息',
+              subtitle: '合唱 [诗篇116:7,9]',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'I. 永远安息'},
+                {t:4,   l:'[诗篇116:7,9] · 合唱'},
+                {t:10,  l:'求主赐他们永远安息，'},
+                {t:19,  l:'安息在您怀里！'},
+                {t:28,  l:'唯有耶和华所亲爱的，'},
+                {t:37,  l:'必让他们安睡。'},
+                {t:47,  l:'阳光永温煦地照耀，'},
+                {t:56,  l:'轻风常吹拂地爱抚，'},
+                {t:65,  l:'花香弥漫发放芳馨，'},
+                {t:74,  l:'天使歌咏轻快活泼。'},
+                {t:84,  l:'求主赐他们永远安息，'},
+                {t:93,  l:'安息在您怀里！'},
+              ],
+            },
+            {
+              id: 'mv2',
+              title: 'II. 深处祷告',
+              subtitle: '女中音独唱与合唱 [诗篇130, 启示录21:4]',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'II. 深处祷告'},
+                {t:5,   l:'女中音独唱与合唱'},
+                {t:12,  l:'主啊，我在深处求告，'},
+                {t:24,  l:'求主垂听我恳切的心声！'},
+                {t:36,  l:'愿您俯首倾耳静听。'},
+                {t:47,  l:'您赦罪之宏恩大爱，'},
+                {t:58,  l:'只使我敬畏的心油然而生。'},
+                {t:72,  l:'我心切实听候主叮咛，'},
+                {t:83,  l:'我灵隐秘如深渊，响应主恩。'},
+                {t:96,  l:'夜正深沉，在这漫漫长夜里，'},
+                {t:110, l:'我守望，我等候。'},
+                {t:121, l:'复活的黎明终将来临，'},
+                {t:133, l:'永在您爱中，从今到永远，'},
+                {t:146, l:'蒙恩惠，得安慰。'},
+              ],
+            },
+            {
+              id: 'mv3',
+              title: 'III. 称颂耶稣',
+              subtitle: '合唱',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'III. 称颂耶稣'},
+                {t:6,   l:'耶稣，耶稣，我称颂您！'},
+                {t:17,  l:'生命之主，永远怜悯，'},
+                {t:29,  l:'让他们安息，永远的安息，'},
+                {t:41,  l:'安息在您怀里！'},
+                {t:52,  l:'耶稣，耶稣，我称颂您！'},
+                {t:63,  l:'奇妙的救赎，永世无穷，'},
+                {t:75,  l:'永在天家，永享福乐，'},
+                {t:87,  l:'永远国度，永远平安，'},
+                {t:99,  l:'永远歌唱，称颂永远。'},
+              ],
+            },
+            {
+              id: 'mv4',
+              title: 'IV. 圣洁颂歌',
+              subtitle: '合唱 [以赛亚书6:3, 希伯来书12:2, 启示录4:4]',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'IV. 圣洁颂歌'},
+                {t:6,   l:'全能的神，永在的父，慈悲的主！'},
+                {t:20,  l:'天上人间充满您大荣光，'},
+                {t:33,  l:'圣洁公义从地直达高天，惟独您！'},
+                {t:48,  l:'以色列的至圣者！'},
+                {t:59,  l:'圣约之神，信心创始成终的主！'},
+                {t:73,  l:'圣约之民，虔诚忠信恒常，'},
+                {t:86,  l:'万民都要在您面前敬拜，'},
+                {t:99,  l:'圣哉！圣哉！圣哉！'},
+              ],
+            },
+            {
+              id: 'mv5',
+              title: 'V. 羔羊赞颂',
+              subtitle: '男高音，女中音领唱，合唱 [启示录1:18, 5:12-13]',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'V. 羔羊赞颂'},
+                {t:6,   l:'看哪！神的羔羊在宝座，'},
+                {t:18,  l:'他曾死过，现在又活了，'},
+                {t:30,  l:'直活到永永远远，'},
+                {t:40,  l:'拿着死亡和阴间的钥匙。'},
+                {t:52,  l:'他曾受苦；为我们受罪刑；'},
+                {t:65,  l:'代我们替死亡；救我们出黑暗。'},
+                {t:78,  l:'神的羔羊，我们歌颂您，'},
+                {t:90,  l:'万主之主，万王之王！'},
+                {t:102, l:'羔羊之歌不住洋溢在高空。'},
+              ],
+            },
+            {
+              id: 'mv6',
+              title: 'VI. 永享自由',
+              subtitle: '男高音独唱，合唱 [葛里高利圣咏639]',
+              mp3: null,
+              lyrics: [
+                {t:0,   l:'VI. 永享自由'},
+                {t:6,   l:'求主释放我得自由，'},
+                {t:18,  l:'释放我肉身不受病痛，'},
+                {t:30,  l:'释放我心灵不再惧怕，'},
+                {t:42,  l:'释放我思想时空局限，'},
+                {t:54,  l:'您曾救我的眼免了眼泪；'},
+                {t:66,  l:'救我的脚免了跌倒；'},
+                {t:77,  l:'救我的命免了死亡。'},
+                {t:88,  l:'今在自由中永与主相交，'},
+                {t:100, l:'如鹰展翅上腾翱翔太空，'},
+                {t:112, l:'如雁飞向南方结成群体，'},
+                {t:124, l:'与亲爱的相聚永不分离。'},
+                {t:137, l:'天使和殉道的圣徒都在天堂迎接他们，'},
+                {t:154, l:'并把他们带到圣城耶路撒冷，'},
+                {t:168, l:'在那里有天使的合唱。'},
+                {t:180, l:'与昔日的丐者拉撒路，'},
+                {t:192, l:'他们将得到永远的安息。'},
+              ],
+            },
+            {
+              id: 'mv7',
+              title: 'VII. 永远照耀',
+              subtitle: '男高音，女中音领唱，合唱 [以赛亚书60:1-2, 诗篇23]',
+              mp3: 'assets/AnlunHuang/manualWorkInProgress/Chapter7.mp3',
+              lyrics: [
+                {t:0,   l:'VII. 永远照耀'},
+                {t:6,   l:'Hallelujah!'},
+                {t:14,  l:'主啊！愿永远的光照耀他们，'},
+                {t:28,  l:'在宁静高天传出喜讯：'},
+                {t:41,  l:'那在主里死的人有福了，'},
+                {t:55,  l:'他们息了地上一切劳苦，'},
+                {t:68,  l:'工作的果效随着他们。'},
+                {t:82,  l:'愿永远的光照耀他们，'},
+                {t:95,  l:'在崇高天庭突有角声，'},
+                {t:108, l:'主必亲自降临，'},
+                {t:119, l:'角声中有天使长的声音，'},
+                {t:132, l:'那在基督里死了的人必先复活，'},
+                {t:148, l:'还在地上存留的人必被提到云里，'},
+                {t:166, l:'在空中与主相遇，主必永远同在。'},
+                {t:182, l:'愿永远的光照耀他们，永远！永远！'},
+                {t:198, l:'——《诗篇二十三篇》——'},
+                {t:208, l:'耶和华是我的牧者，我必不至缺乏，'},
+                {t:224, l:'他使我躺卧在青草地上，'},
+                {t:238, l:'领我在可安歇的水边。'},
+                {t:250, l:'他使我的灵魂苏醒，'},
+                {t:261, l:'为自己的名引导我走义路。'},
+                {t:275, l:'我虽然行过死阴的幽谷，也不怕遭害，'},
+                {t:292, l:'因为你与我同在。'},
+                {t:303, l:'你的杖，你的竿，都安慰我。'},
+                {t:317, l:'在我敌人面前，你为我摆设筵席，'},
+                {t:333, l:'你用油膏了我的头，使我福杯满溢。'},
+                {t:349, l:'我一生一世必有恩惠慈爱随着我。'},
+                {t:365, l:'我且要住在耶和华的殿中，直到永远。'},
+                {t:382, l:'Amen.'},
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+// ====================================================================
+// APP STATE
+// ====================================================================
+const audioEl = document.getElementById('audioEl');
+let allSongs = [];   // flat list: [ { mv, work, composer }, ... ]
+let currentIdx = -1;
+let currentLyricIdx = 0;
+let isDragging = false;
+
+let cfg = {
+  linesAbove: 2,
+  linesBelow: 2,
+  aboveColor:   '#8b949e',
+  aboveBg:      '#161b22',
+  currentColor: '#e6edf3',
+  currentBg:    '#1f2d3d',
+  belowColor:   '#8b949e',
+  belowBg:      '#161b22',
+};
+
+// ====================================================================
+// INIT
+// ====================================================================
+function init() {
+  loadConfig();
+  buildSongList();
+  buildNavTree();
+  syncConfigUI();
+  updateNavButtons();
+
+  // Auto-select the movement that has an actual MP3
+  const defaultIdx = allSongs.findIndex(s => s.mv.id === 'mv7');
+  if (defaultIdx >= 0) selectSong(defaultIdx);
+}
+
+function buildSongList() {
+  allSongs = [];
+  for (const composer of SONGS_DATA.composers) {
+    for (const work of composer.works) {
+      for (const mv of work.movements) {
+        allSongs.push({ mv, work, composer });
+      }
+    }
+  }
+}
+
+// ====================================================================
+// NAV TREE
+// ====================================================================
+function buildNavTree() {
+  const tree = document.getElementById('navTree');
+  tree.innerHTML = '';
+
+  for (const composer of SONGS_DATA.composers) {
+    const composerWrap = document.createElement('div');
+
+    const composerHdr = document.createElement('div');
+    composerHdr.className = 'tree-composer-header';
+    const caret1 = document.createElement('span');
+    caret1.className = 'tree-caret';
+    caret1.textContent = '▾';
+    composerHdr.append(caret1, ' 🎼 ', h(composer.name));
+    composerHdr.addEventListener('click', () => {
+      const w = composerWrap.querySelector('.tree-works');
+      const closed = w.classList.toggle('collapsed');
+      caret1.className = 'tree-caret' + (closed ? ' closed' : '');
+    });
+
+    const worksDiv = document.createElement('div');
+    worksDiv.className = 'tree-works';
+
+    for (const work of composer.works) {
+      const workWrap = document.createElement('div');
+
+      const workHdr = document.createElement('div');
+      workHdr.className = 'tree-work-header';
+      const caret2 = document.createElement('span');
+      caret2.className = 'tree-caret';
+      caret2.textContent = '▾';
+      workHdr.append(caret2, ' 📀 ', h(work.title));
+      workHdr.addEventListener('click', () => {
+        const m = workWrap.querySelector('.tree-movements');
+        const closed = m.classList.toggle('collapsed');
+        caret2.className = 'tree-caret' + (closed ? ' closed' : '');
+      });
+
+      const mvsDiv = document.createElement('div');
+      mvsDiv.className = 'tree-movements';
+
+      for (const mv of work.movements) {
+        const mvEl = document.createElement('div');
+        const hasAudio = !!mv.mp3;
+        mvEl.className = 'tree-movement' + (hasAudio ? '' : ' no-audio');
+        mvEl.id = `nav-mv-${mv.id}`;
+        mvEl.title = hasAudio ? mv.subtitle || '' : '暂无音频文件';
+        mvEl.innerHTML = `<span>♪</span> <span>${h(mv.title)}</span>`;
+        const songIdx = allSongs.findIndex(s => s.mv.id === mv.id);
+        mvEl.addEventListener('click', () => selectSong(songIdx));
+        mvsDiv.appendChild(mvEl);
+      }
+
+      workWrap.appendChild(workHdr);
+      workWrap.appendChild(mvsDiv);
+      worksDiv.appendChild(workWrap);
+    }
+
+    composerWrap.appendChild(composerHdr);
+    composerWrap.appendChild(worksDiv);
+    tree.appendChild(composerWrap);
+  }
+}
+
+// ====================================================================
+// SONG SELECTION
+// ====================================================================
+function selectSong(idx) {
+  if (idx < 0 || idx >= allSongs.length) return;
+
+  const wasPlaying = !audioEl.paused;
+  if (wasPlaying) audioEl.pause();
+
+  currentIdx = idx;
+  currentLyricIdx = 0;
+
+  // Update nav active state
+  document.querySelectorAll('.tree-movement').forEach(el => el.classList.remove('active'));
+  const navEl = document.getElementById(`nav-mv-${allSongs[idx].mv.id}`);
+  if (navEl) navEl.classList.add('active');
+
+  const { mv, work, composer } = allSongs[idx];
+
+  // Update title bar
+  document.getElementById('songTitleDisplay').textContent = mv.title;
+
+  // Update info pane
+  document.getElementById('infoComposer').textContent = composer.name;
+  document.getElementById('infoWork').textContent =
+    work.title + (work.subtitle ? ' · ' + work.subtitle : '');
+  document.getElementById('infoYear').textContent =
+    work.year + (work.place ? ' · ' + work.place : '');
+  document.getElementById('infoDesc').textContent = work.description || '—';
+
+  // Load audio
+  if (mv.mp3) {
+    audioEl.src = mv.mp3;
+    audioEl.load();
+  } else {
+    audioEl.removeAttribute('src');
+    audioEl.load();
+    document.getElementById('playPauseBtn').textContent = '▶';
+    document.getElementById('timeElapsed').textContent = '0:00';
+    document.getElementById('timeDuration').textContent = '—';
+    document.getElementById('progressFill').style.width = '0%';
+  }
+
+  renderLyrics();
+  updateNavButtons();
+}
+
+// ====================================================================
+// LYRICS RENDERING
+// ====================================================================
+function renderLyrics() {
+  const wrap = document.getElementById('lyricsWrap');
+  wrap.innerHTML = '';
+
+  if (currentIdx < 0) {
+    wrap.innerHTML = '<div class="lyrics-placeholder">请从左侧选择曲目开始播放</div>';
+    return;
+  }
+
+  const { mv } = allSongs[currentIdx];
+  const lyrics = mv.lyrics;
+
+  if (!lyrics || lyrics.length === 0) {
+    wrap.innerHTML = '<div class="lyrics-placeholder">暂无歌词</div>';
+    return;
+  }
+
+  if (!mv.mp3) {
+    wrap.innerHTML += '<div class="no-audio-notice">此乐章暂无音频文件</div>';
+  }
+
+  const above = cfg.linesAbove;
+  const below = cfg.linesBelow;
+
+  for (let offset = -above; offset <= below; offset++) {
+    const li = currentLyricIdx + offset;
+    const el = document.createElement('div');
+
+    if (li < 0 || li >= lyrics.length) {
+      el.className = 'lyric-spacer';
+    } else {
+      el.textContent = lyrics[li].l;
+
+      if (offset === 0) {
+        el.className = 'lyric-line lyr-current';
+        el.style.color      = cfg.currentColor;
+        el.style.background = cfg.currentBg;
+      } else if (offset < 0) {
+        el.className = 'lyric-line lyr-above' + (offset < -1 ? ' far' : '');
+        el.style.color      = cfg.aboveColor;
+        el.style.background = cfg.aboveBg;
+      } else {
+        el.className = 'lyric-line lyr-below' + (offset > 1 ? ' far' : '');
+        el.style.color      = cfg.belowColor;
+        el.style.background = cfg.belowBg;
+      }
+    }
+    wrap.appendChild(el);
+  }
+}
+
+function updateLyricsByTime(t) {
+  if (currentIdx < 0) return;
+  const lyrics = allSongs[currentIdx].mv.lyrics;
+  if (!lyrics) return;
+
+  let newIdx = 0;
+  for (let i = 0; i < lyrics.length; i++) {
+    if (lyrics[i].t <= t) newIdx = i;
+    else break;
+  }
+  if (newIdx !== currentLyricIdx) {
+    currentLyricIdx = newIdx;
+    renderLyrics();
+  }
+}
+
+// ====================================================================
+// AUDIO EVENT HANDLERS
+// ====================================================================
+audioEl.addEventListener('timeupdate', () => {
+  const cur = audioEl.currentTime;
+  const dur = audioEl.duration || 0;
+  document.getElementById('timeElapsed').textContent = fmtTime(cur);
+  document.getElementById('timeDuration').textContent = fmtTime(dur);
+  if (dur > 0) {
+    document.getElementById('progressFill').style.width = `${(cur / dur) * 100}%`;
+  }
+  updateLyricsByTime(cur);
+});
+
+audioEl.addEventListener('loadedmetadata', () => {
+  document.getElementById('timeDuration').textContent = fmtTime(audioEl.duration);
+});
+
+audioEl.addEventListener('play', () => {
+  document.getElementById('playPauseBtn').textContent = '⏸';
+});
+
+audioEl.addEventListener('pause', () => {
+  document.getElementById('playPauseBtn').textContent = '▶';
+});
+
+audioEl.addEventListener('ended', () => {
+  document.getElementById('playPauseBtn').textContent = '▶';
+  // Auto-advance to next song if it exists and has audio
+  if (currentIdx >= 0 && currentIdx < allSongs.length - 1) {
+    const nextIdx = currentIdx + 1;
+    selectSong(nextIdx);
+    if (allSongs[nextIdx].mv.mp3) {
+      audioEl.play().catch(() => {});
+    }
+  }
+});
+
+audioEl.addEventListener('error', () => {
+  console.warn('Audio error for:', allSongs[currentIdx]?.mv.mp3);
+  document.getElementById('playPauseBtn').textContent = '▶';
+});
+
+// ====================================================================
+// PLAYBACK CONTROLS
+// ====================================================================
+function togglePlay() {
+  if (currentIdx < 0) return;
+  if (!allSongs[currentIdx].mv.mp3) return;
+  if (audioEl.paused) {
+    audioEl.play().catch(e => console.warn('Play error:', e));
+  } else {
+    audioEl.pause();
+  }
+}
+
+function seekToStart()  { audioEl.currentTime = 0; }
+function seekToEnd()    { if (audioEl.duration) audioEl.currentTime = audioEl.duration - 0.5; }
+function seekBack()     { audioEl.currentTime = Math.max(0, audioEl.currentTime - 15); }
+function seekForward()  { audioEl.currentTime = Math.min(audioEl.duration || 0, audioEl.currentTime + 15); }
+
+function playPrevSong() {
+  if (currentIdx > 0) selectSong(currentIdx - 1);
+}
+
+function playNextSong() {
+  if (currentIdx >= 0 && currentIdx < allSongs.length - 1) selectSong(currentIdx + 1);
+}
+
+function updateNavButtons() {
+  document.getElementById('prevBtn').disabled = currentIdx <= 0;
+  document.getElementById('nextBtn').disabled = currentIdx < 0 || currentIdx >= allSongs.length - 1;
+}
+
+// Progress bar — click + drag
+const progressContainer = document.getElementById('progressContainer');
+
+function applySeek(e) {
+  if (!audioEl.duration) return;
+  const rect = progressContainer.getBoundingClientRect();
+  const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  audioEl.currentTime = ratio * audioEl.duration;
+}
+
+progressContainer.addEventListener('mousedown', (e) => { isDragging = true; applySeek(e); });
+document.addEventListener('mousemove',  (e) => { if (isDragging) applySeek(e); });
+document.addEventListener('mouseup',    ()  => { isDragging = false; });
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  switch (e.code) {
+    case 'Space':       e.preventDefault(); togglePlay();   break;
+    case 'ArrowLeft':   e.preventDefault(); seekBack();     break;
+    case 'ArrowRight':  e.preventDefault(); seekForward();  break;
+    case 'Home':        e.preventDefault(); seekToStart();  break;
+    case 'End':         e.preventDefault(); seekToEnd();    break;
+  }
+});
+
+// ====================================================================
+// SETTINGS
+// ====================================================================
+function toggleSettings(e) {
+  e.stopPropagation();
+  const panel = document.getElementById('settingsPanel');
+  const overlay = document.getElementById('settingsOverlay');
+  const opening = !panel.classList.contains('open');
+  panel.classList.toggle('open', opening);
+  overlay.classList.toggle('open', opening);
+}
+
+function closeSettings() {
+  document.getElementById('settingsPanel').classList.remove('open');
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+
+// Prevent clicks inside panel from closing it
+document.getElementById('settingsPanel').addEventListener('click', e => e.stopPropagation());
+
+function applyConfig() {
+  cfg.linesAbove   = clamp(parseInt(document.getElementById('cfgLinesAbove').value) || 2, 0, 5);
+  cfg.linesBelow   = clamp(parseInt(document.getElementById('cfgLinesBelow').value) || 2, 0, 5);
+  cfg.aboveColor   = document.getElementById('cfgAboveColor').value;
+  cfg.aboveBg      = document.getElementById('cfgAboveBg').value;
+  cfg.currentColor = document.getElementById('cfgCurrentColor').value;
+  cfg.currentBg    = document.getElementById('cfgCurrentBg').value;
+  cfg.belowColor   = document.getElementById('cfgBelowColor').value;
+  cfg.belowBg      = document.getElementById('cfgBelowBg').value;
+  saveConfig();
+  renderLyrics();
+}
+
+function syncConfigUI() {
+  document.getElementById('cfgLinesAbove').value   = cfg.linesAbove;
+  document.getElementById('cfgLinesBelow').value   = cfg.linesBelow;
+  document.getElementById('cfgAboveColor').value   = cfg.aboveColor;
+  document.getElementById('cfgAboveBg').value      = cfg.aboveBg;
+  document.getElementById('cfgCurrentColor').value = cfg.currentColor;
+  document.getElementById('cfgCurrentBg').value    = cfg.currentBg;
+  document.getElementById('cfgBelowColor').value   = cfg.belowColor;
+  document.getElementById('cfgBelowBg').value      = cfg.belowBg;
+}
+
+function saveConfig() {
+  try { localStorage.setItem('opm_cfg', JSON.stringify(cfg)); } catch (_) {}
+}
+
+function loadConfig() {
+  try {
+    const saved = localStorage.getItem('opm_cfg');
+    if (saved) Object.assign(cfg, JSON.parse(saved));
+  } catch (_) {}
+}
+
+// ====================================================================
+// UTILITIES
+// ====================================================================
+function fmtTime(s) {
+  if (!isFinite(s) || s < 0) return '0:00';
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+function h(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+// ====================================================================
+// START
+// ====================================================================
+init();
+</script>
+</body>
+</html>

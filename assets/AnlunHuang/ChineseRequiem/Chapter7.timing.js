@@ -1,0 +1,32 @@
+onePageMp3Timing({
+  "format": "onepagemp3-lyrics-timing",
+  "version": 1,
+  "composer": "anlun-huang",
+  "work": "chinese-requiem",
+  "movement": "ch7",
+  "audio": "assets/AnlunHuang/ChineseRequiem/Chapter7.mp3",
+  "saved": "2026-11-08T22:46:50.164Z",
+  "lines": [
+    {"time":null,"text":"Hallelujah, Hallelujah!"},
+    {"time":null,"text":"Hallelujah, Hallelujah!"},
+    {"time":null,"text":"Hallelujah, Hallelujah!"},
+    {"time":null,"text":"Hallelujah! 主啊！"},
+    {"time":null,"text":"Hallelujah! 主啊！"},
+    {"time":null,"text":"愿永远的光照耀他们，"},
+    {"time":null,"text":"在宁静高天传出喜讯："},
+    {"time":null,"text":"那在主里死的人有福了，"},
+    {"time":null,"text":"他们息了地上一切劳苦，"},
+    {"time":null,"text":"工作的果效随着他们。"},
+    {"time":null,"text":"愿永远的光照耀他们，"},
+    {"time":null,"text":"在崇高天庭突有角声，"},
+    {"time":null,"text":"主必亲自降临，"},
+    {"time":null,"text":"主必亲自降临，"},
+    {"time":null,"text":"角声中有天使长的声音，"},
+    {"time":null,"text":"那在基督里死了的人必先复活，"},
+    {"time":null,"text":"还在地上存留的人必被提到云里，"},
+    {"time":null,"text":"在空中与主相遇，"},
+    {"time":null,"text":"主必永远同在。"},
+    {"time":null,"text":"愿永远的光照耀他们，"},
+    {"time":null,"text":"永远！永远！"}
+  ]
+});
