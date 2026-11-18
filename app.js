@@ -84,7 +84,8 @@ async function loadArtists() {
 /* ================================================================
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
-   Lyrics highlight mode: index.html?highlight-mode=auto  (default: auto; highlight-mode=manual for manual)
+   Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too:
+   index.html?highlight-mode=auto&mute=0&show=both&font=100 (see VIEW OPTIONS IN URL)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
 ================================================================ */
@@ -113,8 +114,7 @@ const state = {
   lastLyricIdx: -1,
   allMovements: [],  // flat list for prev/next
   lyricsShown:  { original: true, translation: true },  // see LYRICS SHOWN
-  highlightMode: new URLSearchParams(window.location.search).get('highlight-mode') === 'manual'
-                 ? 'manual' : 'auto'
+  highlightMode: 'auto'  // set from the URL, see VIEW OPTIONS IN URL
 };
 
 const audio = document.getElementById('audio');
@@ -309,6 +309,21 @@ function updateTimeInUrl() {
   timeInUrl.written = Date.now();
   const time = Math.floor(audio.currentTime);
   rewriteUrlParams({ [TIME_PARAM]: time > 0 ? time : null });
+}
+
+/* ================================================================
+   VIEW OPTIONS IN URL
+   The view options are kept in URL parameters, always written in full, so
+   reloading or sharing the link restores them (a missing or invalid value
+   gives the default):
+     highlight-mode  auto | manual                 (default auto; see LYRICS HIGHLIGHT MODE)
+     mute            1 | 0                         (default 0, unmuted; see MUTE)
+     show            original | translation | both (default both; see LYRICS SHOWN)
+     font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150
+================================================================ */
+function urlParam(name) {
+  return new URLSearchParams(location.search).get(name);
 }
 
 /* ================================================================
@@ -535,6 +550,7 @@ function centerCurrentLine() {
 ================================================================ */
 function setHighlightMode(mode) {
   state.highlightMode = mode;
+  rewriteUrlParams({ 'highlight-mode': mode });
   document.querySelectorAll('#mode-toggle .ctrl-btn').forEach(btn => {
     const on = btn.dataset.mode === mode;
     btn.classList.toggle('active', on);
@@ -647,15 +663,27 @@ document.getElementById('btn-restore').addEventListener('click', e => {
    original lyrics, Translation alone the translations (a line without
    one shows its original). The top bar's titles follow them too (see
    updateNowPlaying). At least one stays checked: the last checked box
-   is disabled. Not saved: reloading the page checks both.
+   is disabled. Kept in the URL parameter show (see VIEW OPTIONS IN URL).
 ================================================================ */
 const lyricsShownBoxes = [...document.querySelectorAll('#lyrics-shown input')];
 
+// Sync state, the disabled flags and the URL with the check boxes
+function syncLyricsShown() {
+  lyricsShownBoxes.forEach(b => { state.lyricsShown[b.value] = b.checked; });
+  const checked = lyricsShownBoxes.filter(b => b.checked);
+  lyricsShownBoxes.forEach(b => { b.disabled = checked.length === 1 && b.checked; });
+  rewriteUrlParams({ show: checked.length === 1 ? checked[0].value : 'both' });
+}
+
+{
+  const show = urlParam('show');
+  lyricsShownBoxes.forEach(b => { b.checked = show !== 'original' && show !== 'translation' || b.value === show; });
+  syncLyricsShown();
+}
+
 lyricsShownBoxes.forEach(box => {
   box.addEventListener('change', () => {
-    state.lyricsShown[box.value] = box.checked;
-    const checked = lyricsShownBoxes.filter(b => b.checked);
-    lyricsShownBoxes.forEach(b => { b.disabled = checked.length === 1 && b.checked; });
+    syncLyricsShown();
     box.blur();  // so Space / arrow keys keep controlling playback and lyrics
 
     const movement = currentMovement();
@@ -670,23 +698,26 @@ lyricsShownBoxes.forEach(box => {
    MUTE
    The Mute check box silences the audio without stopping it: playback
    goes on, so the lyrics, the progress bar and timing recording follow
-   it as usual. The audio is unmuted by default: check the box to silence it. The box's state
-   stays from one movement to the next. Not saved: reloading the page
-   unchecks it again.
+   it as usual. The audio is unmuted by default: check the box to silence it.
+   The box's state stays from one movement to the next. Kept in the URL
+   parameter mute (see VIEW OPTIONS IN URL).
 ================================================================ */
 const muteBox = document.getElementById('chk-mute');
 
-muteBox.checked = audio.muted;  // a reload can bring back an unchecked box (Firefox)
+audio.muted = urlParam('mute') === '1';
+muteBox.checked = audio.muted;  // also overrides a box state a reload brings back (Firefox)
+rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
 
 muteBox.addEventListener('change', () => {
   audio.muted = muteBox.checked;
+  rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
   muteBox.blur();  // so Space / arrow keys keep controlling playback and lyrics
 });
 
 /* ================================================================
    LYRICS FONT SIZE
    A+ / A- scale the lyrics (--lyrics-font-scale, 10%-250%, steps of 10%);
-   click the percentage to reset. Not saved: reloading resets it.
+   click the percentage to reset. Kept in the URL parameter font (see VIEW OPTIONS IN URL).
 ================================================================ */
 (function () {
   let pct = 100;
@@ -695,12 +726,15 @@ muteBox.addEventListener('change', () => {
     pct = Math.max(10, Math.min(250, v));
     document.documentElement.style.setProperty('--lyrics-font-scale', pct / 100);
     label.textContent = pct + '%';
+    rewriteUrlParams({ font: pct });
   }
   [['btn-font-down', -10], ['btn-font-up', 10]].forEach(([id, d]) => {
     const b = document.getElementById(id);
     b.addEventListener('click', () => { apply(pct + d); b.blur(); });
   });
   label.addEventListener('click', () => apply(100));
+  const fromUrl = Number(urlParam('font'));
+  apply(urlParam('font') && isFinite(fromUrl) ? Math.round(fromUrl) : 100);
 })();
 
 /* ================================================================
@@ -1425,7 +1459,7 @@ function escHtml(str) {
 /* ================================================================
    INIT
 ================================================================ */
-setHighlightMode(state.highlightMode);
+setHighlightMode(urlParam('highlight-mode') === 'manual' ? 'manual' : 'auto');
 loadArtists().then(() => {
   buildFlatList();
   buildTree();
