@@ -36,7 +36,8 @@ const APP_DATA = {
    An artist.js file holds one artist (name, bio, workFiles, ...) wrapped
    in one onePageMp3Artist(...) call; a work.js file holds one work
    (title, description, movements, ...) wrapped in one onePageMp3Work(...)
-   call. So a <script> can load them when the page is opened as file://
+   call. A movement's audio and thumbnail are named relative to its work.js
+   file (audio: "Chapter1.mp3"). So a <script> can load them when the page is opened as file://
    (fetch of local files is blocked).
 ================================================================ */
 const ARTIST_CALLBACK = 'onePageMp3Artist';  // what an artist.js file calls
@@ -62,9 +63,22 @@ function loadDataFile(url, callback) {
       const loaded = loadedData.get(script);
       loadedData.delete(script);
       if (loaded?.callback !== callback) console.warn(`${url} did not call ${callback}(...)`);
-      resolve(loaded?.callback === callback ? loaded.data : null);
+      const data = loaded?.callback === callback ? loaded.data : null;
+      if (data && callback === WORK_CALLBACK) resolveWorkPaths(data, url);
+      resolve(data);
     };
     document.head.append(script);
+  });
+}
+
+// A work's movement files (audio, thumbnail) are named relative to its work.js file:
+// make them relative to index.html, as the rest of app.js uses them
+function resolveWorkPaths(work, workUrl) {
+  const dir = workUrl.slice(0, workUrl.lastIndexOf('/') + 1);
+  (work.movements ?? []).forEach(movement => {
+    ['audio', 'thumbnail'].forEach(key => {
+      if (movement[key]) movement[key] = dir + movement[key];
+    });
   });
 }
 
@@ -85,7 +99,7 @@ async function loadArtists() {
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
    Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too:
-   index.html?highlight-mode=auto&mute=0&show=both&font=100 (see VIEW OPTIONS IN URL)
+   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45 (see VIEW OPTIONS IN URL)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
 ================================================================ */
@@ -325,7 +339,9 @@ function updateTimeInUrl() {
      mute            1 | 0                         (default 0, unmuted; see MUTE)
      show            original | translation | both (default both; see LYRICS SHOWN)
      font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150
+     chinese-width   the Chinese lyrics column's percent of the width, 20-80 (default 45;
+                     see BILINGUAL LYRICS DIVIDER)
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -750,12 +766,13 @@ muteBox.addEventListener('change', () => {
    Chinese column it is the original's.
    Drag the line between the original and translation columns to set
    that column's share of the width (DIVIDER_MIN–DIVIDER_MAX percent);
-   double-click it to go back to the default (--lyrics-chinese-width in
-   common.css). A dragged width is not saved: reloading the page restores
-   the default.
+   double-click it to go back to the default (45%, DEFAULT_CHINESE_WIDTH;
+   keep --lyrics-chinese-width in common.css the same). The width is kept in
+   the URL parameter chinese-width (see VIEW OPTIONS IN URL).
 ================================================================ */
 const DIVIDER_MIN = 20;
 const DIVIDER_MAX = 80;
+const DEFAULT_CHINESE_WIDTH = 45;  // percent; the other column gets the rest
 
 // True when the Chinese lyrics are the work's translations (the right column): its
 // translationLanguage is Chinese ("zh", "zh-Hant", ...) and its language is not
@@ -764,11 +781,18 @@ function translationIsChinese(work) {
   return isChinese(work?.translationLanguage) && !isChinese(work?.language);
 }
 
-// pct: the Chinese column's percent of the lyrics width, or null for the CSS default
+// pct: the Chinese column's percent of the lyrics width, or null for the default;
+// written to the URL
 function setChineseWidth(pct) {
-  const root = document.documentElement.style;
-  if (pct === null) root.removeProperty('--lyrics-chinese-width');
-  else root.setProperty('--lyrics-chinese-width', `${pct}%`);
+  if (pct === null) pct = DEFAULT_CHINESE_WIDTH;
+  document.documentElement.style.setProperty('--lyrics-chinese-width', `${pct}%`);
+  rewriteUrlParams({ 'chinese-width': pct });
+}
+
+{
+  const fromUrl = Number(urlParam('chinese-width'));
+  const valid = urlParam('chinese-width') && isFinite(fromUrl);
+  setChineseWidth(valid ? Math.round(Math.min(DIVIDER_MAX, Math.max(DIVIDER_MIN, fromUrl)) * 10) / 10 : null);
 }
 
 // One divider, put back into #lyrics-inner by renderLyrics for bilingual lyrics

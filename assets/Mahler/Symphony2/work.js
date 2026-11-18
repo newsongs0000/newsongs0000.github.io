@@ -21,8 +21,8 @@ onePageMp3Work({
       subtitle: "With a thoroughly serious and solemn expression",
       subtitleTranslation: "以完全严肃和庄重的表情",
       voicing: "Orchestra",
-      audio: "assets/Mahler/Symphony2/Chapter1.mp3",
-      thumbnail: "assets/Mahler/Symphony2/Chapter1.jpg"
+      audio: "Chapter1.mp3",
+      thumbnail: "Chapter1.jpg"
     }
   ]
 });

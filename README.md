@@ -146,10 +146,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     centered vertically.
   - **Translation.** If any line of the movement has a `"translation"` (see
     [Flow: modifying lyrics](#flow-modifying-lyrics)), the panel is divided into two columns: the original lyrics on
-    the left and the translation on the right. The column with the Chinese lyrics gets 40% of the width and the other
-    column the remaining 60%, since Chinese usually needs less room. The work's `language` and `translationLanguage`
+    the left and the translation on the right. The column with the Chinese lyrics gets 45% of the width and the other
+    column the remaining 55%, since Chinese usually needs less room. The work's `language` and `translationLanguage`
     in `work.js` tell which column that is: for 安魂曲 (`language: "zh"`) the left one, for Messiah
-    (`translationLanguage: "zh"`) the right one. If neither is Chinese, the original gets the 40%.
+    (`translationLanguage: "zh"`) the right one. If neither is Chinese, the original gets the 45%.
     Each line and its translation share one row, so they are highlighted
     together and stay level even when one of them wraps. The translation column has its own movement heading, made from
     the movement's `titleTranslation`, `subtitleTranslation` and `voicingTranslation` in `work.js`. Movements without
@@ -161,9 +161,9 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     disabled. The highlighted line stays the same when you change them. The choice applies to every movement and is
     not saved: reloading the page checks both again.
   - **Divider.** Drag the line between the two columns to change their widths (from 20% to 80% for each column).
-    It turns gold under the mouse. Double-click it to go back to 40% for the Chinese column. The new width belongs to
-    the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It lasts
-    until the page is reloaded.
+    It turns gold under the mouse. Double-click it to go back to 45% for the Chinese column. The new width belongs to
+    the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
+    URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
   - **Picture.** The movement's picture (`thumbnail`) covers the lyrics until playback starts, with "▶ Click to play".
     It is hidden while the music plays so it never makes the lyrics hard to read.
 - **Bottom control section.** These are the playback buttons: ◀◀ rewind to the beginning, −15s, ▶ / ❚❚
@@ -266,8 +266,8 @@ Three settings have no URL parameter yet, so you change them in the source:
 - **Current line colors.** `--lyrics-current-color`, `--lyrics-current-bg` and `--lyrics-current-border` at the top
   of [common.css](common.css).
 - **Default width of the Chinese-lyrics column** when a movement has translations. `--lyrics-chinese-width` at the
-  top of [common.css](common.css), `40%`. The other column gets the rest. To change it only until the page is reloaded,
-  [drag the divider](#screen-layout) instead.
+  top of [common.css](common.css), `45%`, and `DEFAULT_CHINESE_WIDTH` in [app.js](app.js), which must match. The other column gets the rest. To change
+  it for one link only, use `?chinese-width=` or [drag the divider](#screen-layout).
 - **Number of lines above and below.** This is the `4` in `highlightLyricLine()` in [app.js](app.js). Lines further
   away are faded.
 
@@ -369,7 +369,9 @@ source material only, and the app does not read them.
 
 ## Flow: adding an artist, work or movement
 
-All paths in the data files are relative to `index.html`.
+The paths to `artist.js` and `work.js` files (in `artistFiles` and `workFiles`) are relative to `index.html`. A
+movement's `audio` and `thumbnail` in a `work.js` file are relative to that `work.js` file, so they are just file names
+when the media sits next to it.
 
 ### 1. Put the media in place
 
@@ -405,7 +407,7 @@ onePageMp3Work({
   title: "安魂曲",                 // shown in the tree, top bar and info pane
   titleTranslation: "Requiem",    // top bar: "安魂曲 I. 永远安息  Requiem I. Eternal Rest" (optional)
   titleSort: "Chinese Requiem",   // tree sort key (optional; defaults to title)
-  language: "zh",                 // language of the lyrics' "text"; the "zh" column gets 40% of the lyrics width
+  language: "zh",                 // language of the lyrics' "text"; the "zh" column gets 45% of the lyrics width
   translationLanguage: "en",      // language of the lyrics' "translation"
   year: 2004,                     // info pane: "title Op. 63 (2004)"
   opusNumber: "Op. 63",
@@ -421,8 +423,8 @@ onePageMp3Work({
       subtitleTranslation: "Psalm 116:7,9",  // translation column's heading (optional)
       voicing: "合唱",             // lyrics heading, second line (optional)
       voicingTranslation: "Chorus",          // translation column's heading (optional)
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter1.jpg"   // optional
+      audio: "Chapter1.mp3",
+      thumbnail: "Chapter1.jpg"   // optional
     }
   ]
 });

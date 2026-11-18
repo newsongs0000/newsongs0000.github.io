@@ -23,8 +23,8 @@ onePageMp3Work({
       subtitle: "G小调",
       subtitleTranslation: "G minor",
       voicing: "管弦乐",
-      audio: "assets/Mozart/Symphony40/Chapter1.mp3",
-      thumbnail: "assets/Mozart/Symphony40/Chapter1.jpg"
+      audio: "Chapter1.mp3",
+      thumbnail: "Chapter1.jpg"
     }
   ]
 });

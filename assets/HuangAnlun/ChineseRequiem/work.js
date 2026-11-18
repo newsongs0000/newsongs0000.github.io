@@ -21,8 +21,8 @@ onePageMp3Work({
       voicing: "合唱",
       voicingTranslation: "Chorus",
       description: "第一乐章“永远安息”是安魂曲的开篇，表达了对逝者的哀悼和对永恒安息的祈愿。",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter1.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter1.jpg"
+      audio: "Chapter1.mp3",
+      thumbnail: "Chapter1.jpg"
     },
     {
       id: "ch2",
@@ -33,8 +33,8 @@ onePageMp3Work({
       subtitleTranslation: "Psalm 130, Revelation 21:4",
       voicing: "女中音独唱与合唱",
       voicingTranslation: "Mezzo-soprano solo and Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter2.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter2.jpg"
+      audio: "Chapter2.mp3",
+      thumbnail: "Chapter2.jpg"
     },
     {
       id: "ch3",
@@ -45,8 +45,8 @@ onePageMp3Work({
       subtitleTranslation: "Philippians 4:6-11; 1 Corinthians 15:55-56; Hebrews 11:13-16; 12:1,2",
       voicing: "合唱",
       voicingTranslation: "Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter3.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter3.jpg"
+      audio: "Chapter3.mp3",
+      thumbnail: "Chapter3.jpg"
     },
     {
       id: "ch4",
@@ -57,8 +57,8 @@ onePageMp3Work({
       subtitleTranslation: "Isaiah 6:3; Hebrews 12:2; Revelation 4:4",
       voicing: "合唱",
       voicingTranslation: "Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter4.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter4.jpg"
+      audio: "Chapter4.mp3",
+      thumbnail: "Chapter4.jpg"
     },
     {
       id: "ch5",
@@ -69,8 +69,8 @@ onePageMp3Work({
       subtitleTranslation: "Revelation 1:18; 5:12-13; 14:1-4; 15:3-4",
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter5.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter5.jpg"
+      audio: "Chapter5.mp3",
+      thumbnail: "Chapter5.jpg"
     },
     {
       id: "ch6",
@@ -81,8 +81,8 @@ onePageMp3Work({
       subtitleTranslation: "Revelation 1:18; 5:12-13; 14:1-4; 15:3-4; Gregorian Chant 639",
       voicing: "男高音独唱，合唱",
       voicingTranslation: "Tenor solo and Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter6.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter6.jpg"
+      audio: "Chapter6.mp3",
+      thumbnail: "Chapter6.jpg"
     },
     {
       id: "ch7",
@@ -93,8 +93,8 @@ onePageMp3Work({
       subtitleTranslation: "Isaiah 60:1-2; Revelation 15:13; 1 Thessalonians 4:15-18",
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter7.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter7.jpg"
+      audio: "Chapter7.mp3",
+      thumbnail: "Chapter7.jpg"
     },
     {
       id: "ch8",
@@ -105,8 +105,8 @@ onePageMp3Work({
       subtitleTranslation: "Psalm 23",
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
-      audio: "assets/HuangAnlun/ChineseRequiem/Chapter8.mp3",
-      thumbnail: "assets/HuangAnlun/ChineseRequiem/Chapter8.jpg"
+      audio: "Chapter8.mp3",
+      thumbnail: "Chapter8.jpg"
     }
   ]
 });
