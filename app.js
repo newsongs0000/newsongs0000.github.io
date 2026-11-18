@@ -84,7 +84,7 @@ async function loadArtists() {
 /* ================================================================
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
-   Lyrics highlight mode: index.html?highlight-mode=auto  (default: manual)
+   Lyrics highlight mode: index.html?highlight-mode=auto  (default: auto; highlight-mode=manual for manual)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
 ================================================================ */
@@ -113,8 +113,8 @@ const state = {
   lastLyricIdx: -1,
   allMovements: [],  // flat list for prev/next
   lyricsShown:  { original: true, translation: true },  // see LYRICS SHOWN
-  highlightMode: new URLSearchParams(window.location.search).get('highlight-mode') === 'auto'
-                 ? 'auto' : 'manual'
+  highlightMode: new URLSearchParams(window.location.search).get('highlight-mode') === 'manual'
+                 ? 'manual' : 'auto'
 };
 
 const audio = document.getElementById('audio');
@@ -670,10 +670,9 @@ lyricsShownBoxes.forEach(box => {
    MUTE
    The Mute check box silences the audio without stopping it: playback
    goes on, so the lyrics, the progress bar and timing recording follow
-   it as usual. The audio is muted by default (the muted attribute of
-   <audio> in index.html): uncheck the box to hear it. The box's state
+   it as usual. The audio is unmuted by default: check the box to silence it. The box's state
    stays from one movement to the next. Not saved: reloading the page
-   checks it again.
+   unchecks it again.
 ================================================================ */
 const muteBox = document.getElementById('chk-mute');
 

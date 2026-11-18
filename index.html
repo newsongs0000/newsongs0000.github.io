@@ -52,7 +52,7 @@
       </div>
       <div id="audio-options" role="group" aria-label="Audio">
         <span id="audio-options-label">Audio:</span>
-        <label title="Silence the audio; it keeps playing, so the lyrics follow it as usual"><input type="checkbox" id="chk-mute" checked> Mute</label>
+        <label title="Silence the audio; it keeps playing, so the lyrics follow it as usual"><input type="checkbox" id="chk-mute"> Mute</label>
         <span id="font-size-ctl" title="Lyrics font size">
           <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>
           <span id="font-size-value" title="Click to reset">100%</span>
@@ -120,8 +120,7 @@
   </main>
 </div>
 
-<!-- muted: the audio starts silent, until the Mute check box is unchecked -->
-<audio id="audio" preload="metadata" muted></audio>
+<audio id="audio" preload="metadata"></audio>
 
 <script src="app.js"></script>
 </body>
