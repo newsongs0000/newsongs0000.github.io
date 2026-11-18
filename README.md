@@ -511,8 +511,16 @@ assets/
       Chapter1..9.mp3      audio: Overture, then Nos. 1–52 in 8 tracks
       Handel.jpg           picture shared by all movements (Thomas Hudson's 1749 portrait, public domain)
       Chapter1..9.timing.js  lyrics: English libretto + 和合本 translation, a heading line per number
-  Mahler/, Mozart/         example entries that show the layout for more artists
-                           (their audio and lyrics are placeholder copies of Chinese Requiem I)
+  Mozart/                  莫扎特 — Requiem (安魂曲, K. 626), 6 movements: one per band of the 1971 Deutsche
+    artist.js              Grammophon LP (Karl Böhm, Wiener Philharmoniker), from the Internet Archive
+    Requiem/
+      work.js
+      Chapter1..6.mp3      audio: Nos. 1–7 (side 1) in one track, then Nos. 8–12 one track each
+      Mozart.jpg           picture shared by all movements (Barbara Krafft's 1819 portrait, public domain)
+      Chapter1..6.timing.js  lyrics: Latin text + Chinese translation, a heading line per number
+    Symphony40/            example entry (its audio and lyrics are a placeholder copy of Chinese Requiem I)
+  Mahler/                  example entry that shows the layout for more artists
+                           (its audio and lyrics are a placeholder copy of Chinese Requiem I)
 workItems/                 work items: draft / todo / wip / completed / blocked / archived
 CLAUDE.md, CLAUDE_engineering.md   instructions for the AI assistant
 ```
