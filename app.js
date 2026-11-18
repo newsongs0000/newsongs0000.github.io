@@ -260,6 +260,11 @@ function rewriteUrlParams(values) {
     if (value == null) params.delete(name);
     else params.set(name, value);
   });
+  if (params.has(TIME_PARAM)) {  // the position, which changes most often, goes last
+    const time = params.get(TIME_PARAM);
+    params.delete(TIME_PARAM);
+    params.set(TIME_PARAM, time);
+  }
   const search = params.toString().replace(/%2F/g, '/');  // keep the movement key readable
   try {
     history.replaceState(history.state, '', `?${search}${location.hash}`);
