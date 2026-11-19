@@ -205,8 +205,14 @@ body {
 #timing-buttons .ctrl-btn { padding: 5px 4px; font-size: 0.74rem; }
 #timing-buttons #btn-timing-export { grid-column: 1 / -1; }
 
-/* Start time of the selected lyric line, under the buttons */
+/* Selected lyric line, under the buttons: two rows of two columns
+   (line number, elapsed time / first characters, start time) */
 #timing-line-time {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  gap: 4px 12px;
   margin-top: 8px;
   font-size: 0.72rem;
   color: var(--text-secondary);
@@ -215,14 +221,14 @@ body {
 #timing-line-time[hidden] { display: none; }
 
 /* The line's first characters: highlighted so the line is easy to spot by eye */
-#timing-line-time .line-text {
+#line-text {
+  justify-self: start;
   background: var(--accent);
   color: var(--bg-primary);
   font-weight: 600;
   padding: 1px 6px;
   border-radius: 3px;
 }
-#timing-line-time .line-time { margin-left: 4px; }
 
 #btn-record.recording,
 #btn-record.recording:hover {

@@ -26,7 +26,7 @@ onePageMp3Timing({
     {"time":172.137,"text":"make straight in the desert","translation":"在沙漠地修平"},
     {"time":176.931,"text":"a highway for our God.","translation":"               我们神的道。"},
     {"time":185.949,"text":"No. 2 · Air (tenor) [Isaiah 40:4]","translation":"第2首 · 咏叹调（男高音）[以赛亚书40:4]"},
-    {"time":207.825,"text":"Ev’ry valley,","translation":"一切山洼，"},
+    {"time":207.544,"text":"Ev’ry valley,","translation":"一切山洼，"},
     {"time":212.28,"text":"Ev’ry valley shall be exalted,","translation":"一切山洼都要填满，"},
     {"time":218.626,"text":"shall be exalted,","translation":"都要填满，"},
     {"time":230.213,"text":"shall be exalted,","translation":"都要填满，"},

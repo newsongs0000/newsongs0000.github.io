@@ -1219,10 +1219,11 @@ function updateSelectedLineTime() {
   const time = lyricTimes(movement)?.[idx];
   // First 6 characters (by code point, so a Chinese or accented character is never split)
   const start = [...(movement.lyrics[idx].text ?? '').trim()].slice(0, 6).join('');
-  const text = Object.assign(document.createElement('span'), { className: 'line-text', textContent: start });
-  const when = Object.assign(document.createElement('span'), {
-    className: 'line-time', textContent: time == null ? 'not timed' : fmtPrecise(time) });
-  el.replaceChildren(`Line ${idx + 1} `, text, ' ', when);
+  // Times are seconds, in the same format as in the .timing.js file
+  document.getElementById('line-number').textContent  = `Line ${idx + 1}`;
+  document.getElementById('line-elapse').textContent  = String(Math.round(audio.currentTime * 1000) / 1000);
+  document.getElementById('line-text').textContent    = start;
+  document.getElementById('line-start').textContent   = time == null ? 'not timed' : String(time);
   el.hidden = false;
 }
 
@@ -1341,6 +1342,7 @@ audio.addEventListener('timeupdate', () => {
   if (state.composerIdx !== null && state.highlightMode === 'auto') {
     highlightLyricLine(getCurrentLyricIdx());
   }
+  updateSelectedLineTime();  // the elapsed time
   updateTimeInUrl();
 });
 
@@ -1522,14 +1524,6 @@ function fmt(s) {
   const m = Math.floor(s / 60);
   const sec = Math.floor(s % 60);
   return `${m}:${sec.toString().padStart(2, '0')}`;
-}
-
-// m:ss.mmm — the precision timings are recorded at
-function fmtPrecise(s) {
-  const ms = Math.round(s * 1000);
-  const m  = Math.floor(ms / 60000);
-  const sec = ((ms % 60000) / 1000).toFixed(3).padStart(6, '0');
-  return `${m}:${sec}`;
 }
 
 function escHtml(str) {
