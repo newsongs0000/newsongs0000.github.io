@@ -557,6 +557,7 @@ function highlightLyricLine(idx, force = false) {
     else                   el.classList.add(diff <= 4 ? 'after' : 'distant');
   });
 
+  updateSelectedLineTime();
   centerCurrentLine();
 }
 
@@ -1206,6 +1207,25 @@ function setRecording(on) {
   updateTimingPanel();
 }
 
+// Under the buttons: start time of the selected (highlighted) lyric line, hidden when none is
+function updateSelectedLineTime() {
+  const el       = document.getElementById('timing-line-time');
+  const movement = currentMovement();
+  const idx      = state.lastLyricIdx;
+  if (!movement?.lyrics?.length || idx < 0 || idx >= movement.lyrics.length) {
+    el.hidden = true;
+    return;
+  }
+  const time = lyricTimes(movement)?.[idx];
+  // First 6 characters (by code point, so a Chinese or accented character is never split)
+  const start = [...(movement.lyrics[idx].text ?? '').trim()].slice(0, 6).join('');
+  const text = Object.assign(document.createElement('span'), { className: 'line-text', textContent: start });
+  const when = Object.assign(document.createElement('span'), {
+    className: 'line-time', textContent: time == null ? 'not timed' : fmtPrecise(time) });
+  el.replaceChildren(`Line ${idx + 1} `, text, ' ', when);
+  el.hidden = false;
+}
+
 function updateTimingPanel() {
   const movement  = currentMovement();
   const hasLyrics = !!movement?.lyrics?.length;
@@ -1239,6 +1259,8 @@ function updateTimingPanel() {
   const exportBtn = document.getElementById('btn-timing-export');
   exportBtn.disabled    = stored === 0;
   exportBtn.textContent = stored ? `Export ${stored} to MP3 folders` : 'Export to MP3 folders';
+
+  updateSelectedLineTime();
 }
 
 // Timing of the current movement changed: refresh the panel and, in auto mode, the highlight
@@ -1500,6 +1522,14 @@ function fmt(s) {
   const m = Math.floor(s / 60);
   const sec = Math.floor(s % 60);
   return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+// m:ss.mmm — the precision timings are recorded at
+function fmtPrecise(s) {
+  const ms = Math.round(s * 1000);
+  const m  = Math.floor(ms / 60000);
+  const sec = ((ms % 60000) / 1000).toFixed(3).padStart(6, '0');
+  return `${m}:${sec}`;
 }
 
 function escHtml(str) {

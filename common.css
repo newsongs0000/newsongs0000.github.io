@@ -205,6 +205,25 @@ body {
 #timing-buttons .ctrl-btn { padding: 5px 4px; font-size: 0.74rem; }
 #timing-buttons #btn-timing-export { grid-column: 1 / -1; }
 
+/* Start time of the selected lyric line, under the buttons */
+#timing-line-time {
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+#timing-line-time[hidden] { display: none; }
+
+/* The line's first characters: highlighted so the line is easy to spot by eye */
+#timing-line-time .line-text {
+  background: var(--accent);
+  color: var(--bg-primary);
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+#timing-line-time .line-time { margin-left: 4px; }
+
 #btn-record.recording,
 #btn-record.recording:hover {
   background: #b3261e;
