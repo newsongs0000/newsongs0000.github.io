@@ -22,7 +22,8 @@ onePageMp3Work({
       voicingTranslation: "Chorus",
       description: "第一乐章“永远安息”是安魂曲的开篇，表达了对逝者的哀悼和对永恒安息的祈愿。",
       audio: "Chapter1.mp3",
-      thumbnail: "Chapter1.jpg"
+      thumbnail: "HuangAnlun.jpg",
+      thumbnail1: "An-lun Huang.png"
     },
     {
       id: "ch2",
