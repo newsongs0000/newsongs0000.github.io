@@ -7,7 +7,7 @@ onePageMp3Timing({
   "audio": "Chapter2.mp3",
   "saved": "2026-11-18T04:12:21.402Z",
   "lines": [
-    {"time":0.021,"text":"No. 1 · Recitative (tenor) [Isaiah 40:1–3]","translation":"第1首 · 宣叙调（男高音）[以赛亚书40:1–3]"},
+    {"time":1.5,"text":"No. 1 · Recitative (tenor) [Isaiah 40:1–3]","translation":"第1首 · 宣叙调（男高音）[以赛亚书40:1–3]"},
     {"time":15.04,"text":"Comfort ye,","translation":"你们要安慰，"},
     {"time":24.691,"text":"comfort ye my people;","translation":"安慰我的百姓；"},
     {"time":38.83,"text":"Comfort ye,","translation":"你们要安慰，"},
