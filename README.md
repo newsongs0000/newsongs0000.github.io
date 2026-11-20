@@ -518,6 +518,11 @@ assets/
       Chapter1..9.mp3      audio: Overture, then Nos. 1–52 in 8 tracks
       Handel.jpg           picture shared by all movements (Thomas Hudson's 1749 portrait, public domain)
       Chapter1..9.timing.js  lyrics: English libretto + 和合本 translation, a heading line per number
+    MessiahChinese/        弥赛亚（中文版）: the same oratorio sung in Chinese (performers unknown), from
+      work.js              https://www.bilibili.com/video/BV1eb4y1h7Va/, in the same 9 chapters as Messiah/
+      Chapter1..9.mp3      audio: Nos. 1–55 as numbered in the video (Sinfonia = No. 1, Amen = No. 55)
+      Chapter1..9.timing.js  lyrics: Chinese as sung + English libretto, timed from the video's subtitles;
+                           the picture is Messiah/Handel.jpg
   Mozart/                  莫扎特 — Requiem (安魂曲, K. 626), 6 movements: one per band of the 1971 Deutsche
     artist.js              Grammophon LP (Karl Böhm, Wiener Philharmoniker), from the Internet Archive
     Requiem/

@@ -5,6 +5,7 @@ onePageMp3Artist({
   nameSort: "Handel, George Frideric",
   bio: "乔治·弗里德里克·亨德尔（1685–1759），生于德国、后入籍英国的巴洛克作曲家。",
   workFiles: [
-    "Messiah/work.js"
+    "Messiah/work.js",
+    "MessiahChinese/work.js"
   ]
 });
