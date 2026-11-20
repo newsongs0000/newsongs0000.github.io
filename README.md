@@ -131,6 +131,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index.html` the row is just **Font:** (the lyrics size buttons), because the audio is always muted.
+  - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and takes
+    64% of the height. The last row (**Audio:** or **Font:**) is collapsible there: it starts collapsed to its label
+    and an arrow button, and the arrow opens it. The state is kept in the `audio-options` URL parameter (`open` or
+    `collapsed`). On a wider window the row is always shown and has no arrow.
 - **Top control section**
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
   - **Now playing** shows the work title and the movement number and title, then both translations (if any)

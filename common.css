@@ -292,6 +292,9 @@ body {
 #lyrics-shown input,
 #audio-options input { accent-color: var(--accent); cursor: pointer; }
 
+/* Collapse arrow: smartphones only (see the max-width media query at the end); always hidden elsewhere */
+#btn-audio-toggle { display: none; }
+
 /* The last checked box can't be unchecked */
 #lyrics-shown label:has(input:disabled) { cursor: default; }
 #lyrics-shown input:disabled { cursor: default; }
@@ -705,12 +708,26 @@ body {
 
 /* ─── Smartphone layout (not maximized): navigation stacked above the player ─── */
 @media (max-width: 700px) {
-  #app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 32%) minmax(0, 1fr); }
+  #app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 64%) minmax(0, 1fr); }
   #app.lyrics-maximized { grid-template-rows: minmax(0, 1fr); }
   #left-pane { border-right: none; border-bottom: 1px solid var(--border); overflow-y: auto; }
   #left-header { display: none; }
   #composer-tree { flex: none; overflow: visible; }
   #view-panel { position: sticky; bottom: 0; background: var(--bg-nav); z-index: 2; }
+
+  /* Audio / Font row: collapsible, collapsed (only its label and the arrow) by default; the arrow points down while open */
+  #btn-audio-toggle { display: flex; margin-left: auto; padding: 4px 8px; }
+  #btn-audio-toggle svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  #audio-options:not(.collapsed) #btn-audio-toggle { transform: rotate(180deg); }
+  #audio-options.collapsed > :not(#audio-options-label):not(#btn-audio-toggle) { display: none; }
 
   #right-pane { grid-template-rows: auto minmax(0, 1fr) auto auto; }
   #top-controls { padding: 6px 8px; gap: 6px; }

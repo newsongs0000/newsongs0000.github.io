@@ -58,7 +58,8 @@
         <label><input type="checkbox" value="original"    checked> Original</label>
         <label><input type="checkbox" value="translation" checked> Translation</label>
       </div>
-      <div id="audio-options" role="group" aria-label="Audio">
+      <!-- On a smartphone the row is collapsed (to its label and arrow button) unless the URL says open; see setAudioOptionsOpen -->
+      <div id="audio-options" class="collapsed" role="group" aria-label="Audio">
         <span id="audio-options-label">Audio:</span>
         <label title="Silence the audio; it keeps playing, so the lyrics follow it as usual"><input type="checkbox" id="chk-mute"> Mute</label>
         <span id="font-size-ctl" title="Lyrics font size">
@@ -66,6 +67,8 @@
           <span id="font-size-value" title="Click to reset">100%</span>
           <button class="ctrl-btn" id="btn-font-up" aria-label="Larger lyrics">A+</button>
         </span>
+        <button class="ctrl-btn" id="btn-audio-toggle" aria-expanded="false"
+                title="Show options"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
       </div>
     </div>
   </aside>
