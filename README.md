@@ -183,6 +183,10 @@ The player starts set up for a live performance: muted, and in Manual mode, wher
 To listen to a recording with the highlight following it, uncheck **Mute** and click **Auto** at the bottom of the
 left pane (or open the page with `?highlight-mode=auto`).
 
+**Silent page.** To show the lyrics without any sound, open `index-silent.html` instead of `index.html`. It is the same
+player with the audio always muted: the Mute check box is hidden (and locked), the `mute` URL parameter is ignored, and
+the music still plays silently so the lyrics, progress bar and keyboard work as usual.
+
 Prev, Next and auto-advance use the **data order**: artists as listed in `APP_DATA.artistFiles` in `app.js`, works
 as listed in each artist's `workFiles`, then movements as listed in `work.js`. This order can differ from the
 alphabetical order of the tree.
@@ -500,6 +504,7 @@ then the `.timing.js` file, then even spacing. The lyrics **text** and **transla
 
 ```
 index.html                 page markup only
+index-silent.html          same page with the audio always muted (the Mute box is hidden and locked)
 common.css                 all styles; color variables at the top
 app.js                     all behavior; APP_DATA.artistFiles at the top
 assets/

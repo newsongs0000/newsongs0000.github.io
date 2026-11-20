@@ -741,14 +741,20 @@ lyricsShownBoxes.forEach(box => {
    it as usual. The audio is unmuted by default: check the box to silence it.
    The box's state stays from one movement to the next. Kept in the URL
    parameter mute (see VIEW OPTIONS IN URL).
+
+   index-silent.html ships the box checked and disabled (and hidden): the
+   audio is then always muted, the URL parameter mute is ignored and not
+   written, and the user cannot unmute.
 ================================================================ */
 const muteBox = document.getElementById('chk-mute');
+const muteLocked = muteBox.disabled;
 
-audio.muted = urlParam('mute') === '1';
+audio.muted = muteLocked || urlParam('mute') === '1';
 muteBox.checked = audio.muted;  // also overrides a box state a reload brings back (Firefox)
-rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
+if (!muteLocked) rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
 
 muteBox.addEventListener('change', () => {
+  if (muteLocked) return;
   audio.muted = muteBox.checked;
   rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
   muteBox.blur();  // so Space / arrow keys keep controlling playback and lyrics

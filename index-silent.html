@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player with Lyrics (silent)</title>
+  <link rel="stylesheet" href="common.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ══════════════════════════════════════
+       LEFT PANE — navigation tree
+  ═══════════════════════════════════════ -->
+  <aside id="left-pane">
+    <div id="left-header">
+      <h1>&#9835; / Lyrics</h1>
+    </div>
+    <div id="composer-tree"></div>
+    <div id="timing-panel" class="collapsed">
+      <div id="timing-header">
+        <h2>LYRICS TIMING</h2>
+        <button class="ctrl-btn" id="btn-timing-toggle" aria-expanded="false" aria-controls="timing-body"
+                title="Show lyrics timing"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
+      </div>
+      <div id="timing-body">
+        <div id="timing-status"></div>
+        <div id="timing-buttons">
+          <button class="ctrl-btn" id="btn-record"       aria-pressed="false"
+                  title="Record: while the audio plays, each line you advance to in manual mode gets the current audio time">&#9679; Rec</button>
+          <button class="ctrl-btn" id="btn-timing-save"  title="Save this movement's timing to a .timing.js file (put it next to the MP3)">Save</button>
+          <button class="ctrl-btn" id="btn-timing-load"  title="Load .timing.js (or older .timing.json) file(s)">Load</button>
+          <button class="ctrl-btn" id="btn-timing-clear" title="Discard the timing recorded in this browser for this movement">Clear</button>
+          <button class="ctrl-btn" id="btn-timing-clear-all" title="Discard the timing recorded in this browser for every movement">Clear all</button>
+          <button class="ctrl-btn" id="btn-timing-export"
+                  title="Write every timing kept in this browser next to its MP3 as .timing.js. Pick the app folder (the one with index.html) or the MP3 folder.">Export to MP3 folders</button>
+        </div>
+        <!-- Row 1: selected line's number, audio time elapsed. Row 2: its first characters, its start time (seconds),
+             or a hint when no line is selected -->
+        <div id="timing-line-time" title="Selected lyric line" hidden>
+          <span id="line-number"></span><span id="line-elapse" title="Audio time elapsed"></span>
+          <span id="line-text"></span><span id="line-start" title="Start time of the line"></span>
+          <span id="line-hint" hidden>(No line selected)</span>
+        </div>
+        <input type="file" id="timing-file-input" accept=".js,.json" multiple hidden>
+      </div>
+    </div>
+    <div id="view-panel">
+      <div id="mode-toggle" role="group" aria-label="Lyrics highlight mode">
+        <span id="mode-toggle-label">Lyrics:</span>
+        <button class="ctrl-btn" data-mode="auto"   title="Highlight follows audio playback">Auto</button>
+        <button class="ctrl-btn" data-mode="manual" title="Operator advances lyrics: &darr; / &rarr; next, &uarr; / &larr; back">Manual</button>
+      </div>
+      <button class="ctrl-btn" id="btn-maximize" title="Maximize lyrics panel (Esc to restore)">&#x2922; Maximize</button>
+      <div id="lyrics-shown" role="group" aria-label="Lyrics shown"
+           title="Which lyrics and titles to show; at least one must be checked">
+        <span id="lyrics-shown-label">Show:</span>
+        <label><input type="checkbox" value="original"    checked> Original</label>
+        <label><input type="checkbox" value="translation" checked> Translation</label>
+      </div>
+      <div id="audio-options" role="group" aria-label="Font size">
+        <span id="audio-options-label">Font:</span>
+        <!-- Always muted: the box is checked, disabled and hidden, so app.js keeps the audio muted (see MUTE) -->
+        <label hidden><input type="checkbox" id="chk-mute" checked disabled> Mute</label>
+        <span id="font-size-ctl" title="Lyrics font size">
+          <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>
+          <span id="font-size-value" title="Click to reset">100%</span>
+          <button class="ctrl-btn" id="btn-font-up" aria-label="Larger lyrics">A+</button>
+        </span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════
+       RIGHT PANE
+  ═══════════════════════════════════════ -->
+  <main id="right-pane">
+
+    <!-- Top control section -->
+    <div id="top-controls">
+      <button class="ctrl-btn" id="btn-prev">&#9664; Prev</button>
+      <div id="now-playing">
+        <span id="np-original"><span id="np-label"></span>
+          <span id="np-title">Select a movement to begin</span></span>
+        <span id="np-translation" hidden><span id="np-label-translation"></span><span id="np-title-translation"></span></span>
+      </div>
+      <button class="ctrl-btn" id="btn-next">Next &#9654;</button>
+      <button class="ctrl-btn" id="btn-play-pause-max" title="Play / Pause (Space)" hidden>&#9654;</button>
+      <button class="ctrl-btn" id="btn-restore" title="Exit maximized lyrics (Esc)" hidden>&#x2715; Exit</button>
+    </div>
+
+    <!-- Song playing section -->
+    <div id="song-display">
+      <!-- Thumbnail overlay: visible before playback, click to play -->
+      <div id="thumbnail-overlay" class="hidden">
+        <img id="thumbnail-img" src="" alt="">
+        <div id="thumbnail-play-hint">&#9654; Click to play</div>
+      </div>
+      <div id="manual-hint" hidden><span id="rec-indicator" hidden>&#9679; REC</span>&darr;&rarr; next &nbsp; &uarr;&larr; back &nbsp; (swipe: up = next, down = back)</div>
+      <div id="lyrics-container">
+        <div id="lyrics-inner">
+          <div class="lyrics-spacer"></div>
+          <p class="no-song-msg">Select a movement from the left panel to begin.</p>
+          <div class="lyrics-spacer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom control section -->
+    <div id="bottom-controls">
+      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#9664;</button>
+      <button class="ctrl-btn" id="btn-rewind-15"    title="Rewind 15 seconds">&#8722;15s</button>
+      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;</button>
+      <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
+      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#9654;</button>
+      <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
+      <span   id="time-display">0:00 / 0:00</span>
+    </div>
+
+    <!-- Info pane -->
+    <div id="info-pane">
+      <div id="info-left">
+        <div id="info-composer">&#8212;</div>
+        <div id="info-work"></div>
+        <div id="info-dates"></div>
+      </div>
+      <div id="info-description">Select a song to see composer and work details.</div>
+    </div>
+
+  </main>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<script src="app.js"></script>
+</body>
+</html>
