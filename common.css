@@ -304,12 +304,12 @@ body {
 /* ============ RIGHT PANE ============ */
 #right-pane {
   display: grid;
-  grid-template-rows: auto 1fr auto 100px;
+  grid-template-rows: auto auto 1fr 100px;
   overflow: hidden;
 }
 
-/* ─── Top Controls ─── */
-#top-controls {
+/* ─── Song navigation (Prev / Next + now playing) ─── */
+#song-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -572,14 +572,14 @@ body {
   left: calc(var(--lyrics-original-width) + (100% - var(--lyrics-original-width)) / 2);
 }
 
-/* ─── Bottom Controls ─── */
-#bottom-controls {
+/* ─── Playback controls (first panel of the right pane) ─── */
+#playback-controls {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 10px 18px;
   background: var(--bg-secondary);
-  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -717,12 +717,12 @@ body {
   flex: 1;
 }
 
-/* ─── Maximized lyrics panel: hide nav, bottom controls + info pane, enlarge lyrics ─── */
+/* ─── Maximized lyrics panel: hide nav, playback controls + info pane, enlarge lyrics ─── */
 #app.lyrics-maximized { grid-template-columns: 1fr; }
 #app.lyrics-maximized #left-pane,
-#app.lyrics-maximized #bottom-controls,
+#app.lyrics-maximized #playback-controls,
 #app.lyrics-maximized #info-pane,
-#app.lyrics-maximized #top-controls > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
+#app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
 #app.lyrics-maximized #btn-play-pause-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
 #app.lyrics-maximized #right-pane { grid-template-rows: auto 1fr; }
@@ -735,8 +735,8 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
 
-/* Top/Nav buttons */
-#top-controls .ctrl-btn { padding: 7px 14px; font-size: 0.82rem; }
+/* Song navigation buttons */
+#song-nav .ctrl-btn { padding: 7px 14px; font-size: 0.82rem; }
 
 /* ─── Smartphone layout (not maximized): navigation stacked above the player ─── */
 @media (max-width: 700px) {
@@ -775,10 +775,10 @@ body {
   #view-panel.collapsed { padding-top: 6px; padding-bottom: 6px; }
   #view-panel.collapsed #view-body { display: none; }
 
-  #right-pane { grid-template-rows: auto minmax(0, 1fr) auto auto; }
-  #top-controls { padding: 6px 8px; gap: 6px; }
-  #top-controls .ctrl-btn { padding: 7px 10px; }
-  #bottom-controls { flex-wrap: wrap; justify-content: center; padding: 6px 8px; gap: 6px; }
+  #right-pane { grid-template-rows: auto auto minmax(0, 1fr) auto; }
+  #song-nav { padding: 6px 8px; gap: 6px; }
+  #song-nav .ctrl-btn { padding: 7px 10px; }
+  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 8px; gap: 6px; }
   #progress-bar { flex: 1 1 100%; order: -1; }
   #time-display { min-width: 0; text-align: center; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; font-size: 0.85em; }

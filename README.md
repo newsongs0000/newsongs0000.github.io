@@ -96,17 +96,17 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 
 ```
 ┌───────────────┬─────────────────────────────────────────────────────────────┐
-│ ♫ / Lyrics    │ ◀ Prev               Work · Movement                 Next ▶ │  top controls
-│               ├────────────────────────┬────────────────────────────────────┤
-│ ▾ Artist      │                        │                                    │
-│   ▾ Work      │   lines above (dimmed) │   their translations               │
-│     1. Mvt    │ ▌ CURRENT LINE         │   ITS TRANSLATION (highlighted)    │  lyrics
-│     2. Mvt    │   lines below (dimmed) │   their translations               │
+│ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶   ━━━━━━━●━━━━━━━━━━   1:23 / 5:40    │  playback controls
+│               ├─────────────────────────────────────────────────────────────┤
+│ ▾ Artist      │ ◀ Prev               Work · Movement                 Next ▶ │  song navigation
+│   ▾ Work      ├────────────────────────┬────────────────────────────────────┤
+│     1. Mvt    │   lines above (dimmed) │   their translations               │
+│     2. Mvt    │ ▌ CURRENT LINE         │   ITS TRANSLATION (highlighted)    │  lyrics
+│ ▸ Artist      │   lines below (dimmed) │   their translations               │
 │ ▸ Artist      │                        │                                    │
-│ ▸ Artist      ├────────────────────────┴────────────────────────────────────┤
-│               │ ◀◀  −15s  ▶  +15s  ▶▶   ━━━━━━━●━━━━━━━━━━   1:23 / 5:40    │  bottom controls
-│ LYRICS TIMING ├─────────────────────────────────────────────────────────────┤
-│   (collapsed) │ Artist · Work Op. (year) · Premiere: … │ Description        │  info pane
+│               ├────────────────────────┴────────────────────────────────────┤
+│ LYRICS TIMING │ Artist · Work Op. (year) · Premiere: … │ Description        │  info pane
+│   (collapsed) │                                                             │
 │ Lyrics:[Auto| │                                                             │
 │ Manual] ⤢ Max │                                                             │
 │ Show: ☑ Orig. │                                                             │
@@ -137,13 +137,16 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
-- **Top control section**
+- **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the beginning, −15s, ▶ / ❚❚
+  play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar and the elapsed / total
+  time.
+- **Song navigation section** (below the playback controls)
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
   - **Now playing** shows the work title and the movement number and title, then both translations (if any)
     after them, without parentheses, e.g. "安魂曲 I. 永远安息  Requiem I. Eternal Rest". It follows the **Show**
     check boxes: with only Original checked it shows "安魂曲 I. 永远安息", and with only Translation checked
     "Requiem I. Eternal Rest" (a title without a translation shows its original). While the lyrics panel shows two
-    columns, the top bar is split the same way: the original titles are centered over the original lyrics and the
+    columns, the song navigation bar is split the same way: the original titles are centered over the original lyrics and the
     translations over the translations. Dragging the divider moves both.
 - **Song playing section (lyrics)**
   - **Movement heading.** The number and title, then the subtitle (e.g. the Bible references) and the voicing.
@@ -174,9 +177,6 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
-- **Bottom control section.** These are the playback buttons: ◀◀ rewind to the beginning, −15s, ▶ / ❚❚
-  play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar and the elapsed / total
-  time.
 - **Bottom info pane.** Shows the artist's name, the work's title with its opus number and year, the premiere
   (`Premiere: …`) and the work's description.
 
@@ -246,7 +246,7 @@ audio, for example for live singing. When you switch back to Auto, the highlight
 
 ## Maximized lyrics
 
-**⤢ Maximize** hides the left pane, the bottom controls, the info pane and the top-bar buttons. Only the "now playing"
+**⤢ Maximize** hides the left pane, the playback controls, the info pane and the song navigation buttons. Only the "now playing"
 title and the lyrics remain, in a larger font. This suits projecting lyrics for an audience. The keyboard still works:
 Space plays and pauses, and the arrow keys seek or step through lines. **Esc** restores the normal layout.
 

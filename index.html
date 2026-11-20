@@ -83,8 +83,19 @@
   ═══════════════════════════════════════ -->
   <main id="right-pane">
 
-    <!-- Top control section -->
-    <div id="top-controls">
+    <!-- Playback control section -->
+    <div id="playback-controls">
+      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#9664;</button>
+      <button class="ctrl-btn" id="btn-rewind-15"    title="Rewind 15 seconds">&#8722;15s</button>
+      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;</button>
+      <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
+      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#9654;</button>
+      <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
+      <span   id="time-display">0:00 / 0:00</span>
+    </div>
+
+    <!-- Song navigation section (Prev / Next + now playing) -->
+    <div id="song-nav">
       <button class="ctrl-btn" id="btn-prev">&#9664; Prev</button>
       <div id="now-playing">
         <span id="np-original"><span id="np-label"></span>
@@ -113,17 +124,6 @@
           <div class="lyrics-spacer"></div>
         </div>
       </div>
-    </div>
-
-    <!-- Bottom control section -->
-    <div id="bottom-controls">
-      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#9664;</button>
-      <button class="ctrl-btn" id="btn-rewind-15"    title="Rewind 15 seconds">&#8722;15s</button>
-      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;</button>
-      <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
-      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#9654;</button>
-      <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
-      <span   id="time-display">0:00 / 0:00</span>
     </div>
 
     <!-- Info pane -->
