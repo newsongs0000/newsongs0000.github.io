@@ -16,3 +16,6 @@ target
 # logs
 logs
 _.log
+
+# Python
+__pycache__/
