@@ -6,6 +6,8 @@ Helper scripts for maintaining the assets. Run everything from the repository ro
   `make-work-pdf.js` also needs Google Chrome or Microsoft Edge.
 - The [timing-from-audio](#timing-from-audio) scripts, which time lyrics from a recording, need Python 3 with
   OpenAI Whisper, and ffmpeg.
+- The [denoise-audio](denoise-audio/README.md) scripts, which find and remove high-frequency noise from MP3 files,
+  need Python 3 with NumPy, and ffmpeg.
 
 | Script | Output (next to each `work.js`) |
 | --- | --- |
