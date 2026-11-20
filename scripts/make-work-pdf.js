@@ -37,12 +37,12 @@ function findBrowser() {
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const CSS = `
-  @page { size: A4; margin: 16mm 14mm 18mm;
+  @page { size: A4; margin: 12mm 5mm 14mm;
           @bottom-center { content: counter(page) " / " counter(pages); font: 9pt sans-serif; color: #777; } }
   * { box-sizing: border-box; }
   body { margin: 0; color: #111; font: 11pt/1.45 -apple-system, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
          "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif; }
-  .row { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10mm; break-inside: avoid; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; column-gap: 3mm; break-inside: avoid; }
   .row > div { white-space: pre-line; overflow-wrap: anywhere; }
   .lyric { padding: 1.4mm 0; border-bottom: 0.2mm solid #e4e4e4; }
   .lyric > div:last-child { color: #1c4a86; }

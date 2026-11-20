@@ -111,8 +111,9 @@ async function loadArtists() {
 /* ================================================================
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
-   Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too:
-   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
+   Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too
+   (mute is used only by index-sound.html; index.html is always muted, see MUTE):
+   index-sound.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
    (see VIEW OPTIONS IN URL)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
@@ -357,7 +358,7 @@ function updateTimeInUrl() {
                      see BILINGUAL LYRICS DIVIDER)
      timing          open | collapsed, the Lyrics Timing panel (default collapsed; see
                      setTimingPanelOpen)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open
+   index-sound.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -742,9 +743,10 @@ lyricsShownBoxes.forEach(box => {
    The box's state stays from one movement to the next. Kept in the URL
    parameter mute (see VIEW OPTIONS IN URL).
 
-   index-silent.html ships the box checked and disabled (and hidden): the
-   audio is then always muted, the URL parameter mute is ignored and not
-   written, and the user cannot unmute.
+   index.html (the default page) ships the box checked and disabled (and
+   hidden): the audio is then always muted, the URL parameter mute is ignored
+   and not written, and the user cannot unmute. index-sound.html has the
+   usual, visible, unchecked box.
 ================================================================ */
 const muteBox = document.getElementById('chk-mute');
 const muteLocked = muteBox.disabled;

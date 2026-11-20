@@ -111,7 +111,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 │ Manual] ⤢ Max │                                                             │
 │ Show: ☑ Orig. │                                                             │
 │   ☑ Transl.   │                                                             │
-│ Audio: ☑ Mute │                                                             │
+│ Font: A− A+   │                                                             │
 └───────────────┴─────────────────────────────────────────────────────────────┘
 ```
 
@@ -126,11 +126,11 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
   - **⤢ Maximize** (next to it) shows only the lyrics. See [Maximized lyrics](#maximized-lyrics).
   - **Show: ☑ Original ☑ Translation** (under them) chooses which lyrics the panel shows, and which titles the top
     bar shows. See **Translation** below.
-  - **Audio: ☑ Mute** (the last row) silences the audio without stopping it. The music keeps playing with no sound,
-    so the lyrics are highlighted, the progress bar moves and the keyboard works exactly as usual. This suits showing
-    the timed lyrics while the music is performed live. It is checked by default, so the player starts silent:
-    **uncheck it to hear the music**. Your choice stays when you go to another movement, and is not saved: reloading
-    the page checks it again.
+  - **Audio: ☑ Mute** (the last row; only on `index-sound.html`, see [Silent and sound pages](#silent-and-sound-pages))
+    silences the audio without stopping it. The music keeps playing with no sound, so the lyrics are highlighted, the
+    progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
+    performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
+    `index.html` the row is just **Font:** (the lyrics size buttons), because the audio is always muted.
 - **Top control section**
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
   - **Now playing** shows the work title and the movement number and title, then both translations (if any)
@@ -179,13 +179,18 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 2. Click the picture, or press ▶ or Space, to play.
 3. When a movement ends, the next one starts automatically.
 
-The player starts set up for a live performance: muted, and in Manual mode, where you move the highlight yourself.
-To listen to a recording with the highlight following it, uncheck **Mute** and click **Auto** at the bottom of the
-left pane (or open the page with `?highlight-mode=auto`).
+The default page, `index.html`, is silent: it never plays sound (see below). To listen to a recording, open
+`index-sound.html` instead.
 
-**Silent page.** To show the lyrics without any sound, open `index-silent.html` instead of `index.html`. It is the same
-player with the audio always muted: the Mute check box is hidden (and locked), the `mute` URL parameter is ignored, and
-the music still plays silently so the lyrics, progress bar and keyboard work as usual.
+### Silent and sound pages
+
+- **`index.html` (default)** is the player with the audio always muted. The Mute check box is hidden and locked, the
+  `mute` URL parameter is ignored, and the music still plays silently, so the lyrics, progress bar and keyboard work
+  as usual. This suits showing the timed lyrics while the music is performed live.
+- **`index-sound.html`** is the same player with the visible **Mute** check box, unchecked by default. Check it to
+  silence the audio, or open the page with `?mute=1`.
+
+The two pages differ only in that check box (and the page title); both use the same `app.js` and `common.css`.
 
 Prev, Next and auto-advance use the **data order**: artists as listed in `APP_DATA.artistFiles` in `app.js`, works
 as listed in each artist's `workFiles`, then movements as listed in `work.js`. This order can differ from the
@@ -503,8 +508,8 @@ then the `.timing.js` file, then even spacing. The lyrics **text** and **transla
 ## Project structure
 
 ```
-index.html                 page markup only
-index-silent.html          same page with the audio always muted (the Mute box is hidden and locked)
+index.html                 page markup only; the default page, the audio is always muted (the Mute box is hidden and locked)
+index-sound.html           same page with the visible Mute box, for listening
 common.css                 all styles; color variables at the top
 app.js                     all behavior; APP_DATA.artistFiles at the top
 assets/

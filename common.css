@@ -286,7 +286,7 @@ body {
   cursor: pointer;
 }
 
-/* index-silent.html hides the Mute box (display: flex above would override the hidden attribute) */
+/* index.html hides the Mute box (display: flex above would override the hidden attribute) */
 #audio-options label[hidden] { display: none; }
 
 #lyrics-shown input,
