@@ -371,6 +371,7 @@ body {
 
 /* ─── Song Display (lyrics area) ─── */
 #song-display {
+  --lyrics-side-pad: 60px;  /* the lyrics panel's side margins; the thumbnail overlay keeps the same (see below) */
   overflow: hidden;
   position: relative;
   background: var(--bg-primary);
@@ -382,7 +383,7 @@ body {
   height: 100%;
   overflow-y: auto;
   scroll-behavior: smooth;
-  padding: 0 60px;
+  padding: 0 var(--lyrics-side-pad);
 }
 
 #lyrics-inner {
@@ -503,13 +504,15 @@ body {
   margin-top: 40px;
 }
 
-/* ─── Thumbnail overlay (shown before playback starts) ─── */
+/* ─── Thumbnail overlay (shown before playback starts) ───
+   It is the placeholder of the lyrics panel(s): the same box as the real lyrics (the song area less
+   the same side margins, --lyrics-side-pad), and, while the lyrics are bilingual, the same two
+   columns split at --lyrics-original-width, with the divider between them. The thumbnail sits in the
+   first (original) panel and the hint in the second. */
 #thumbnail-overlay {
   position: absolute;
-  inset: 0;
+  inset: 0 var(--lyrics-side-pad);
   display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--bg-primary);
   z-index: 10;
   cursor: pointer;
@@ -519,6 +522,27 @@ body {
 #thumbnail-overlay.hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.thumbnail-panel {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbnail-panel-2 { display: none; }
+
+/* Two columns, like the lyrics (see "Bilingual lyrics" above) */
+#right-pane:has(#lyrics-inner.bilingual) #thumbnail-overlay {
+  display: grid;
+  grid-template-columns: var(--lyrics-original-width) 1fr;
+}
+#right-pane:has(#lyrics-inner.bilingual) .thumbnail-panel-2 {
+  display: block;
+  border-left: 1px solid var(--border);
 }
 
 #thumbnail-overlay img {
@@ -539,7 +563,13 @@ body {
   padding: 5px 14px;
   border-radius: 20px;
   letter-spacing: 0.05em;
+  white-space: nowrap;
   pointer-events: none;
+}
+
+/* Bilingual: the hint is centered in the second panel */
+#right-pane:has(#lyrics-inner.bilingual) #thumbnail-play-hint {
+  left: calc(var(--lyrics-original-width) + (100% - var(--lyrics-original-width)) / 2);
 }
 
 /* ─── Bottom Controls ─── */
@@ -696,7 +726,7 @@ body {
 #app.lyrics-maximized #btn-play-pause-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
 #app.lyrics-maximized #right-pane { grid-template-rows: auto 1fr; }
-#app.lyrics-maximized #lyrics-container { padding-left: 0; padding-right: 0; }  /* lyrics span the full width */
+#app.lyrics-maximized #song-display { --lyrics-side-pad: 0px; }  /* lyrics (and the thumbnail overlay) span the full width */
 #app.lyrics-maximized .lyric-meta { font-size: 1rem; }
 #app.lyrics-maximized .lyric-line { font-size: calc(2.7rem * var(--lyrics-font-scale, 1)); }
 
@@ -710,7 +740,9 @@ body {
 
 /* ─── Smartphone layout (not maximized): navigation stacked above the player ─── */
 @media (max-width: 700px) {
-  #app { grid-template-columns: 1fr; grid-template-rows: minmax(0, 64%) minmax(0, 1fr); }
+  /* The navigation pane is as tall as its content, up to 64% (then it scrolls); the player gets the rest, so
+     collapsing the tree moves the player up with the View Options panel */
+  #app { grid-template-columns: 1fr; grid-template-rows: fit-content(64%) minmax(0, 1fr); }
   #app.lyrics-maximized { grid-template-rows: minmax(0, 1fr); }
   #left-pane { border-right: none; border-bottom: 1px solid var(--border); overflow-y: auto; }
   #left-header { display: none; }

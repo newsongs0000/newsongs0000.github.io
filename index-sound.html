@@ -98,9 +98,11 @@
 
     <!-- Song playing section -->
     <div id="song-display">
-      <!-- Thumbnail overlay: visible before playback, click to play -->
+      <!-- Thumbnail overlay: visible before playback, click to play. It covers exactly the lyrics panel(s) below it:
+           one panel, or two (original | translation, same split as the real lyrics) while the lyrics are bilingual -->
       <div id="thumbnail-overlay" class="hidden">
-        <img id="thumbnail-img" src="" alt="">
+        <div class="thumbnail-panel"><img id="thumbnail-img" src="" alt=""></div>
+        <div class="thumbnail-panel thumbnail-panel-2"></div>
         <div id="thumbnail-play-hint">&#9654; Click to play</div>
       </div>
       <div id="manual-hint" hidden><span id="rec-indicator" hidden>&#9679; REC</span>&darr;&rarr; next &nbsp; &uarr;&larr; back &nbsp; (swipe: up = next, down = back)</div>

@@ -131,8 +131,9 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index.html` the row is just **Font:** (the lyrics size buttons), because the audio is always muted.
-  - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and takes
-    64% of the height. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**, **Maximize**,
+  - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and is as
+    tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The player
+    takes the rest, so it moves up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**, **Maximize**,
     **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
@@ -170,7 +171,9 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
   - **Picture.** The movement's picture (`thumbnail`) covers the lyrics until playback starts, with "▶ Click to play".
-    It is hidden while the music plays so it never makes the lyrics hard to read.
+    It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
+    are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
+    the other. It is hidden while the music plays so it never makes the lyrics hard to read.
 - **Bottom control section.** These are the playback buttons: ◀◀ rewind to the beginning, −15s, ▶ / ❚❚
   play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar and the elapsed / total
   time.
