@@ -218,7 +218,8 @@ line, down or right for the previous one (at least 40 px). Tapping a line still 
 scroll by touch in Manual mode; the highlighted line is kept centered.
 
 In Manual mode, a hint (`↓→ next ↑← back`) shows in the corner of the lyrics. The movement starts with no line
-highlighted, and the first ↓ highlights line 1. Holding a key down advances only one line. ◀◀ (rewind to the
+highlighted, and the first ↓ highlights line 1; if you press play first, the line being played is highlighted
+instead (not while recording), and from then on you move the highlight. Holding a key down advances only one line. ◀◀ (rewind to the
 beginning) clears the highlight. Stepping through lines also hides the picture, so lyrics can be shown without any
 audio, for example for live singing. When you switch back to Auto, the highlight returns to the audio position.
 
@@ -331,6 +332,8 @@ Only the `.timing.js` file beside the MP3 goes into the project. A browser recor
   matter which movement is selected. After loading, Save or Export them as above.
 - **Clear** discards this browser's recording for the current movement and goes back to the times in the file. It
   asks for confirmation first.
+- **Clear all** does the same for **every** movement that has a recording in this browser. It asks for confirmation
+  first, and is disabled when there is nothing to clear. Use Export first if you want to keep the recordings.
 
 ## Flow: modifying lyrics
 

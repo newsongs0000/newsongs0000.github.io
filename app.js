@@ -112,7 +112,8 @@ async function loadArtists() {
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
    Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too:
-   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45 (see VIEW OPTIONS IN URL)
+   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
+   (see VIEW OPTIONS IN URL)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
 ================================================================ */
@@ -354,7 +355,9 @@ function updateTimeInUrl() {
      font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
      chinese-width   the Chinese lyrics column's percent of the width, 20-80 (default 45;
                      see BILINGUAL LYRICS DIVIDER)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45
+     timing          open | collapsed, the Lyrics Timing panel (default collapsed; see
+                     setTimingPanelOpen)
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -410,7 +413,9 @@ function loadMovement(composer, work, movement, autoplay = false) {
 
   // Load audio
   audio.src = movement.audio;
-  audio.load();
+  audio.load();  // stops what was playing, without a 'pause' event
+  showPlaying(false);
+  pickLineOnPlay = false;
   resetProgress();
 
   // Show thumbnail overlay if a thumbnail is available
@@ -905,7 +910,8 @@ function lyricLineStartTime(movement, idx) {
    Save:  writes the current movement's timing to <audio>.timing.js
    Load:  reads .timing.js (or older .timing.json) file(s); each names
           its own movement
-   Clear: discards the timing recorded in this browser
+   Clear: discards the timing recorded in this browser for the current movement
+   Clear all: discards the timing recorded in this browser for every movement
    Export: writes every timing kept in this browser to <audio>.timing.js
           in its MP3's folder (Chromium: folder access; others: downloads)
    Recordings persist in localStorage and override the file's times
@@ -1207,23 +1213,32 @@ function setRecording(on) {
   updateTimingPanel();
 }
 
-// Under the buttons: start time of the selected (highlighted) lyric line, hidden when none is
+// Under the buttons: number, elapsed time and start time of the selected (highlighted) lyric
+// line; with no line selected, the audio time elapsed and a hint. Hidden without lyrics.
 function updateSelectedLineTime() {
   const el       = document.getElementById('timing-line-time');
   const movement = currentMovement();
   const idx      = state.lastLyricIdx;
-  if (!movement?.lyrics?.length || idx < 0 || idx >= movement.lyrics.length) {
+  if (!movement?.lyrics?.length) {
     el.hidden = true;
     return;
   }
-  const time = lyricTimes(movement)?.[idx];
-  // First 6 characters (by code point, so a Chinese or accented character is never split)
-  const start = [...(movement.lyrics[idx].text ?? '').trim()].slice(0, 6).join('');
+  const selected = idx >= 0 && idx < movement.lyrics.length;
   // Times are seconds, in the same format as in the .timing.js file
-  document.getElementById('line-number').textContent  = `Line ${idx + 1}`;
-  document.getElementById('line-elapse').textContent  = String(Math.round(audio.currentTime * 1000) / 1000);
-  document.getElementById('line-text').textContent    = start;
-  document.getElementById('line-start').textContent   = time == null ? 'not timed' : String(time);
+  document.getElementById('line-elapse').textContent = String(Math.round(audio.currentTime * 1000) / 1000);
+  document.getElementById('line-text').hidden  = !selected;
+  document.getElementById('line-start').hidden = !selected;
+  document.getElementById('line-hint').hidden  = selected;
+  if (selected) {
+    const time = lyricTimes(movement)?.[idx];
+    // First 6 characters (by code point, so a Chinese or accented character is never split)
+    const start = [...(movement.lyrics[idx].text ?? '').trim()].slice(0, 6).join('');
+    document.getElementById('line-number').textContent = `Line ${idx + 1}`;
+    document.getElementById('line-text').textContent   = start;
+    document.getElementById('line-start').textContent  = time == null ? 'not timed' : String(time);
+  } else {
+    document.getElementById('line-number').textContent = 'Line –';
+  }
   el.hidden = false;
 }
 
@@ -1257,6 +1272,7 @@ function updateTimingPanel() {
   document.getElementById('btn-timing-clear').disabled = rec?.source !== 'local';
 
   const stored = storedTimingMovements().length;
+  document.getElementById('btn-timing-clear-all').disabled = stored === 0;
   const exportBtn = document.getElementById('btn-timing-export');
   exportBtn.disabled    = stored === 0;
   exportBtn.textContent = stored ? `Export ${stored} to MP3 folders` : 'Export to MP3 folders';
@@ -1272,12 +1288,21 @@ function refreshAfterTimingChange() {
   }
 }
 
-// The panel starts collapsed to its arrow button; the button opens and closes it
+// The panel is collapsed to its arrow button unless the URL says open (see VIEW OPTIONS IN
+// URL); the button opens and closes it, and the URL follows
+function setTimingPanelOpen(open) {
+  const btn = document.getElementById('btn-timing-toggle');
+  document.getElementById('timing-panel').classList.toggle('collapsed', !open);
+  btn.setAttribute('aria-expanded', open);
+  btn.title = open ? 'Hide lyrics timing' : 'Show lyrics timing';
+  rewriteUrlParams({ timing: open ? 'open' : 'collapsed' });
+}
+
+setTimingPanelOpen(urlParam('timing') === 'open');
+
 document.getElementById('btn-timing-toggle').addEventListener('click', e => {
   const btn = e.currentTarget;
-  const collapsed = document.getElementById('timing-panel').classList.toggle('collapsed');
-  btn.setAttribute('aria-expanded', !collapsed);
-  btn.title = collapsed ? 'Show lyrics timing' : 'Hide lyrics timing';
+  setTimingPanelOpen(btn.getAttribute('aria-expanded') !== 'true');
   btn.blur();  // so Space doesn't re-activate the button
 });
 
@@ -1317,21 +1342,54 @@ document.getElementById('timing-file-input').addEventListener('change', async e 
   refreshAfterTimingChange();
 });
 
+// Discard the timing recorded in this browser for a movement, going back to the timing in
+// the file next to its audio, if it has any
+function discardBrowserTiming(movement) {
+  const key = movementKey(movement);
+  delete timing.byKey[key];
+  try { localStorage.removeItem(TIMING_STORAGE_KEY + key); } catch { /* storage unavailable */ }
+  if (timing.files[key]) applyTimingDoc(timing.files[key], 'file');
+}
+
 document.getElementById('btn-timing-clear').addEventListener('click', e => {
   e.currentTarget.blur();
   const movement = currentMovement();
   if (!movement || !confirm(`Discard the timing recorded in this browser for "${movement.number}. ${movement.title}"?`)) return;
-  const key = movementKey(movement);
-  delete timing.byKey[key];
-  try { localStorage.removeItem(TIMING_STORAGE_KEY + key); } catch { /* storage unavailable */ }
-  // Back to the timing in the file next to the audio, if it has any
-  if (timing.files[key]) applyTimingDoc(timing.files[key], 'file');
+  discardBrowserTiming(movement);
+  refreshAfterTimingChange();
+});
+
+document.getElementById('btn-timing-clear-all').addEventListener('click', e => {
+  e.currentTarget.blur();
+  const movements = storedTimingMovements();
+  if (!movements.length) return;
+  if (!confirm(`Discard the timing recorded in this browser for all ${movements.length} movement(s)?\n\n` +
+               'Export them first to keep them.')) return;
+  movements.forEach(discardBrowserTiming);
   refreshAfterTimingChange();
 });
 
 /* ================================================================
    AUDIO EVENTS
 ================================================================ */
+// Manual mode leaves the highlight to the operator, but when the audio starts playing with
+// no line highlighted, it highlights the line being played (as Auto mode would), once: from
+// then on the operator moves it. Not while recording, where the first line is timed by the
+// operator's first key press.
+let pickLineOnPlay = false;
+
+function pickLineBeingPlayed() {
+  if (state.lastLyricIdx >= 0 || timing.recording || state.composerIdx === null) {
+    pickLineOnPlay = false;  // a line is selected already, or the operator is timing them
+    return;
+  }
+  if (!currentMovement()?.lyrics?.length) return;  // lyrics not loaded yet
+  const idx = getCurrentLyricIdx();
+  if (idx < 0) return;  // before the first timed line: try again as the audio goes on
+  pickLineOnPlay = false;
+  highlightLyricLine(idx);
+}
+
 audio.addEventListener('timeupdate', () => {
   if (audio.duration && isFinite(audio.duration)) {
     const ratio = audio.currentTime / audio.duration;
@@ -1341,6 +1399,8 @@ audio.addEventListener('timeupdate', () => {
 
   if (state.composerIdx !== null && state.highlightMode === 'auto') {
     highlightLyricLine(getCurrentLyricIdx());
+  } else if (pickLineOnPlay) {
+    pickLineBeingPlayed();
   }
   updateSelectedLineTime();  // the elapsed time
   updateTimeInUrl();
@@ -1354,9 +1414,15 @@ audio.addEventListener('loadedmetadata', () => {
   }
 });
 
+// The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise
+function showPlaying(playing) {
+  document.getElementById('btn-play-pause').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  state.isPlaying = playing;
+}
+
 audio.addEventListener('play', () => {
-  document.getElementById('btn-play-pause').innerHTML = '&#9646;&#9646;';
-  state.isPlaying = true;
+  showPlaying(true);
+  pickLineOnPlay = true;
   document.getElementById('thumbnail-overlay').classList.add('hidden');
   updateTimingPanel();
 });
@@ -1366,8 +1432,7 @@ document.getElementById('thumbnail-overlay').addEventListener('click', () => {
 });
 
 audio.addEventListener('pause', () => {
-  document.getElementById('btn-play-pause').innerHTML = '&#9654;';
-  state.isPlaying = false;
+  showPlaying(false);
   updateTimingPanel();
 });
 

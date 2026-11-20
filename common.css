@@ -203,7 +203,7 @@ body {
 }
 
 #timing-buttons .ctrl-btn { padding: 5px 4px; font-size: 0.74rem; }
-#timing-buttons #btn-timing-export { grid-column: 1 / -1; }
+#timing-buttons #btn-timing-export { grid-column: 2 / -1; }
 
 /* Selected lyric line, under the buttons: two rows of two columns
    (line number, elapsed time / first characters, start time) */
@@ -219,6 +219,12 @@ body {
   font-variant-numeric: tabular-nums;
 }
 #timing-line-time[hidden] { display: none; }
+
+/* Shown instead of the first characters and start time while no line is selected */
+#line-hint {
+  grid-column: 1 / -1;
+  font-style: italic;
+}
 
 /* The line's first characters: highlighted so the line is easy to spot by eye */
 #line-text {

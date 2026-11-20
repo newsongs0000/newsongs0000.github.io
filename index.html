@@ -31,13 +31,16 @@
           <button class="ctrl-btn" id="btn-timing-save"  title="Save this movement's timing to a .timing.js file (put it next to the MP3)">Save</button>
           <button class="ctrl-btn" id="btn-timing-load"  title="Load .timing.js (or older .timing.json) file(s)">Load</button>
           <button class="ctrl-btn" id="btn-timing-clear" title="Discard the timing recorded in this browser for this movement">Clear</button>
+          <button class="ctrl-btn" id="btn-timing-clear-all" title="Discard the timing recorded in this browser for every movement">Clear all</button>
           <button class="ctrl-btn" id="btn-timing-export"
                   title="Write every timing kept in this browser next to its MP3 as .timing.js. Pick the app folder (the one with index.html) or the MP3 folder.">Export to MP3 folders</button>
         </div>
-        <!-- Row 1: selected line's number, audio time elapsed. Row 2: its first characters, its start time (seconds) -->
+        <!-- Row 1: selected line's number, audio time elapsed. Row 2: its first characters, its start time (seconds),
+             or a hint when no line is selected -->
         <div id="timing-line-time" title="Selected lyric line" hidden>
           <span id="line-number"></span><span id="line-elapse" title="Audio time elapsed"></span>
           <span id="line-text"></span><span id="line-start" title="Start time of the line"></span>
+          <span id="line-hint" hidden>(No line selected)</span>
         </div>
         <input type="file" id="timing-file-input" accept=".js,.json" multiple hidden>
       </div>
