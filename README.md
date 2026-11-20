@@ -517,7 +517,8 @@ assets/
       work.js
       Chapter1..9.mp3      audio: Overture, then Nos. 1–52 in 8 tracks
       Handel.jpg           picture shared by all movements (Thomas Hudson's 1749 portrait, public domain)
-      Chapter1..9.timing.js  lyrics: English libretto + 和合本 translation, a heading line per number
+      Chapter1..9.timing.js  lyrics: English libretto as sung (repeats included) + 和合本 translation, a heading
+                           line per number; timed from a Whisper transcription of the recording
     MessiahChinese/        弥赛亚（中文版）: the same oratorio sung in Chinese (performers unknown), from
       work.js              https://www.bilibili.com/video/BV1eb4y1h7Va/, in the same 9 chapters as Messiah/
       Chapter1..9.mp3      audio: Nos. 1–55 as numbered in the video (Sinfonia = No. 1, Amen = No. 55)
