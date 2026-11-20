@@ -746,15 +746,48 @@ lyricsShownBoxes.forEach(box => {
    parameter mute (see VIEW OPTIONS IN URL).
 
    index.html (the default page) ships the box checked and disabled (and
-   hidden): the audio is then always muted, the URL parameter mute is ignored
+   hidden): the audio is then always silent, the URL parameter mute is ignored
    and not written, and the user cannot unmute. index-sound.html has the
    usual, visible, unchecked box.
+
+   The silent page does NOT set audio.muted: on mobile browsers (iOS Safari
+   in particular) an element that is muted from the start gets no audio
+   output to keep time with, and its currentTime races to the end of the
+   movement as soon as ▶ is pressed. Instead the element plays normally,
+   into a Web Audio gain node set to 0, which keeps a real audio output
+   (and so a real clock) running while nothing is heard. Browsers keep an
+   AudioContext suspended until a user gesture, so it is resumed on the
+   first gesture (and again after an interruption, e.g. a phone call).
+   Without Web Audio the page falls back to audio.muted.
 ================================================================ */
 const muteBox = document.getElementById('chk-mute');
 const muteLocked = muteBox.disabled;
 
-audio.muted = muteLocked || urlParam('mute') === '1';
-muteBox.checked = audio.muted;  // also overrides a box state a reload brings back (Firefox)
+// Make the audio silent without muting the element; false if Web Audio is not available
+function silenceAudioViaWebAudio() {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return false;
+  try {
+    const context = new AudioContextClass();
+    const gain = context.createGain();
+    gain.gain.value = 0;
+    context.createMediaElementSource(audio).connect(gain);
+    gain.connect(context.destination);
+
+    const resume = () => { if (context.state !== 'running') context.resume().catch(() => {}); };
+    ['pointerdown', 'touchend', 'click', 'keydown'].forEach(type =>
+      document.addEventListener(type, resume, { capture: true, passive: true }));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) resume(); });
+    audio.addEventListener('play', resume);
+    return true;
+  } catch (err) {
+    console.warn('Cannot silence the audio with Web Audio, muting it instead:', err);
+    return false;
+  }
+}
+
+audio.muted = muteLocked ? !silenceAudioViaWebAudio() : urlParam('mute') === '1';
+muteBox.checked = muteLocked || audio.muted;  // also overrides a box state a reload brings back (Firefox)
 if (!muteLocked) rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
 
 muteBox.addEventListener('change', () => {

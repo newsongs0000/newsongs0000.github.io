@@ -192,9 +192,13 @@ The default page, `index.html`, is silent: it never plays sound (see below). To 
 
 ### Silent and sound pages
 
-- **`index.html` (default)** is the player with the audio always muted. The Mute check box is hidden and locked, the
+- **`index.html` (default)** is the player with the audio always silent. The Mute check box is hidden and locked, the
   `mute` URL parameter is ignored, and the music still plays silently, so the lyrics, progress bar and keyboard work
-  as usual. This suits showing the timed lyrics while the music is performed live.
+  as usual. This suits showing the timed lyrics while the music is performed live. The audio is not muted at the
+  element level: on phones a muted `<audio>` element has no audio output to keep time with, and its position races to
+  the end of the movement when ▶ is pressed. So the page plays the audio normally into a Web Audio gain node set to
+  0, which keeps a real output clock running while nothing is heard (it falls back to muting where Web Audio is
+  missing).
 - **`index-sound.html`** is the same player with the visible **Mute** check box, unchecked by default. Check it to
   silence the audio, or open the page with `?mute=1`.
 
