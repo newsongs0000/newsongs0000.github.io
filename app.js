@@ -358,9 +358,9 @@ function updateTimeInUrl() {
                      see BILINGUAL LYRICS DIVIDER)
      timing          open | collapsed, the Lyrics Timing panel (default collapsed; see
                      setTimingPanelOpen)
-     audio-options   open | collapsed, the Audio / Font row, which only a smartphone layout can
-                     collapse (default collapsed; see setAudioOptionsOpen)
-   index-sound.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open&audio-options=open
+     view-options    open | collapsed, the View Options panel, which only a smartphone layout can
+                     collapse (default collapsed; see setViewPanelOpen)
+   index-sound.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open&view-options=open
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -1316,22 +1316,22 @@ document.getElementById('btn-timing-toggle').addEventListener('click', e => {
   btn.blur();  // so Space doesn't re-activate the button
 });
 
-// The Audio / Font row (#audio-options) can be collapsed on a smartphone only (the CSS shows
-// the arrow button and hides the rest of the row in a narrow window); it starts collapsed unless
-// the URL says open (see VIEW OPTIONS IN URL)
-function setAudioOptionsOpen(open) {
-  const btn = document.getElementById('btn-audio-toggle');
-  document.getElementById('audio-options').classList.toggle('collapsed', !open);
+// The View Options panel (#view-panel: lyrics mode, Maximize, Show, Audio / Font) can be collapsed
+// on a smartphone only (the CSS shows its title bar and hides its body in a narrow window); it
+// starts collapsed to its title and arrow unless the URL says open (see VIEW OPTIONS IN URL)
+function setViewPanelOpen(open) {
+  const btn = document.getElementById('btn-view-toggle');
+  document.getElementById('view-panel').classList.toggle('collapsed', !open);
   btn.setAttribute('aria-expanded', open);
-  btn.title = open ? 'Hide options' : 'Show options';
-  rewriteUrlParams({ 'audio-options': open ? 'open' : 'collapsed' });
+  btn.title = open ? 'Hide view options' : 'Show view options';
+  rewriteUrlParams({ 'view-options': open ? 'open' : 'collapsed' });
 }
 
-setAudioOptionsOpen(urlParam('audio-options') === 'open');
+setViewPanelOpen(urlParam('view-options') === 'open');
 
-document.getElementById('btn-audio-toggle').addEventListener('click', e => {
+document.getElementById('btn-view-toggle').addEventListener('click', e => {
   const btn = e.currentTarget;
-  setAudioOptionsOpen(btn.getAttribute('aria-expanded') !== 'true');
+  setViewPanelOpen(btn.getAttribute('aria-expanded') !== 'true');
   btn.blur();  // so Space doesn't re-activate the button
 });
 

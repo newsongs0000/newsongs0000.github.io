@@ -45,31 +45,36 @@
         <input type="file" id="timing-file-input" accept=".js,.json" multiple hidden>
       </div>
     </div>
-    <div id="view-panel">
-      <div id="mode-toggle" role="group" aria-label="Lyrics highlight mode">
-        <span id="mode-toggle-label">Lyrics:</span>
-        <button class="ctrl-btn" data-mode="auto"   title="Highlight follows audio playback">Auto</button>
-        <button class="ctrl-btn" data-mode="manual" title="Operator advances lyrics: &darr; / &rarr; next, &uarr; / &larr; back">Manual</button>
+    <div id="view-panel" class="collapsed">
+      <!-- Smartphone only: the panel starts collapsed to this title bar unless the URL says open; see setViewPanelOpen -->
+      <div id="view-header">
+        <h2>VIEW OPTIONS</h2>
+        <button class="ctrl-btn" id="btn-view-toggle" aria-expanded="false" aria-controls="view-body"
+                title="Show view options"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
       </div>
-      <button class="ctrl-btn" id="btn-maximize" title="Maximize lyrics panel (Esc to restore)">&#x2922; Maximize</button>
-      <div id="lyrics-shown" role="group" aria-label="Lyrics shown"
-           title="Which lyrics and titles to show; at least one must be checked">
-        <span id="lyrics-shown-label">Show:</span>
-        <label><input type="checkbox" value="original"    checked> Original</label>
-        <label><input type="checkbox" value="translation" checked> Translation</label>
-      </div>
-      <!-- On a smartphone the row is collapsed (to its label and arrow button) unless the URL says open; see setAudioOptionsOpen -->
-      <div id="audio-options" class="collapsed" role="group" aria-label="Font size">
-        <span id="audio-options-label">Font:</span>
-        <!-- Always muted: the box is checked, disabled and hidden, so app.js keeps the audio muted (see MUTE) -->
-        <label hidden><input type="checkbox" id="chk-mute" checked disabled> Mute</label>
-        <span id="font-size-ctl" title="Lyrics font size">
-          <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>
-          <span id="font-size-value" title="Click to reset">100%</span>
-          <button class="ctrl-btn" id="btn-font-up" aria-label="Larger lyrics">A+</button>
-        </span>
-        <button class="ctrl-btn" id="btn-audio-toggle" aria-expanded="false"
-                title="Show options"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
+      <div id="view-body">
+        <div id="mode-toggle" role="group" aria-label="Lyrics highlight mode">
+          <span id="mode-toggle-label">Lyrics:</span>
+          <button class="ctrl-btn" data-mode="auto"   title="Highlight follows audio playback">Auto</button>
+          <button class="ctrl-btn" data-mode="manual" title="Operator advances lyrics: &darr; / &rarr; next, &uarr; / &larr; back">Manual</button>
+        </div>
+        <button class="ctrl-btn" id="btn-maximize" title="Maximize lyrics panel (Esc to restore)">&#x2922; Maximize</button>
+        <div id="lyrics-shown" role="group" aria-label="Lyrics shown"
+             title="Which lyrics and titles to show; at least one must be checked">
+          <span id="lyrics-shown-label">Show:</span>
+          <label><input type="checkbox" value="original"    checked> Original</label>
+          <label><input type="checkbox" value="translation" checked> Translation</label>
+        </div>
+        <div id="audio-options" role="group" aria-label="Font size">
+          <span id="audio-options-label">Font:</span>
+          <!-- Always muted: the box is checked, disabled and hidden, so app.js keeps the audio muted (see MUTE) -->
+          <label hidden><input type="checkbox" id="chk-mute" checked disabled> Mute</label>
+          <span id="font-size-ctl" title="Lyrics font size">
+            <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>
+            <span id="font-size-value" title="Click to reset">100%</span>
+            <button class="ctrl-btn" id="btn-font-up" aria-label="Larger lyrics">A+</button>
+          </span>
+        </div>
       </div>
     </div>
   </aside>
