@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player with Lyrics (with sound)</title>
+  <title>Player with Lyrics</title>
   <link rel="stylesheet" href="common.css">
 </head>
 <body>
@@ -65,9 +65,10 @@
           <label><input type="checkbox" value="original"    checked> Original</label>
           <label><input type="checkbox" value="translation" checked> Translation</label>
         </div>
-        <div id="audio-options" role="group" aria-label="Audio">
-          <span id="audio-options-label">Audio:</span>
-          <label title="Silence the audio; it keeps playing, so the lyrics follow it as usual"><input type="checkbox" id="chk-mute"> Mute</label>
+        <div id="audio-options" role="group" aria-label="Font size">
+          <span id="audio-options-label">Font:</span>
+          <!-- Always muted: the box is checked, disabled and hidden, so app.js keeps the audio muted (see MUTE) -->
+          <label hidden><input type="checkbox" id="chk-mute" checked disabled> Mute</label>
           <span id="font-size-ctl" title="Lyrics font size">
             <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>
             <span id="font-size-value" title="Click to reset">100%</span>
