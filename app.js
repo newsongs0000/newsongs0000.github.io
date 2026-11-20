@@ -1416,7 +1416,9 @@ audio.addEventListener('loadedmetadata', () => {
 
 // The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise
 function showPlaying(playing) {
-  document.getElementById('btn-play-pause').innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  const icon = playing ? '&#9646;&#9646;' : '&#9654;';
+  document.getElementById('btn-play-pause').innerHTML = icon;
+  document.getElementById('btn-play-pause-max').innerHTML = icon;  // top bar, maximized lyrics mode
   state.isPlaying = playing;
 }
 
@@ -1454,10 +1456,13 @@ audio.addEventListener('error', () => {
 /* ================================================================
    PLAYBACK CONTROLS
 ================================================================ */
-document.getElementById('btn-play-pause').addEventListener('click', () => {
-  if (audio.src) {
-    audio.paused ? audio.play().catch(() => {}) : audio.pause();
-  }
+['btn-play-pause', 'btn-play-pause-max'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    e.currentTarget.blur();  // so Space doesn't re-activate the button
+    if (audio.src) {
+      audio.paused ? audio.play().catch(() => {}) : audio.pause();
+    }
+  });
 });
 
 document.getElementById('btn-rewind-start').addEventListener('click', () => {

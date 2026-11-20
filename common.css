@@ -570,7 +570,8 @@ body {
   pointer-events: none;
 }
 
-#btn-play-pause {
+#btn-play-pause,
+#btn-play-pause-max {
   background: var(--accent);
   color: #000;
   border-color: var(--accent);
@@ -579,7 +580,8 @@ body {
   min-width: 44px;
 }
 
-#btn-play-pause:hover {
+#btn-play-pause:hover,
+#btn-play-pause-max:hover {
   background: var(--accent-light);
   border-color: var(--accent-light);
   color: #000;
@@ -682,9 +684,11 @@ body {
 #app.lyrics-maximized #left-pane,
 #app.lyrics-maximized #bottom-controls,
 #app.lyrics-maximized #info-pane,
-#app.lyrics-maximized #top-controls > :not(#now-playing):not(#btn-restore) { display: none; }
+#app.lyrics-maximized #top-controls > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
+#app.lyrics-maximized #btn-play-pause-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
 #app.lyrics-maximized #right-pane { grid-template-rows: auto 1fr; }
+#app.lyrics-maximized #lyrics-container { padding-left: 0; padding-right: 0; }  /* lyrics span the full width */
 #app.lyrics-maximized .lyric-meta { font-size: 1rem; }
 #app.lyrics-maximized .lyric-line { font-size: calc(2.7rem * var(--lyrics-font-scale, 1)); }
 
