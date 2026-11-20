@@ -112,8 +112,8 @@ async function loadArtists() {
    CONFIGURATION — apply URL params to CSS custom properties
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
    Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too
-   (mute is used only by index-sound.html; index.html is always muted, see MUTE):
-   index-sound.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
+   (mute is used only by index.html; index1.html is always silent, see MUTE):
+   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
    (see VIEW OPTIONS IN URL)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
@@ -360,7 +360,7 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-   index-sound.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open&view-options=open
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open&view-options=open
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -745,12 +745,12 @@ lyricsShownBoxes.forEach(box => {
    The box's state stays from one movement to the next. Kept in the URL
    parameter mute (see VIEW OPTIONS IN URL).
 
-   index.html (the default page) ships the box checked and disabled (and
+   index1.html (the silent page) ships the box checked and disabled (and
    hidden): the audio is then always silent, the URL parameter mute is ignored
-   and not written, and the user cannot unmute. index-sound.html has the
-   usual, visible, unchecked box.
+   and not written, and the user cannot unmute. index.html (the default page)
+   has the usual, visible, unchecked box.
 
-   The silent page does NOT set audio.muted: on mobile browsers (iOS Safari
+   The silent page (index1.html) does NOT set audio.muted: on mobile browsers (iOS Safari
    in particular) an element that is muted from the start gets no audio
    output to keep time with, and its currentTime races to the end of the
    movement as soon as ▶ is pressed. Instead the element plays normally,

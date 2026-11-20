@@ -126,11 +126,11 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
   - **⤢ Maximize** (next to it) shows only the lyrics. See [Maximized lyrics](#maximized-lyrics).
   - **Show: ☑ Original ☑ Translation** (under them) chooses which lyrics the panel shows, and which titles the top
     bar shows. See **Translation** below.
-  - **Audio: ☑ Mute** (the last row; only on `index-sound.html`, see [Silent and sound pages](#silent-and-sound-pages))
+  - **Audio: ☑ Mute** (the last row; not on `index1.html`, see [Silent and sound pages](#silent-and-sound-pages))
     silences the audio without stopping it. The music keeps playing with no sound, so the lyrics are highlighted, the
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
-    `index.html` the row is just **Font:** (the lyrics size buttons), because the audio is always muted.
+    `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
   - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The player
     takes the rest, so it moves up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**, **Maximize**,
@@ -187,20 +187,20 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 2. Click the picture, or press ▶ or Space, to play.
 3. When a movement ends, the next one starts automatically.
 
-The default page, `index.html`, is silent: it never plays sound (see below). To listen to a recording, open
-`index-sound.html` instead.
+The default page, `index.html`, plays the recording's sound (see below). To show the timed lyrics with no sound,
+open `index1.html` instead.
 
 ### Silent and sound pages
 
-- **`index.html` (default)** is the player with the audio always silent. The Mute check box is hidden and locked, the
+- **`index.html` (default)** is the player with the visible **Mute** check box, unchecked by default. Check it to
+  silence the audio, or open the page with `?mute=1`.
+- **`index1.html`** is the player with the audio always silent. The Mute check box is hidden and locked, the
   `mute` URL parameter is ignored, and the music still plays silently, so the lyrics, progress bar and keyboard work
   as usual. This suits showing the timed lyrics while the music is performed live. The audio is not muted at the
   element level: on phones a muted `<audio>` element has no audio output to keep time with, and its position races to
   the end of the movement when ▶ is pressed. So the page plays the audio normally into a Web Audio gain node set to
   0, which keeps a real output clock running while nothing is heard (it falls back to muting where Web Audio is
   missing).
-- **`index-sound.html`** is the same player with the visible **Mute** check box, unchecked by default. Check it to
-  silence the audio, or open the page with `?mute=1`.
 
 The two pages differ only in that check box (and the page title); both use the same `app.js` and `common.css`.
 
@@ -520,8 +520,8 @@ then the `.timing.js` file, then even spacing. The lyrics **text** and **transla
 ## Project structure
 
 ```
-index.html                 page markup only; the default page, the audio is always muted (the Mute box is hidden and locked)
-index-sound.html           same page with the visible Mute box, for listening
+index.html                 page markup only; the default page, with the visible Mute box, for listening
+index1.html                same page with the audio always silent (the Mute box is hidden and locked)
 common.css                 all styles; color variables at the top
 app.js                     all behavior; APP_DATA.artistFiles at the top
 assets/
