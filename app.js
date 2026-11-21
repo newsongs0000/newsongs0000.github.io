@@ -367,7 +367,7 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-     bg              none | graphics | image, the lyrics background (default image; see BACKGROUND)
+     bg              none | graphics | image, the lyrics background (default none; see BACKGROUND)
      pictures        1 | 2, which version of the movements' pictures the image background shows
                      (default 1; see PICTURE VERSIONS)
    index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&bg=image
@@ -1000,7 +1000,7 @@ picturesBtns.forEach(btn => {
 });
 
 setPictureVersion(PICTURE_VERSIONS.includes(urlParam('pictures')) ? urlParam('pictures') : '1');
-setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'image');
+setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'none');
 
 /* ================================================================
    BILINGUAL LYRICS DIVIDER

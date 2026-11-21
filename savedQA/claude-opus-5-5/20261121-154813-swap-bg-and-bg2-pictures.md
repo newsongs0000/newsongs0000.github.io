@@ -96,3 +96,17 @@ Created branch `chinese-requiem-image-sets` from `main` and committed everything
 includes the uncommitted image-set work from the earlier session (`background2`, the 1 | 2 buttons, the `local/`
 fallback), because it shares files with this session's edits. Not pushed; `main` is unchanged. To put it on `main`:
 `git switch main && git merge --ff-only chinese-requiem-image-sets`.
+
+## Ask
+
+Set default background to None
+
+## Answer
+
+- `app.js`: with no valid `bg` URL parameter, the background is now `none` (was `image`); the VIEW OPTIONS IN URL
+  comment says `default none`.
+- `README.md`: the **Background** section and the `bg` row of the URL parameter table give `none` as the default.
+
+A `bg=graphics` or `bg=image` in the URL still wins, so saved links keep their background. The app writes the
+current choice into the URL, so anyone on an old link that already has `bg=image` keeps Image. Not committed (on
+branch `chinese-requiem-image-sets`).

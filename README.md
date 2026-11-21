@@ -195,7 +195,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
   - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
-    and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `image` by default).
+    and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `none` by default).
     - **None**: the plain page color.
     - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
       Their hue comes from the movement, so each movement has its own colors.
@@ -318,7 +318,7 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `below-bg` | Background of the lines below the current line | `transparent` |
 | `highlight-mode` | `auto` starts in Auto mode; anything else starts in Manual | `manual` |
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
-| `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `image` |
+| `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `none` |
 | `pictures` | Which image set the `image` background shows, `1` or `2`, for a movement that has two (see **Image sets** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `1` |
 | `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
 | `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `70` |
