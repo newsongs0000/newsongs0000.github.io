@@ -404,7 +404,8 @@ body {
 
 /* ─── Song Display (lyrics area) ─── */
 #song-display {
-  --lyrics-side-pad: 60px;  /* the lyrics panel's side margins; the thumbnail overlay keeps the same (see below) */
+  --lyrics-side-pad: 0px;  /* the lyrics panel's side margins (none: the lyrics span the full width, as in maximized
+                              mode); the thumbnail overlay keeps the same (see below) */
   overflow: hidden;
   position: relative;
   background: var(--bg-primary);
@@ -773,7 +774,6 @@ body {
   stroke-linejoin: round;
 }
 #app.lyrics-maximized #right-pane { grid-template-rows: auto 1fr; }
-#app.lyrics-maximized #song-display { --lyrics-side-pad: 0px; }  /* lyrics (and the thumbnail overlay) span the full width */
 #app.lyrics-maximized .lyric-meta { font-size: 1rem; }
 #app.lyrics-maximized .lyric-line { font-size: calc(2.7rem * var(--lyrics-font-scale, 1)); }
 
