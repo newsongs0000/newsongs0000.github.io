@@ -130,18 +130,19 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
-  - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and is as
-    tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The player
-    takes the rest, so it moves up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
+  - **Smartphone layout** (window 700 px wide or narrower). The playback controls are at the top of the screen, then
+    the navigation pane, then the rest of the player (song navigation, lyrics, info pane). The navigation pane is as
+    tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
+    lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
     **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
   beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
   and the elapsed / total time, then, a little apart at the right end, **⤢ Max**, which shows only the lyrics (see
-  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the progress bar has a row of its own above the
-  buttons, and the time and **⤢ Max** go to the right end of the row after them, or of a row of their own when they
-  don't fit.
+  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons are smaller, the time and **⤢ Max** are at
+  the right end of the button row (on a row of their own on a very narrow screen, about 320 px), and the progress bar
+  is always on a row of its own below them.
 - **Song navigation section** (below the playback controls)
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
   - **Now playing** shows the work title and the movement number and title, then both translations (if any)

@@ -752,12 +752,16 @@ body {
 /* Song navigation buttons */
 #song-nav .ctrl-btn { padding: 7px 14px; font-size: 0.82rem; }
 
-/* ─── Smartphone layout (not maximized): navigation stacked above the player ─── */
+/* ─── Smartphone layout: playback controls on top, then navigation, then the rest of the player ─── */
 @media (max-width: 700px) {
-  /* The navigation pane is as tall as its content, up to 64% (then it scrolls); the player gets the rest, so
-     collapsing the tree moves the player up with the View Options panel */
-  #app { grid-template-columns: 1fr; grid-template-rows: fit-content(64%) minmax(0, 1fr); }
-  #app.lyrics-maximized { grid-template-rows: minmax(0, 1fr); }
+  /* The right pane's panels are rows of the app grid themselves (display: contents), so the playback controls can go
+     on top, above the navigation pane. The navigation pane is as tall as its content, up to 64% (then it scrolls);
+     the lyrics get the rest, so collapsing the tree moves the song navigation and lyrics up with the View Options
+     panel. Maximized, only the song navigation and the lyrics are shown */
+  #app { grid-template-columns: 1fr; grid-template-rows: auto fit-content(64%) auto minmax(0, 1fr) auto; }
+  #app.lyrics-maximized { grid-template-rows: auto minmax(0, 1fr); }
+  #right-pane { display: contents; }
+  #playback-controls { order: -1; }
   #left-pane { border-right: none; border-bottom: 1px solid var(--border); overflow-y: auto; }
   #left-header { display: none; }
   #composer-tree { flex: none; overflow: visible; }
@@ -789,17 +793,17 @@ body {
   #view-panel.collapsed { padding-top: 6px; padding-bottom: 6px; }
   #view-panel.collapsed #view-body { display: none; }
 
-  #right-pane { grid-template-rows: auto auto minmax(0, 1fr) auto; }
   #song-nav { padding: 6px 8px; gap: 6px; }
   #song-nav .ctrl-btn { padding: 7px 10px; }
-  /* Buttons centered; the time and Max at the right end, after the buttons if they fit, else on a row of their own.
-     Less padding on the right */
-  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 4px 6px 8px; gap: 6px; }
-  #progress-bar { flex: 1 1 100%; order: -1; }
-  #time-max { flex: 1 0 auto; justify-content: flex-end; }
+  /* Smaller buttons; the time and Max at the right end of their row (if they don't fit after the buttons, a row of
+     their own); the progress bar always on a row of its own below them. Less padding on the right */
+  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 4px 6px 8px; gap: 4px; }
+  #playback-controls .ctrl-btn { padding: 4px 7px; font-size: 0.72rem; }
+  #playback-controls #btn-play-pause { padding: 4px 10px; font-size: 0.85rem; min-width: 34px; }
+  #progress-bar { flex: 1 1 100%; order: 1; }
+  #time-max { flex: 1 0 auto; justify-content: flex-end; gap: 8px; }
   #time-display { min-width: 0; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; font-size: 0.85em; }
-  #app.lyrics-maximized #right-pane { grid-template-rows: auto minmax(0, 1fr); }
 
   /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
   .lyric-line { font-size: calc(0.975rem * var(--lyrics-font-scale, 1)); }

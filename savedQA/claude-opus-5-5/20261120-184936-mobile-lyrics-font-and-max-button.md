@@ -70,3 +70,40 @@ matching icon
   "exit full screen" sign), so the pair reads expand / shrink. Unicode has no single inward-arrows glyph. Styled in
   `common.css` (`#btn-restore svg`: 0.9em, `currentColor` stroke, so it follows the button's hover color).
 - README "Maximized lyrics" now mentions the Norm button next to Esc.
+
+## Ask
+
+On mobile devices, place the song-nav panel at top
+
+(Interrupted, replaced by:)
+
+On mobile devices, place the playback-controls panel at top
+
+## Answer
+
+- Playback controls were already the top panel of the player, so "at top" was taken as the top of the phone screen,
+  above the navigation tree.
+- `common.css`, `max-width: 700px` query: `#right-pane { display: contents; }` makes the player's panels rows of the
+  `#app` grid themselves, and `#playback-controls { order: -1; }` puts the controls first. Rows: playback controls
+  (auto), navigation pane (`fit-content(64%)`), song navigation (auto), lyrics (`minmax(0, 1fr)`), info pane (auto).
+  Maximized: song navigation and lyrics (`auto minmax(0, 1fr)`). The two `#right-pane` row rules in the query, now
+  without effect, were removed. The `#right-pane:has(...)` rules still apply (selectors and inherited custom properties
+  don't depend on the box).
+- Checked in Chrome at 390 px (normal and maximized) and at 1280 px (desktop unchanged).
+- README smartphone layout updated.
+
+## Ask
+
+On mobile devices, reduce the sizes of buttons on playback-controls, make sure tht the progress-bar appears below the
+buttons at all time
+
+## Answer
+
+- `common.css`, `max-width: 700px` query: playback buttons `padding: 4px 7px; font-size: 0.72rem` (were 6px 10px,
+  0.8rem); ▶ `padding: 4px 10px; font-size: 0.85rem; min-width: 34px` (were 7px 16px, 1rem, 44px); gaps 4px (was
+  6px), time–Max gap 8px.
+- `#progress-bar { flex: 1 1 100%; order: 1; }` (was `order: -1`, i.e. above the buttons): always last, on a row of
+  its own below the buttons, time and Max.
+- Measured in Chrome: at 390 px and 360 px the buttons, time and Max fit on one row, with the progress bar below; the
+  bar is 49 px tall (was about 110 px). At 320 px the time and Max wrap to a second row, the progress bar is still last.
+- README playback control section updated.
