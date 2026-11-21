@@ -374,9 +374,9 @@ function urlParam(name) {
 // On a mobile device (a touch screen without a mouse) or in a window as narrow as a
 // phone's (the same media query as the CSS rule that hides the timing panel), the
 // now-playing header has no room for the full titles: it leaves out the work titles
-// and cuts each movement title (with its number) to its first 16 characters
+// and cuts each movement title (with its number) to its first 20 characters
 const compactNowPlaying = matchMedia('(max-width: 700px), (pointer: coarse) and (hover: none)');
-const COMPACT_TITLE_CHARS = 16;
+const COMPACT_TITLE_CHARS = 20;
 
 function nowPlayingTitle(text) {
   if (!compactNowPlaying.matches) return text;

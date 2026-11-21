@@ -90,3 +90,19 @@ The same size as the phone-sized playback buttons (`#playback-controls > .ctrl-b
 Measured in headless Chrome emulating a touch phone, 390×844, `?movement=mozart/mozart-requiem/ch6`: Prev / Next went
 from about 65×33px to 48×22px, the song-nav bar from about 50px to 36px tall, and the freed width lets the translation
 show `VI. 羔羊经、永恒之…` (was `VI. 羔羊…`). Gaps to the titles stay at about 6px. Landscape (844×390) checked too.
+
+## Q5
+
+on mobile devices, limit the text set in np-title and np-title-translation to the first 20 characters
+
+## A5
+
+Changed `app.js`: `COMPACT_TITLE_CHARS` 16 → 20 (and the comment above `compactNowPlaying`). Still counts the movement
+number ("VI. " is 4 of the 20), no "…" added by the cut itself.
+
+Headless Chrome, touch-phone emulation, `?movement=mozart/mozart-requiem/ch6`:
+
+- `#np-title` = `VI. Agnus Dei, Lux a` (20 chars), `#np-title-translation` = `VI. 羔羊经、永恒之光` (under 20, unchanged).
+- 844×390 landscape: both shown in full, Prev 6px → title, translation 6px → Next.
+- 390×844 portrait: the two don't both fit in the bar, so the CSS ellipsis cuts them further: `VI. Agnus Dei, L…` and
+  `VI. 羔羊经、永…`.
