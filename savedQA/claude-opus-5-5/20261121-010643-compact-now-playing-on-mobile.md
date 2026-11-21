@@ -69,3 +69,24 @@ Measured in headless Chrome emulating a touch phone (`?movement=mozart/mozart-re
 | 390×844 portrait | ~35px (title cut "VI. Agnus De…") | 6px ("VI. Agnus Dei, L" in full) | — (cut "VI. 羔羊…") | translation shows "VI. 羔羊经、…" |
 | 844×390 landscape | 55px | 6px | ~16px+ | 6px |
 | 390×844, "I. Overture / I. 序曲" | centered | 6px | centered | 6px |
+
+## Q4
+
+on mobile devices, reduce the padding and size of btn-prev and btn-next
+
+## A4
+
+Changed `common.css`, in the same mobile block as A3 (`(max-width: 700px), (pointer: coarse) and (hover: none)`):
+
+```css
+#song-nav #btn-prev,
+#song-nav #btn-next { padding: 3px 6px; font-size: 0.66rem; }
+```
+
+The same size as the phone-sized playback buttons (`#playback-controls > .ctrl-btn` in "Smartphone sizes"). Was
+`7px 10px` / `0.82rem` at ≤700px and `7px 14px` / `0.82rem` on a phone in landscape. The ID selectors outrank
+`#song-nav .ctrl-btn`, so the rule doesn't depend on its place in the file.
+
+Measured in headless Chrome emulating a touch phone, 390×844, `?movement=mozart/mozart-requiem/ch6`: Prev / Next went
+from about 65×33px to 48×22px, the song-nav bar from about 50px to 36px tall, and the freed width lets the translation
+show `VI. 羔羊经、永恒之…` (was `VI. 羔羊…`). Gaps to the titles stay at about 6px. Landscape (844×390) checked too.
