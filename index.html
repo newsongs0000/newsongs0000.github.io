@@ -100,11 +100,12 @@
 
     <!-- Playback control section -->
     <div id="playback-controls">
-      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#9664;</button>
+      <!-- &#xFE0E; after each triangle: draw it as text, as a computer does, not as an emoji (iPhone) -->
+      <button class="ctrl-btn" id="btn-rewind-start" title="Rewind to beginning">&#9664;&#xFE0E;&#9664;&#xFE0E;</button>
       <button class="ctrl-btn" id="btn-rewind-15"    title="Rewind 15 seconds">&#8722;15s</button>
-      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;</button>
+      <button class="ctrl-btn" id="btn-play-pause"   title="Play / Pause">&#9654;&#xFE0E;</button>
       <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
-      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#9654;</button>
+      <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#xFE0E;&#9654;&#xFE0E;</button>
       <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
       <!-- The time and Max stay together: on a phone they wrap to their own row as one -->
       <div id="time-max">
@@ -124,7 +125,7 @@
         <span id="np-translation" hidden><span id="np-label-translation"></span><span id="np-title-translation"></span></span>
       </div>
       <button class="ctrl-btn" id="btn-next">Next &#9654;</button>
-      <button class="ctrl-btn" id="btn-play-pause-max" title="Play / Pause (Space)" hidden>&#9654;</button>
+      <button class="ctrl-btn" id="btn-play-pause-max" title="Play / Pause (Space)" hidden>&#9654;&#xFE0E;</button>
       <button class="ctrl-btn" id="btn-restore" title="Back to the normal layout (Esc)"
               aria-label="Back to the normal layout" hidden><svg viewBox="0 0 12 12"
               aria-hidden="true"><path d="M11 1 7 5M7 2.5V5h2.5M1 11l4-4M2.5 7H5v2.5"/></svg></button>

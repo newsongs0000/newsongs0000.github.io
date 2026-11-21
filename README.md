@@ -148,7 +148,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
   beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
   and the elapsed / total time, then, a little apart at the right end, the **⤢** (maximize) button, which shows only the lyrics (see
-  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons are smaller, the time and **⤢** are at
+  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons look as they do on a computer, the time and **⤢** are at
   the right end of the button row (on a row of their own on a very narrow screen, about 320 px), and the progress bar
   is always on a row of its own below them.
 - **Song navigation section** (below the playback controls)

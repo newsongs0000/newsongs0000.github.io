@@ -1608,9 +1608,10 @@ audio.addEventListener('loadedmetadata', () => {
   }
 });
 
-// The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise
+// The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise (followed by U+FE0E, so a phone
+// draws it as text, not as an emoji)
 function showPlaying(playing) {
-  const icon = playing ? '&#9646;&#9646;' : '&#9654;';
+  const icon = playing ? '&#9646;&#9646;' : '&#9654;&#xFE0E;';
   document.getElementById('btn-play-pause').innerHTML = icon;
   document.getElementById('btn-play-pause-max').innerHTML = icon;  // top bar, maximized lyrics mode
   songDisplay.classList.toggle('playing', playing);  // the background graphics drift only then (see BACKGROUND)

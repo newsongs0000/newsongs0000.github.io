@@ -72,3 +72,30 @@ Image is now the default background. A URL without `bg`, or with an invalid valu
 
 Verified in headless Chrome: a plain `index.html` loads with `bg=image`, the Image button pressed and Handel.jpg
 showing. `?bg=none` still gives a plain background.
+
+---
+
+## Ask
+
+> On mobile devices, the style of the first 5 buttons in the playback-controls panel are different from desktop, make
+> them as desktop
+
+## Response
+
+The five playback buttons (◀◀, −15s, ▶ / ❚❚, +15s, ▶▶) now look the same on a phone as on a computer.
+
+- **Size**: removed the smartphone overrides in `common.css`. On a phone, portrait or landscape, they had 3px 6px
+  padding and 0.66rem text, with 3px 8px and 0.78rem for play. They now use the desktop size: 4px 8px and 0.72rem,
+  with 4px 12px and 0.88rem for play. The row's slightly tighter spacing on a phone (3px gap, less side padding) stays.
+- **Glyphs**: iPhone Safari tends to draw ◀ (U+25C0) and ▶ (U+25B6) as emoji, in a colored box. Each triangle in these
+  buttons is now followed by U+FE0E (text presentation), in `index.html`, `index1.html` and the ▶ icon that
+  `showPlaying` in `app.js` writes, which the maximized play button shares. A computer already drew them as text, so
+  nothing changes there.
+- `README.md`: says the smartphone buttons look as they do on a computer.
+
+Verified in headless Chrome with touch emulation (pointer: coarse). The buttons have the desktop font size and padding
+at 390, 360 and 320 px portrait and at 844×390 landscape. At 390 and 360 px the buttons, time and Max fit on one row.
+At 320 px the time and Max wrap to their own row, as the README already describes. In landscape the progress bar keeps
+225 px.
+
+Not changed: Prev / Next keep their smaller phone size, and their ◀ ▶ could still show as emoji on an iPhone.

@@ -1051,10 +1051,9 @@ body {
    and gets the two-pane layout, so turning the phone doesn't make the right side's text, the playback buttons and
    the spaces between them larger (which could push Max out of sight) ─── */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  /* Smaller buttons, closer together; less padding on the right */
+  /* The five playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
+     portrait, and the right pane is wide enough in landscape); a little less space between them and around the row */
   #playback-controls { padding: 6px 4px 6px 8px; gap: 3px; }
-  #playback-controls > .ctrl-btn { padding: 3px 6px; font-size: 0.66rem; }
-  #playback-controls > #btn-play-pause { padding: 3px 8px; min-width: 30px; font-size: 0.78rem; }
   #btn-maximize { padding: 2px 7px; font-size: 0.9rem; }
   #time-max { gap: 8px; }
   #time-display { min-width: 0; font-size: 0.85rem; }
