@@ -29,6 +29,9 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Mobile browsers (iOS Safari especially) enlarge text when the phone is turned to landscape: keep it as styled */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
 body {
   font-family: 'Georgia', 'Noto Serif SC', serif;
   background: var(--bg-primary);
@@ -833,12 +836,20 @@ body {
   /* Smaller buttons; the time and Max at the right end of their row (if they don't fit after the buttons, a row of
      their own); the progress bar always on a row of its own below them. Less padding on the right */
   #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 4px 6px 8px; gap: 4px; }
-  #playback-controls .ctrl-btn { padding: 4px 7px; font-size: 0.72rem; }
-  #playback-controls #btn-play-pause { padding: 4px 10px; font-size: 0.85rem; min-width: 34px; }
+  #playback-controls .ctrl-btn { padding: 4px 7px; }
+  #playback-controls #btn-play-pause { padding: 4px 10px; min-width: 34px; }
   #progress-bar { flex: 1 1 100%; order: 1; }
   #time-max { flex: 1 0 auto; justify-content: flex-end; gap: 8px; }
   #time-display { min-width: 0; }
-  #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; font-size: 0.85em; }
+  #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; }
+}
+
+/* ─── Smartphone font sizes: in portrait (the layout above) and also in landscape, where the phone is wider than
+   700px and gets the two-pane layout, so turning the phone doesn't make the right side's text larger ─── */
+@media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
+  #playback-controls .ctrl-btn { font-size: 0.72rem; }
+  #playback-controls #btn-play-pause { font-size: 0.85rem; }
+  #info-pane { font-size: 0.85em; }
 
   /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
   .lyric-line { font-size: calc(0.975rem * var(--lyrics-font-scale, 1)); }
