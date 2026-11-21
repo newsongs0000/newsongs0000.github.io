@@ -67,10 +67,38 @@ body {
   letter-spacing: 0.08em;
 }
 
+/* ─── Songs panel: the tree under a title bar with an arrow; open by default ─── */
+/* It keeps the pane's free height even when collapsed, so the panels under it stay docked at the bottom */
+#tree-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  flex-shrink: 0;
+}
+
+#tree-panel h2 {
+  font-size: 0.72rem;
+  font-weight: normal;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* The tree opens downward, under the title: the arrow points down while collapsed, up while open */
+#tree-panel.collapsed #btn-tree-toggle { transform: rotate(180deg); }
+#tree-panel.collapsed #composer-tree { display: none; }
+
 #composer-tree {
   flex: 1;
   overflow-y: auto;
-  padding: 6px 0;
+  padding: 0 0 6px;
 }
 
 /* Tree nodes */
@@ -164,13 +192,15 @@ body {
   letter-spacing: 0.06em;
 }
 
-/* Up arrow; turned to point down while the panel is open */
-#btn-timing-toggle {
+/* Up arrow; turned to point down while the panel is open. The Songs panel's arrow (above) looks the same */
+#btn-timing-toggle,
+#btn-tree-toggle {
   margin-left: auto;
   display: flex;
   padding: 4px 8px;
 }
-#btn-timing-toggle svg {
+#btn-timing-toggle svg,
+#btn-tree-toggle svg {
   width: 12px;
   height: 12px;
   fill: none;
@@ -764,7 +794,10 @@ body {
   #playback-controls { order: -1; }
   #left-pane { border-right: none; border-bottom: 1px solid var(--border); overflow-y: auto; }
   #left-header { display: none; }
+  #tree-panel { flex: none; }
   #composer-tree { flex: none; overflow: visible; }
+  /* The pane scrolls as a whole here: the Songs title bar stays at its top, so the tree can always be collapsed */
+  #tree-header { position: sticky; top: 0; background: var(--bg-nav); z-index: 2; }
   #view-panel { position: sticky; bottom: 0; background: var(--bg-nav); z-index: 2; }
 
   /* The lyrics timing recorder is for a computer: not shown */

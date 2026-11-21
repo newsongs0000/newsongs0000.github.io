@@ -16,7 +16,15 @@
     <div id="left-header">
       <h1>&#9835; / Lyrics</h1>
     </div>
-    <div id="composer-tree"></div>
+    <div id="tree-panel">
+      <!-- Open by default; the arrow collapses it to this title bar (see setTreePanelOpen) -->
+      <div id="tree-header">
+        <h2>SONGS</h2>
+        <button class="ctrl-btn" id="btn-tree-toggle" aria-expanded="true" aria-controls="composer-tree"
+                title="Hide songs"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 7.5 6 4l3.5 3.5"/></svg></button>
+      </div>
+      <div id="composer-tree"></div>
+    </div>
     <div id="timing-panel" class="collapsed">
       <div id="timing-header">
         <h2>LYRICS TIMING</h2>

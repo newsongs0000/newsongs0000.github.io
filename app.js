@@ -356,11 +356,13 @@ function updateTimeInUrl() {
      font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
      chinese-width   the Chinese lyrics column's percent of the width, 20-80 (default 45;
                      see BILINGUAL LYRICS DIVIDER)
+     songs           open | collapsed, the Songs panel with the tree (default open; see
+                     setTreePanelOpen)
      timing          open | collapsed, the Lyrics Timing panel (default collapsed; see
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&timing=open&view-options=open
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -1330,6 +1332,24 @@ function refreshAfterTimingChange() {
     highlightLyricLine(getCurrentLyricIdx());
   }
 }
+
+// The Songs panel (#tree-panel: the artist / work / movement tree) is open unless the URL says
+// collapsed (see VIEW OPTIONS IN URL); its arrow button closes and opens it, and the URL follows
+function setTreePanelOpen(open) {
+  const btn = document.getElementById('btn-tree-toggle');
+  document.getElementById('tree-panel').classList.toggle('collapsed', !open);
+  btn.setAttribute('aria-expanded', open);
+  btn.title = open ? 'Hide songs' : 'Show songs';
+  rewriteUrlParams({ songs: open ? 'open' : 'collapsed' });
+}
+
+setTreePanelOpen(urlParam('songs') !== 'collapsed');
+
+document.getElementById('btn-tree-toggle').addEventListener('click', e => {
+  const btn = e.currentTarget;
+  setTreePanelOpen(btn.getAttribute('aria-expanded') !== 'true');
+  btn.blur();  // so Space doesn't re-activate the button
+});
 
 // The panel is collapsed to its arrow button unless the URL says open (see VIEW OPTIONS IN
 // URL); the button opens and closes it, and the URL follows

@@ -97,7 +97,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 ```
 ┌───────────────┬─────────────────────────────────────────────────────────────┐
 │ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶  ━━━━━━━●━━━━━━━  1:23 / 5:40   ⤢ Max │  playback controls
-│               ├─────────────────────────────────────────────────────────────┤
+│ SONGS       ˄ ├─────────────────────────────────────────────────────────────┤
 │ ▾ Artist      │ ◀ Prev               Work · Movement                 Next ▶ │  song navigation
 │   ▾ Work      ├────────────────────────┬────────────────────────────────────┤
 │     1. Mvt    │   lines above (dimmed) │   their translations               │
@@ -118,7 +118,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 - **Left navigation pane**
   - **Tree.** Artists, then works, then movements. Artists are sorted alphabetically by `nameSort` and works by
     `titleSort`. Movements keep the order they have in `work.js`. Artist and work folders start collapsed; click one
-    to open or close it. The movement that is playing is highlighted.
+    to open or close it. The movement that is playing is highlighted. The tree is under a **SONGS** title bar, whose
+    arrow button collapses the whole tree to that bar and opens it again. It is open by default; the state is kept in
+    the `songs` URL parameter (`open` or `collapsed`). On a wider window the panels below the tree stay at the bottom of
+    the pane when it is collapsed.
   - **LYRICS TIMING panel.** Docked near the bottom of the pane and collapsed by default, showing its title and a `^`
     button; open it with the button. Not shown on a smartphone. See [Flow: timing the lyrics](#flow-timing-the-lyrics).
   - **Lyrics: Auto | Manual** (below the LYRICS TIMING panel) switches the
@@ -133,7 +136,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
   - **Smartphone layout** (window 700 px wide or narrower). The playback controls are at the top of the screen, then
     the navigation pane, then the rest of the player (song navigation, lyrics, info pane). The navigation pane is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
-    lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
+    lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders or the whole
+    **SONGS** panel. The **SONGS** title bar stays at the top of the pane while the tree scrolls. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
     **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
