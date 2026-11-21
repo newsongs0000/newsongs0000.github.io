@@ -244,7 +244,7 @@ body {
 
 #rec-indicator { color: #ff5c52; margin-right: 8px; }
 
-/* ─── Lyrics mode, Maximize, lyrics shown, mute (bottom of left pane, under the timing panel) ─── */
+/* ─── Lyrics mode, lyrics shown, mute (bottom of left pane, under the timing panel) ─── */
 #view-panel {
   flex-shrink: 0;
   border-top: 1px solid var(--border);
@@ -596,6 +596,9 @@ body {
   font-family: inherit;
 }
 
+/* The time and Max (last in the playback controls), a little apart */
+#time-max { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
 .ctrl-btn:hover {
   background: var(--nav-hover);
   color: var(--text-primary);
@@ -725,6 +728,17 @@ body {
 #app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
 #app.lyrics-maximized #btn-play-pause-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
+/* Norm's icon: two arrows pointing in to the middle, the reverse of Max's ⤢ */
+#btn-restore svg {
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 #app.lyrics-maximized #right-pane { grid-template-rows: auto 1fr; }
 #app.lyrics-maximized #song-display { --lyrics-side-pad: 0px; }  /* lyrics (and the thumbnail overlay) span the full width */
 #app.lyrics-maximized .lyric-meta { font-size: 1rem; }
@@ -778,11 +792,18 @@ body {
   #right-pane { grid-template-rows: auto auto minmax(0, 1fr) auto; }
   #song-nav { padding: 6px 8px; gap: 6px; }
   #song-nav .ctrl-btn { padding: 7px 10px; }
-  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 8px; gap: 6px; }
+  /* Buttons centered; the time and Max at the right end, after the buttons if they fit, else on a row of their own.
+     Less padding on the right */
+  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 4px 6px 8px; gap: 6px; }
   #progress-bar { flex: 1 1 100%; order: -1; }
-  #time-display { min-width: 0; text-align: center; }
+  #time-max { flex: 1 0 auto; justify-content: flex-end; }
+  #time-display { min-width: 0; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; font-size: 0.85em; }
   #app.lyrics-maximized #right-pane { grid-template-rows: auto minmax(0, 1fr); }
+
+  /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
+  .lyric-line { font-size: calc(0.975rem * var(--lyrics-font-scale, 1)); }
+  #app.lyrics-maximized .lyric-line { font-size: calc(1.35rem * var(--lyrics-font-scale, 1)); }
 }
 
 /* Lyrics font size adjuster (next to the Mute box) */

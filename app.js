@@ -663,9 +663,9 @@ document.querySelectorAll('#mode-toggle .ctrl-btn').forEach(btn => {
 
 /* ================================================================
    MAXIMIZE LYRICS PANEL
-   Hides the left nav pane (including the Lyrics mode and Maximize
-   buttons), the top-panel buttons, the bottom control section and the
-   info pane; lyrics font grows (CSS). Esc restores. Space / arrow keys
+   Max (last in the playback controls) hides the left nav pane,
+   the playback controls (including Max), the song navigation buttons and
+   the info pane; lyrics font grows (CSS). Esc restores. Space / arrow keys
    still control playback.
 ================================================================ */
 function setLyricsMaximized(on) {
@@ -1349,7 +1349,7 @@ document.getElementById('btn-timing-toggle').addEventListener('click', e => {
   btn.blur();  // so Space doesn't re-activate the button
 });
 
-// The View Options panel (#view-panel: lyrics mode, Maximize, Show, Audio / Font) can be collapsed
+// The View Options panel (#view-panel: lyrics mode, Show, Audio / Font) can be collapsed
 // on a smartphone only (the CSS shows its title bar and hides its body in a narrow window); it
 // starts collapsed to its title and arrow unless the URL says open (see VIEW OPTIONS IN URL)
 function setViewPanelOpen(open) {

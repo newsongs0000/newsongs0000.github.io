@@ -96,7 +96,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 
 ```
 ┌───────────────┬─────────────────────────────────────────────────────────────┐
-│ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶   ━━━━━━━●━━━━━━━━━━   1:23 / 5:40    │  playback controls
+│ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶  ━━━━━━━●━━━━━━━  1:23 / 5:40   ⤢ Max │  playback controls
 │               ├─────────────────────────────────────────────────────────────┤
 │ ▾ Artist      │ ◀ Prev               Work · Movement                 Next ▶ │  song navigation
 │   ▾ Work      ├────────────────────────┬────────────────────────────────────┤
@@ -108,7 +108,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 │ LYRICS TIMING │ Artist · Work Op. (year) · Premiere: … │ Description        │  info pane
 │   (collapsed) │                                                             │
 │ Lyrics:[Auto| │                                                             │
-│ Manual] ⤢ Max │                                                             │
+│ Manual]       │                                                             │
 │ Show: ☑ Orig. │                                                             │
 │   ☑ Transl.   │                                                             │
 │ Font: A− A+   │                                                             │
@@ -123,7 +123,6 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     button; open it with the button. Not shown on a smartphone. See [Flow: timing the lyrics](#flow-timing-the-lyrics).
   - **Lyrics: Auto | Manual** (below the LYRICS TIMING panel) switches the
     [highlight mode](#lyrics-highlight-modes). The player starts in Manual.
-  - **⤢ Maximize** (next to it) shows only the lyrics. See [Maximized lyrics](#maximized-lyrics).
   - **Show: ☑ Original ☑ Translation** (under them) chooses which lyrics the panel shows, and which titles the top
     bar shows. See **Translation** below.
   - **Audio: ☑ Mute** (the last row; not on `index1.html`, see [Silent and sound pages](#silent-and-sound-pages))
@@ -133,13 +132,16 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
   - **Smartphone layout** (window 700 px wide or narrower). The navigation pane is stacked above the player and is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The player
-    takes the rest, so it moves up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**, **Maximize**,
+    takes the rest, so it moves up when you collapse tree folders. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
     **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
-- **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the beginning, −15s, ▶ / ❚❚
-  play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar and the elapsed / total
-  time.
+- **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
+  beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
+  and the elapsed / total time, then, a little apart at the right end, **⤢ Max**, which shows only the lyrics (see
+  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the progress bar has a row of its own above the
+  buttons, and the time and **⤢ Max** go to the right end of the row after them, or of a row of their own when they
+  don't fit.
 - **Song navigation section** (below the playback controls)
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
   - **Now playing** shows the work title and the movement number and title, then both translations (if any)
@@ -152,7 +154,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
   - **Movement heading.** The number and title, then the subtitle (e.g. the Bible references) and the voicing.
   - **Lyric lines.** The current line has a gold left border, a tinted background and a larger font. Up to 4 lines
     above and 4 below it use the "above" and "below" colors. Lines further away are faded. The current line is kept
-    centered vertically.
+    centered vertically. In the smartphone layout the lines are half the size they are in a wider window (maximized
+    too); **A− / A+** scale them from there.
   - **Translation.** If any line of the movement has a `"translation"` (see
     [Flow: modifying lyrics](#flow-modifying-lyrics)), the panel is divided into two columns: the original lyrics on
     the left and the translation on the right. The column with the Chinese lyrics gets 45% of the width and the other
@@ -246,9 +249,10 @@ audio, for example for live singing. When you switch back to Auto, the highlight
 
 ## Maximized lyrics
 
-**⤢ Maximize** hides the left pane, the playback controls, the info pane and the song navigation buttons. Only the "now playing"
+**⤢ Max** (in the playback controls) hides the left pane, the playback controls, the info pane and the song navigation buttons. Only the "now playing"
 title and the lyrics remain, in a larger font. This suits projecting lyrics for an audience. The keyboard still works:
-Space plays and pauses, and the arrow keys seek or step through lines. **Esc** restores the normal layout.
+Space plays and pauses, and the arrow keys seek or step through lines. **Esc**, or the **Norm** button (arrows
+pointing in, at the top right), restores the normal layout.
 
 ## Keyboard shortcuts
 
