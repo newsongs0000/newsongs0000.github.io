@@ -770,7 +770,9 @@ body {
   /* The lyrics timing recorder is for a computer: not shown */
   #timing-panel { display: none; }
 
-  /* View panel: collapsible; collapsed (only its title and the arrow) by default; the arrow points down while open */
+  /* View panel: collapsible; collapsed (only its title and the arrow) by default. It opens downward (the title stays,
+     the options push the lyrics down), so the arrow points down while collapsed and up while open — the reverse of
+     the LYRICS TIMING arrow on a wider window, whose panel is docked at the bottom and opens upward */
   #view-header { display: flex; align-items: center; justify-content: space-between; }
   #view-panel:not(.collapsed) #view-header { margin-bottom: 6px; }
   #view-header h2 {
@@ -789,7 +791,7 @@ body {
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  #view-panel:not(.collapsed) #btn-view-toggle { transform: rotate(180deg); }
+  #view-panel.collapsed #btn-view-toggle { transform: rotate(180deg); }
   #view-panel.collapsed { padding-top: 6px; padding-bottom: 6px; }
   #view-panel.collapsed #view-body { display: none; }
 
