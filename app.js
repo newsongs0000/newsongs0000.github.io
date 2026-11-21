@@ -371,22 +371,41 @@ function urlParam(name) {
 /* ================================================================
    LOAD MOVEMENT
 ================================================================ */
+// On a mobile device (a touch screen without a mouse) or in a window as narrow as a
+// phone's (the same media query as the CSS rule that hides the timing panel), the
+// now-playing header has no room for the full titles: it leaves out the work titles
+// and cuts each movement title (with its number) to its first 16 characters
+const compactNowPlaying = matchMedia('(max-width: 700px), (pointer: coarse) and (hover: none)');
+const COMPACT_TITLE_CHARS = 16;
+
+function nowPlayingTitle(text) {
+  if (!compactNowPlaying.matches) return text;
+  return Array.from(text).slice(0, COMPACT_TITLE_CHARS).join('').trimEnd();  // whole characters, even outside the BMP
+}
+
+// Resizing the window across the phone width switches between the full and the compact titles
+compactNowPlaying.addEventListener('change', () => {
+  const movement = currentMovement();
+  if (movement) updateNowPlaying(currentWork(), movement);
+});
+
 // Now-playing header, following the Show check boxes (see LYRICS SHOWN): Original
 // shows the work and movement titles, Translation their titleTranslations (if any)
 // after them; Translation alone shows only the translations (a title without one
-// shows its original)
+// shows its original). Compact (see above): the movement titles only, cut short
 function updateNowPlaying(work, movement) {
   const { original: showOriginal, translation: showTranslation } = state.lyricsShown;
+  const compact = compactNowPlaying.matches;
   const [workTitle, movementTitle] = showOriginal
     ? [work.title, movement.title]
     : [work.titleTranslation || work.title, movement.titleTranslation || movement.title];
-  document.getElementById('np-label').textContent = workTitle;
-  document.getElementById('np-title').textContent = `${movement.number}. ${movementTitle}`;
-  document.getElementById('np-label-translation').textContent = work.titleTranslation || '';
+  document.getElementById('np-label').textContent = compact ? '' : workTitle;
+  document.getElementById('np-title').textContent = nowPlayingTitle(`${movement.number}. ${movementTitle}`);
+  document.getElementById('np-label-translation').textContent = compact ? '' : work.titleTranslation || '';
   document.getElementById('np-title-translation').textContent =
-    movement.titleTranslation ? `${movement.number}. ${movement.titleTranslation}` : '';
-  document.getElementById('np-translation').hidden =
-    !showOriginal || !showTranslation || (!work.titleTranslation && !movement.titleTranslation);
+    movement.titleTranslation ? nowPlayingTitle(`${movement.number}. ${movement.titleTranslation}`) : '';
+  document.getElementById('np-translation').hidden = !showOriginal || !showTranslation ||
+    (!movement.titleTranslation && (compact || !work.titleTranslation));  // compact: nothing else to show
 }
 
 function loadMovement(composer, work, movement, autoplay = false) {
