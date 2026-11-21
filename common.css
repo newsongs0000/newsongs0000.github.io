@@ -219,6 +219,12 @@ body {
 #timing-panel.collapsed #timing-header { margin-bottom: 0; }
 #timing-panel.collapsed #timing-body { display: none; }
 
+/* The lyrics timing recorder is for a computer: never shown on a mobile device (a phone in portrait or landscape, a
+   tablet: a touch screen without a mouse), nor in a window as narrow as a phone's */
+@media (max-width: 700px), (pointer: coarse) and (hover: none) {
+  #timing-panel { display: none; }
+}
+
 #timing-status {
   font-size: 0.72rem;
   color: var(--text-secondary);
@@ -814,9 +820,6 @@ body {
   /* The pane scrolls as a whole here: the Songs title bar stays at its top, so the tree can always be collapsed */
   #tree-header { position: sticky; top: 0; background: var(--bg-nav); z-index: 2; }
   #view-panel { position: sticky; bottom: 0; background: var(--bg-nav); z-index: 2; }
-
-  /* The lyrics timing recorder is for a computer: not shown */
-  #timing-panel { display: none; }
 
   /* View panel: collapsible; collapsed (only its title and the arrow) by default. It opens downward (the title stays,
      the options push the lyrics down), so the arrow points down while collapsed and up while open — the reverse of
