@@ -10,6 +10,7 @@ onePageMp3Work({
   opusNumber: "K. 626",
   premiered: "Vienna, 2 January 1793",
   premieredTranslation: "维也纳，1793年1月2日",
+  thumbnail: "Mozart.jpg",  // shown when the work is selected, and for any movement without a picture of its own
   description: "Requiem Mass in D minor for soloists, chorus, orchestra and organ, on the Latin text of the Mass for the Dead. Left unfinished at Mozart's death on 5 December 1791 and completed by his pupil Franz Xaver Süssmayr.\nRecording: Edith Mathis, soprano; Julia Hamari, alto; Wiesław Ochman, tenor; Karl Ridderbusch, bass; Konzertvereinigung Wiener Staatsopernchor (chorus master Norbert Balatsch); Hans Haselböck, organ; Wiener Philharmoniker; Karl Böhm, conductor. Deutsche Grammophon 2530 143 (1 LP), 1971.\nSource: Internet Archive, https://archive.org/details/lp_requiem_volfgang-amadeus-mozart-karl-bhm-viener-ph",
   descriptionTranslation: "D小调安魂弥撒，为独唱、合唱、管弦乐队与管风琴而作，歌词为拉丁文追思弥撒经文。1791年12月5日莫扎特去世时尚未完成，由其学生弗朗茨·克萨韦尔·苏斯迈尔续完。\n录音：女高音伊迪丝·马蒂斯、女低音尤利娅·哈马里、男高音维斯瓦夫·奥赫曼、男低音卡尔·里德布施；维也纳国家歌剧院合唱团音乐会协会（合唱指导诺贝特·巴拉奇）；管风琴汉斯·哈泽尔伯克；维也纳爱乐乐团；指挥卡尔·伯姆。Deutsche Grammophon 2530 143（1张唱片），1971年。\n来源：Internet Archive, https://archive.org/details/lp_requiem_volfgang-amadeus-mozart-karl-bhm-viener-ph",
   // One movement per band of the LP; the numbers (1–12) are the ones printed on its sleeve.
@@ -26,7 +27,6 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音、女低音、男高音、男低音",
       description: "1 Requiem aeternam – Kyrie (chorus, soprano); 2 Dies irae (chorus); 3 Tuba mirum (soloists); 4 Rex tremendae (chorus); 5 Recordare (soloists); 6 Confutatis (chorus); 7 Lacrimosa (chorus).",
       audio: "Chapter1.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter1-bg.jpg"
     },
     {
@@ -40,7 +40,6 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音、女低音、男高音、男低音",
       description: "8 Domine Jesu (chorus, soloists), ending with the fugue Quam olim Abrahae.",
       audio: "Chapter2.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter2-bg.jpg"
     },
     {
@@ -54,7 +53,6 @@ onePageMp3Work({
       voicingTranslation: "合唱",
       description: "9 Hostias (chorus), ending with the fugue Quam olim Abrahae repeated from No. 8.",
       audio: "Chapter3.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter3-bg.jpg"
     },
     {
@@ -68,7 +66,6 @@ onePageMp3Work({
       voicingTranslation: "合唱",
       description: "10 Sanctus (chorus), ending with the fugue Hosanna in excelsis.",
       audio: "Chapter4.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter4-bg.jpg"
     },
     {
@@ -82,7 +79,6 @@ onePageMp3Work({
       voicingTranslation: "女高音、女低音、男高音、男低音；合唱",
       description: "11 Benedictus (soloists), ending with the Hosanna fugue (chorus).",
       audio: "Chapter5.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter5-bg.jpg"
     },
     {
@@ -96,7 +92,6 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音",
       description: "12 Agnus Dei (chorus), followed by the Communio Lux aeterna (soprano, chorus), which returns to the music of the Introitus and the Kyrie fugue.",
       audio: "Chapter6.mp3",
-      thumbnail: "Mozart.jpg",
       background: "Chapter6-bg.jpg"
     }
   ]

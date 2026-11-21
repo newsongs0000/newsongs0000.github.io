@@ -123,7 +123,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 - **Left navigation pane**
   - **Tree.** Artists, then works, then movements. Artists are sorted alphabetically by `nameSort` and works by
     `titleSort`. Movements keep the order they have in `work.js`. Artist and work folders start collapsed; click one
-    to open or close it. The movement that is playing is highlighted. The tree is under a **SONGS** title bar, whose
+    to open or close it. Opening a work also selects it, unless music is playing (so browsing the tree never stops
+    it): its picture (`thumbnail`) and information show, nothing plays yet, and ▶, Space or a click on the picture
+    plays its first movement; **Next** selects its first movement and **Prev** the movement before it. Closing a
+    work changes nothing. The selected work or movement is highlighted. The tree is under a **SONGS** title bar, whose
     arrow button collapses the whole tree to that bar and opens it again. It is open by default; the state is kept in
     the `songs` URL parameter (`open` or `collapsed`). On a wider window the panels below the tree stay at the bottom of
     the pane when it is collapsed.
@@ -189,8 +192,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It turns gold under the mouse. Double-click it to go back to 45% for the Chinese column. The new width belongs to
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
-  - **Picture.** The movement's picture (`thumbnail`) covers the lyrics until playback starts, with "▶ Click to play"
-    (in the Image background mode, the background picture does instead: see **Background** below).
+  - **Picture.** The selection's picture covers the lyrics until playback starts, with "▶ Click to play": a selected
+    work's `thumbnail`, or a selected movement's `background` (`background2` in image set 2), else its own
+    `thumbnail`, else its work's (in the Image background mode, a movement's background picture fills the area
+    instead: see **Background** below).
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
@@ -202,7 +207,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with "▶ Click to play" over it
       (instead of the thumbnail); when the music starts it blurs and darkens behind the lyrics. It is the `bg-image` URL
       parameter if given (one picture for
-      every movement), else the movement's `background` in `work.js`, else its `thumbnail`. A movement with no
+      every movement), else the movement's `background` in `work.js`, else its `thumbnail`, else its work's. A
+      selected work shows its `thumbnail` as the **Picture** above does. A movement with no
       picture, or one that cannot be loaded, shows the Graphics instead. Every movement of the bundled works has a
       `background` of its own: a public-domain painting from Wikimedia Commons that fits its text, e.g. Zurbarán's
       *Agnus Dei* for "Behold the Lamb of God", or Xu Jihua's *The Wedding at Cana* for 诗篇二十三. The
@@ -224,8 +230,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 
 ## Playing music
 
-1. In the left tree, open an artist and then a work, and click a movement. Its lyrics, picture and work information
-   appear.
+1. In the left tree, open an artist and then a work (its picture and information appear), and click a movement. Its
+   lyrics, picture and work information appear.
 2. Click the picture, or press ▶ or Space, to play.
 3. When a movement ends, the next one starts automatically.
 
@@ -318,6 +324,7 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `below-bg` | Background of the lines below the current line | `transparent` |
 | `highlight-mode` | `auto` starts in Auto mode; anything else starts in Manual | `manual` |
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
+| `work` | The work selected on load, as `<artist id>/<work id>`, used when there is no `movement`. The app writes it instead of `movement` when you select a work | — |
 | `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `none` |
 | `pictures` | Which image set the `image` background shows, `1` or `2`, for a movement that has two (see **Image sets** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `1` |
 | `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
@@ -442,8 +449,8 @@ source material only, and the app does not read them.
 ## Flow: adding an artist, work or movement
 
 The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `workFiles` in an
-`artist.js` file are relative to that `artist.js` file, a movement's `audio`, `thumbnail` and `background` in a `work.js` file
-are relative to that `work.js` file, and the `audio` in a `.timing.js` file is relative to that `.timing.js` file, so
+`artist.js` file are relative to that `artist.js` file, a work's `thumbnail` and a movement's `audio`, `thumbnail` and
+`background` in a `work.js` file are relative to that `work.js` file, and the `audio` in a `.timing.js` file is relative to that `.timing.js` file, so
 they are short when the files sit next to each other.
 
 ### 1. Put the media in place
@@ -451,8 +458,9 @@ they are short when the files sit next to each other.
 ```
 assets/<Artist>/artist.js
 assets/<Artist>/<Work>/work.js
+assets/<Artist>/<Work>/Composer.jpg        # the work's thumbnail, shown when the work is selected (optional)
 assets/<Artist>/<Work>/Chapter1.mp3        # audio
-assets/<Artist>/<Work>/Chapter1.jpg        # picture shown before playback (optional)
+assets/<Artist>/<Work>/Chapter1-bg.jpg     # the movement's picture, shown before playback (optional)
 assets/<Artist>/<Work>/Chapter1.timing.js  # lyrics + timing (optional: no file = no lyrics)
 ```
 
@@ -486,6 +494,8 @@ onePageMp3Work({
   year: 2004,                     // info pane: "title Op. 63 (2004)"
   opusNumber: "Op. 63",
   premiered: "Toronto, May 2004", // info pane: "Premiere: Toronto, May 2004"
+  thumbnail: "Composer.jpg",      // shown when the work is selected, and for a movement without a picture of its own
+                                  // (optional; defaults to the first movement's thumbnail)
   description: "…",               // info pane; "\n" starts a new line
   movements: [
     {
@@ -498,8 +508,8 @@ onePageMp3Work({
       voicing: "合唱",             // lyrics heading, second line (optional)
       voicingTranslation: "Chorus",          // translation column's heading (optional)
       audio: "Chapter1.mp3",
-      thumbnail: "Chapter1.jpg",  // optional
-      background: "Chapter1-bg.jpg",  // optional: the Image background (defaults to the thumbnail)
+      thumbnail: "Chapter1.jpg",  // optional (defaults to the work's): leave it out when every movement has the same
+      background: "Chapter1-bg.jpg",  // optional: the movement's picture (defaults to the thumbnail)
       background2: "Chapter1-bg2.jpg"  // optional: image set 2 (either may be a list of files, tried in order
                                   // until one loads: see Pictures on this computer only)
     }

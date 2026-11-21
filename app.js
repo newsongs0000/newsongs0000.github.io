@@ -36,9 +36,9 @@ const APP_DATA = {
    in one onePageMp3Artist(...) call; a work.js file holds one work
    (title, description, movements, ...) wrapped in one onePageMp3Work(...)
    call. An artist's workFiles are named relative to its artist.js file
-   (workFiles: ["Messiah/work.js"]), a movement's audio and thumbnail relative
-   to its work.js file (audio: "Chapter1.mp3"); only artistFiles are relative
-   to index.html. So a <script> can load them when the page is opened as file://
+   (workFiles: ["Messiah/work.js"]), a work's thumbnail and a movement's audio
+   and pictures relative to its work.js file (audio: "Chapter1.mp3"); only
+   artistFiles are relative to index.html. So a <script> can load them when the page is opened as file://
    (fetch of local files is blocked).
 ================================================================ */
 const ARTIST_CALLBACK = 'onePageMp3Artist';  // what an artist.js file calls
@@ -84,17 +84,19 @@ function resolveArtistPaths(artist, artistUrl) {
   artist.workFiles = (artist.workFiles ?? []).map(file => dir + file);
 }
 
-// A work's movement files (audio, thumbnail, background, background2) are named relative to its
-// work.js file: make them relative to index.html, as the rest of app.js uses them. A background
-// may be a list of files (see BACKGROUND)
+// A work's files (its thumbnail, its movements' audio, thumbnail, background, background2) are named
+// relative to its work.js file: make them relative to index.html, as the rest of app.js uses them.
+// A background may be a list of files (see BACKGROUND)
 function resolveWorkPaths(work, workUrl) {
   const dir = dirOf(workUrl);
+  const resolve = (item, key) => {
+    const value = item[key];
+    if (Array.isArray(value)) item[key] = value.map(file => dir + file);
+    else if (value) item[key] = dir + value;
+  };
+  resolve(work, 'thumbnail');
   (work.movements ?? []).forEach(movement => {
-    ['audio', 'thumbnail', 'background', 'background2'].forEach(key => {
-      const value = movement[key];
-      if (Array.isArray(value)) movement[key] = value.map(file => dir + file);
-      else if (value) movement[key] = dir + value;
-    });
+    ['audio', 'thumbnail', 'background', 'background2'].forEach(key => resolve(movement, key));
   });
 }
 
@@ -143,7 +145,7 @@ async function loadArtists() {
 const state = {
   composerIdx:  null,
   workIdx:      null,
-  movementIdx:  null,
+  movementIdx:  null,  // null with a work selected (see SELECT WORK)
   isPlaying:    false,
   lastLyricIdx: -1,
   allMovements: [],  // flat list for prev/next
@@ -207,9 +209,14 @@ function buildTree() {
 
       const workHeader = document.createElement('div');
       workHeader.className = 'tree-work-header';
+      workHeader.dataset.key = workKey(composer, work);
       workHeader.innerHTML =
         `<span class="tree-toggle">&#9658;</span><span>${escHtml(work.title)}</span>`;
-      workHeader.addEventListener('click', () => workEl.classList.toggle('open'));
+      // Opening a work selects it, unless music is playing (see SELECT WORK); closing it changes nothing
+      workHeader.addEventListener('click', () => {
+        const opened = workEl.classList.toggle('open');
+        if (opened && !state.isPlaying) loadWork(composer, work);
+      });
 
       const movementsEl = document.createElement('div');
       movementsEl.className = 'tree-movements';
@@ -235,18 +242,23 @@ function buildTree() {
 }
 
 // On page load: select the movement named in the URL (see MOVEMENT IN URL), at the
-// position in the URL (see POSITION IN URL), else the first movement of the first
-// artist's first work in the tree (skipping any without one), opening their folders to
-// show it
-function selectInitialMovement() {
+// position in the URL (see POSITION IN URL), else the work named in the URL, else the
+// first movement of the first artist's first work in the tree (skipping any without
+// one), opening their folders to show it
+function selectInitialItem() {
   const fromUrl = movementFromUrl();
-  const entry = fromUrl ?? firstTreeMovement();
-  if (!entry) return;
-  loadMovement(entry.composer, entry.work, entry.data);
-  if (fromUrl) startAtTimeFromUrl();
-  const movEl = document.querySelector('.tree-movement.active');
-  movEl?.closest('.tree-work').classList.add('open');
-  movEl?.closest('.tree-composer').classList.add('open');
+  const workEntry = fromUrl ? null : workFromUrl();
+  if (workEntry) {
+    loadWork(workEntry.composer, workEntry.work);
+  } else {
+    const entry = fromUrl ?? firstTreeMovement();
+    if (!entry) return;
+    loadMovement(entry.composer, entry.work, entry.data);
+    if (fromUrl) startAtTimeFromUrl();
+  }
+  const el = document.querySelector('.tree-movement.active, .tree-work-header.active');
+  el?.closest('.tree-work').classList.add('open');
+  el?.closest('.tree-composer').classList.add('open');
 }
 
 function firstTreeMovement() {
@@ -265,8 +277,12 @@ function firstTreeMovement() {
    <artist id>/<work id>/<movement id>, so reloading or sharing the link
    opens the same movement:
    index.html?movement=anlun-huang/chinese-requiem/ch2
+   A selected work (see SELECT WORK) is kept in the URL parameter work
+   instead, as <artist id>/<work id>:
+   index.html?work=anlun-huang/chinese-requiem
 ================================================================ */
 const MOVEMENT_PARAM = 'movement';
+const WORK_PARAM     = 'work';
 
 // The flat-list entry of the movement named in the URL, or null
 function movementFromUrl() {
@@ -277,13 +293,30 @@ function movementFromUrl() {
   return entry ?? null;
 }
 
+// The work named in the URL, as { composer, work }, or null
+function workFromUrl() {
+  const key = new URLSearchParams(location.search).get(WORK_PARAM);
+  if (!key) return null;
+  for (const composer of APP_DATA.artists) {
+    const work = composer.works.find(w => workKey(composer, w) === key);
+    if (work) return { composer, work };
+  }
+  console.warn(`No work "${key}" (URL parameter ${WORK_PARAM})`);
+  return null;
+}
+
 // Rewrite the URL to name the movement; selecting another movement drops the position
 // (see POSITION IN URL)
 function setMovementInUrl(movement) {
   const key = movementKey(movement);
-  const values = { [MOVEMENT_PARAM]: key };
+  const values = { [MOVEMENT_PARAM]: key, [WORK_PARAM]: null };
   if (new URLSearchParams(location.search).get(MOVEMENT_PARAM) !== key) values[TIME_PARAM] = null;
   rewriteUrlParams(values);
+}
+
+// Rewrite the URL to name the selected work (see SELECT WORK), with no movement or position
+function setWorkInUrl(composer, work) {
+  rewriteUrlParams({ [WORK_PARAM]: workKey(composer, work), [MOVEMENT_PARAM]: null, [TIME_PARAM]: null });
 }
 
 // Set the URL parameters (null removes one), keeping the others and adding no history
@@ -393,17 +426,28 @@ function nowPlayingTitle(text) {
 
 // Resizing the window across the phone width switches between the full and the compact titles
 compactNowPlaying.addEventListener('change', () => {
-  const movement = currentMovement();
-  if (movement) updateNowPlaying(currentWork(), movement);
+  const work = currentWork();
+  if (work) updateNowPlaying(work, currentMovement());
 });
 
 // Now-playing header, following the Show check boxes (see LYRICS SHOWN): Original
 // shows the work and movement titles, Translation their titleTranslations (if any)
 // after them; Translation alone shows only the translations (a title without one
-// shows its original). Compact (see above): the movement titles only, cut short
+// shows its original). Compact (see above): the movement titles only, cut short.
+// A selected work (no movement, see SELECT WORK) shows its titles in the movement's place
 function updateNowPlaying(work, movement) {
   const { original: showOriginal, translation: showTranslation } = state.lyricsShown;
   const compact = compactNowPlaying.matches;
+  if (!movement) {
+    document.getElementById('np-label').textContent = '';
+    document.getElementById('np-title').textContent =
+      nowPlayingTitle(showOriginal ? work.title : work.titleTranslation || work.title);
+    document.getElementById('np-label-translation').textContent = '';
+    document.getElementById('np-title-translation').textContent =
+      work.titleTranslation ? nowPlayingTitle(work.titleTranslation) : '';
+    document.getElementById('np-translation').hidden = !showOriginal || !showTranslation || !work.titleTranslation;
+    return;
+  }
   const [workTitle, movementTitle] = showOriginal
     ? [work.title, movement.title]
     : [work.titleTranslation || work.title, movement.titleTranslation || movement.title];
@@ -428,21 +472,10 @@ function loadMovement(composer, work, movement, autoplay = false) {
   timeInUrl.start = null;
   setMovementInUrl(movement);
 
-  // Highlight active tree node
-  document.querySelectorAll('.tree-movement').forEach(el => {
-    el.classList.toggle('active', el.dataset.key === movementKey(movement));
-  });
-
+  markActiveTreeNode();
   updateNowPlaying(work, movement);
-  updateBackground();
-
-  // Update info pane
-  document.getElementById('info-composer').textContent = composer.name;
-  document.getElementById('info-work').textContent =
-    `${work.title}${work.opusNumber ? ' ' + work.opusNumber : ''}${work.year ? ' (' + work.year + ')' : ''}`;
-  document.getElementById('info-dates').textContent =
-    work.premiered ? `Premiere: ${work.premiered}` : '';
-  document.getElementById('info-description').textContent = work.description || '';
+  updateBackground();  // and the picture over the lyrics (see PICTURE BEFORE PLAYBACK)
+  updateInfoPane(composer, work);
 
   // Load audio
   audio.src = movement.audio;
@@ -450,17 +483,7 @@ function loadMovement(composer, work, movement, autoplay = false) {
   showPlaying(false);
   pickLineOnPlay = false;
   resetProgress();
-
-  // Show thumbnail overlay if a thumbnail is available
-  const overlay = document.getElementById('thumbnail-overlay');
-  const thumbImg = document.getElementById('thumbnail-img');
-  if (movement.thumbnail) {
-    thumbImg.src = movement.thumbnail;
-    thumbImg.alt = movement.title;
-    overlay.classList.remove('hidden');
-  } else {
-    overlay.classList.add('hidden');
-  }
+  showPictureOverlay();
 
   // Render lyrics (none until they are loaded)
   renderLyrics(movement);
@@ -482,14 +505,71 @@ function loadMovement(composer, work, movement, autoplay = false) {
 }
 
 /* ================================================================
+   SELECT WORK
+   Opening a work in the tree selects it (unless music is playing, so
+   browsing the tree never stops it): nothing is loaded to play, the
+   work's thumbnail covers the lyrics area (see PICTURE BEFORE PLAYBACK)
+   and the info pane shows the work. ▶, Space or a click on the picture
+   plays its first movement, Next selects it, Prev the movement before
+   it (see PLAYBACK CONTROLS).
+================================================================ */
+function loadWork(composer, work) {
+  state.composerIdx  = APP_DATA.artists.indexOf(composer);
+  state.workIdx      = composer.works.indexOf(work);
+  state.movementIdx  = null;
+  state.lastLyricIdx = -1;
+  timeInUrl.start = null;
+  setWorkInUrl(composer, work);
+
+  markActiveTreeNode();
+  updateNowPlaying(work, null);
+  updateBackground();
+  updateInfoPane(composer, work);
+
+  audio.removeAttribute('src');
+  audio.load();  // stops what was playing, without a 'pause' event
+  showPlaying(false);
+  pickLineOnPlay = false;
+  resetProgress();
+  showPictureOverlay();
+
+  renderLyrics(null);
+  updateNavButtons();
+  updateTimingPanel();
+}
+
+// Highlight the selected tree node: the movement, or the work's header when a work is selected
+function markActiveTreeNode() {
+  const work = currentWork();
+  const movement = currentMovement();
+  const movKey = movement && movementKey(movement);
+  const wKey = work && !movement ? workKey(APP_DATA.artists[state.composerIdx], work) : null;
+  document.querySelectorAll('.tree-movement').forEach(el => {
+    el.classList.toggle('active', el.dataset.key === movKey);
+  });
+  document.querySelectorAll('.tree-work-header').forEach(el => {
+    el.classList.toggle('active', el.dataset.key === wKey);
+  });
+}
+
+function updateInfoPane(composer, work) {
+  document.getElementById('info-composer').textContent = composer.name;
+  document.getElementById('info-work').textContent =
+    `${work.title}${work.opusNumber ? ' ' + work.opusNumber : ''}${work.year ? ' (' + work.year + ')' : ''}`;
+  document.getElementById('info-dates').textContent =
+    work.premiered ? `Premiere: ${work.premiered}` : '';
+  document.getElementById('info-description').textContent = work.description || '';
+}
+
+/* ================================================================
    RENDER LYRICS
 ================================================================ */
 // keepHighlight: re-rendering the same movement (the lyrics shown changed), so the
-// highlighted line stays
+// highlighted line stays. No movement (a work is selected): a hint to pick one
 function renderLyrics(movement, keepHighlight = false) {
   const inner = document.getElementById('lyrics-inner');
   inner.innerHTML = '';
-  const hasTranslation = !!movement.lyrics?.some(l => l.translation);
+  const hasTranslation = !!movement?.lyrics?.some(l => l.translation);
   const { original: showOriginal, translation: showTranslation } = state.lyricsShown;
   // Two columns only when both are checked; Translation alone shows one column of
   // translations (a line without one shows its original)
@@ -504,7 +584,12 @@ function renderLyrics(movement, keepHighlight = false) {
   topSpacer.className = 'lyrics-spacer';
   inner.appendChild(topSpacer);
 
-  if (!movement.lyrics) {
+  if (!movement) {
+    const msg = document.createElement('p');
+    msg.className = 'no-song-msg';
+    msg.textContent = 'Select a movement, or press ▶ to play the work from its first movement.';
+    inner.appendChild(msg);
+  } else if (!movement.lyrics) {
     // Still loading (see loadMovement)
   } else if (movement.lyrics.length === 0) {
     const msg = document.createElement('p');
@@ -647,7 +732,7 @@ function stepLyricLine(delta) {
   const idx = Math.max(-1, Math.min(movement.lyrics.length - 1, state.lastLyricIdx + delta));
   selectLyricLine(idx);
   // Lyrics may be driven without audio (e.g. live singing) — don't leave them hidden
-  document.getElementById('thumbnail-overlay').classList.add('hidden');
+  pictureOverlay.classList.add('hidden');
 }
 
 // Operator moved the highlight (key or click) in manual mode
@@ -759,10 +844,9 @@ lyricsShownBoxes.forEach(box => {
     syncLyricsShown();
     box.blur();  // so Space / arrow keys keep controlling playback and lyrics
 
-    const movement = currentMovement();
-    if (movement) {
-      renderLyrics(movement, true);
-      updateNowPlaying(currentWork(), movement);
+    if (currentWork()) {
+      renderLyrics(currentMovement(), true);
+      updateNowPlaying(currentWork(), currentMovement());
     }
   });
 });
@@ -865,9 +949,11 @@ muteBox.addEventListener('change', () => {
      image     a picture: the one in the URL parameter bg-image (named
                relative to index.html, the same for every movement), else
                the movement's background in work.js (or its background2,
-               see PICTURE VERSIONS), else its thumbnail. A movement
-               without one, or whose pictures can't be loaded, gets the
-               graphics instead.
+               see PICTURE VERSIONS), else its thumbnail, else its work's.
+               A movement without one, or whose pictures can't be loaded,
+               gets the graphics instead. A selected work (see SELECT
+               WORK) has none: its thumbnail is shown over the lyrics
+               area instead (see PICTURE BEFORE PLAYBACK).
    A background (or background2) may be a list of files: they are tried
    in order until one loads. So a work can name first a picture kept only
    on this computer (in a git-ignored local/ folder: e.g. a copyrighted
@@ -920,25 +1006,43 @@ function setPictureVersion(version) {
   updateBackground();
 }
 
-// The pictures Image mode tries for a movement, in order (see BACKGROUND and PICTURE VERSIONS)
-function backgroundCandidates(movement) {
+// A picture field of work.js (one file, a list of them, or none) as a list
+function pictureList(value) {
+  return [value ?? []].flat();
+}
+
+// A movement's own pictures, in the order to try them: its background (after its background2 in image
+// set 2, see PICTURE VERSIONS), then its thumbnail, else its work's thumbnail
+function movementPictures(movement, work) {
+  const version2 = pictureVersion === '2' ? pictureList(movement.background2) : [];
+  return [...version2, ...pictureList(movement.background), ...pictureList(movement.thumbnail ?? work?.thumbnail)];
+}
+
+// A work's thumbnail: its own, else its first movement's (a work whose movements have pictures of their own)
+function workThumbnail(work) {
+  return pictureList(work?.thumbnail ?? work?.movements?.[0]?.thumbnail);
+}
+
+// The pictures Image mode tries for the selected movement, in order (see BACKGROUND and PICTURE
+// VERSIONS); none for a selected work
+function backgroundCandidates(movement, work) {
+  if (!movement) return [];
   if (urlParam('bg-image')) return [urlParam('bg-image')];
-  const list = value => [value ?? []].flat();
-  const version2 = pictureVersion === '2' ? list(movement?.background2) : [];
-  return [...version2, ...list(movement?.background), ...list(movement?.thumbnail)];
+  return movementPictures(movement, work);
 }
 
 // Fit the background to the current movement: the graphics' hue, the Image set buttons, and in image
-// mode its picture. The same pictures as before (e.g. one portrait for a whole work) are kept as they
-// are, without a flash.
+// mode its picture; and the picture over the lyrics before playback (see PICTURE BEFORE PLAYBACK).
+// The same pictures as before are kept as they are, without a flash.
 function updateBackground() {
   const movement = currentMovement();
+  updateOverlayPicture();
   songDisplay.style.setProperty('--bg-hue', movement ? backgroundHue(movementKey(movement)) : 220);
   picturesRow.hidden = songDisplay.dataset.bg !== 'image' || !movement?.background2;
   const names = currentWork()?.pictureVersions ?? [];
   picturesBtns.forEach((btn, i) => { btn.title = names[i] || `Image set ${i + 1}`; });
   if (songDisplay.dataset.bg !== 'image') return;
-  const candidates = backgroundCandidates(movement);
+  const candidates = backgroundCandidates(movement, currentWork());
   if (candidates.join('\n') === lyricsBg.dataset.candidates) return;
   lyricsBg.dataset.candidates = candidates.join('\n');
   bgCandidates = candidates;
@@ -965,6 +1069,55 @@ lyricsBgImage.addEventListener('error', () => {
   if (!bgCandidates.length) console.warn('Cannot load the background picture:', lyricsBgImage.getAttribute('src'));
   showNextBackground();  // e.g. a local/ picture that is not on this server: the published one
 });
+
+/* ================================================================
+   PICTURE BEFORE PLAYBACK
+   Until playback starts, the thumbnail overlay covers the lyrics area
+   with the selection's picture and "▶ Click to play": a selected work's
+   thumbnail (see SELECT WORK), or a selected movement's background (of
+   the image set picked, see PICTURE VERSIONS), else its thumbnail, else
+   its work's. Like the background, a picture that can't be loaded gives
+   way to the next. Without any picture there is no overlay. In Image
+   background mode a movement's background picture fills the area
+   instead, sharp (see BACKGROUND and common.css).
+================================================================ */
+const pictureOverlay    = document.getElementById('thumbnail-overlay');
+const pictureOverlayImg = document.getElementById('thumbnail-img');
+let overlayCandidates   = [];  // pictures still to try after the one loading or shown
+
+// The pictures the overlay tries for the selection, in order
+function overlayPictures() {
+  const work = currentWork();
+  const movement = currentMovement();
+  return movement ? movementPictures(movement, work) : workThumbnail(work);
+}
+
+// Show the selection's picture in the overlay (without showing the overlay: see showPictureOverlay)
+function updateOverlayPicture() {
+  const candidates = overlayPictures();
+  if (candidates.join('\n') === pictureOverlayImg.dataset.candidates) return;
+  pictureOverlayImg.dataset.candidates = candidates.join('\n');
+  pictureOverlayImg.alt = currentMovement()?.title ?? currentWork()?.title ?? '';
+  overlayCandidates = candidates;
+  showNextOverlayPicture();
+}
+
+function showNextOverlayPicture() {
+  const src = overlayCandidates.shift();
+  if (src) pictureOverlayImg.src = src;
+  else pictureOverlayImg.removeAttribute('src');
+}
+
+pictureOverlayImg.addEventListener('error', () => {
+  if (!pictureOverlayImg.getAttribute('src')) return;
+  if (!overlayCandidates.length) console.warn('Cannot load the picture:', pictureOverlayImg.getAttribute('src'));
+  showNextOverlayPicture();
+});
+
+// A new selection: the overlay covers the lyrics until playback starts, if there is a picture
+function showPictureOverlay() {
+  pictureOverlay.classList.toggle('hidden', overlayPictures().length === 0);
+}
 
 // A hue from 190 (cyan) through blue and violet to 330 (magenta), picked by the movement key,
 // so neighboring movements get unrelated colors and the gold highlight stays apart from them
@@ -1167,6 +1320,10 @@ function movementEntry(movement) {
 function movementKey(movement) {
   const e = movementEntry(movement);
   return `${e.composer.id}/${e.work.id}/${movement.id}`;
+}
+
+function workKey(composer, work) {
+  return `${composer.id}/${work.id}`;
 }
 
 // assets/.../Chapter1.mp3 -> assets/.../Chapter1.timing.js
@@ -1691,13 +1848,11 @@ function showPlaying(playing) {
 audio.addEventListener('play', () => {
   showPlaying(true);
   pickLineOnPlay = true;
-  document.getElementById('thumbnail-overlay').classList.add('hidden');
+  pictureOverlay.classList.add('hidden');
   updateTimingPanel();
 });
 
-document.getElementById('thumbnail-overlay').addEventListener('click', () => {
-  if (audio.src) audio.play().catch(() => {});
-});
+pictureOverlay.addEventListener('click', playSelection);
 
 audio.addEventListener('pause', () => {
   showPlaying(false);
@@ -1722,12 +1877,27 @@ audio.addEventListener('error', () => {
 /* ================================================================
    PLAYBACK CONTROLS
 ================================================================ */
+// Play the selected movement; a selected work (see SELECT WORK) plays from its first movement
+function playSelection() {
+  const work = currentWork();
+  if (work && !currentMovement()) {
+    const first = work.movements?.[0];
+    if (first) loadMovement(APP_DATA.artists[state.composerIdx], work, first, true);
+  } else if (audio.src) {
+    audio.play().catch(() => {});
+  }
+}
+
+// ▶ / ❚❚ and Space
+function togglePlay() {
+  if (audio.src && !audio.paused) audio.pause();
+  else playSelection();
+}
+
 ['btn-play-pause', 'btn-play-pause-max'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
     e.currentTarget.blur();  // so Space doesn't re-activate the button
-    if (audio.src) {
-      audio.paused ? audio.play().catch(() => {}) : audio.pause();
-    }
+    togglePlay();
   });
 });
 
@@ -1758,19 +1928,13 @@ document.getElementById('progress-bar').addEventListener('input', e => {
 });
 
 document.getElementById('btn-prev').addEventListener('click', () => {
-  const idx = currentFlatIdx();
-  if (idx > 0) {
-    const entry = state.allMovements[idx - 1];
-    loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
-  }
+  const entry = navNeighbors().prev;
+  if (entry) loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
 });
 
 document.getElementById('btn-next').addEventListener('click', () => {
-  const idx = currentFlatIdx();
-  if (idx >= 0 && idx < state.allMovements.length - 1) {
-    const entry = state.allMovements[idx + 1];
-    loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
-  }
+  const entry = navNeighbors().next;
+  if (entry) loadMovement(entry.composer, entry.work, entry.data, state.isPlaying);
 });
 
 /* ================================================================
@@ -1808,7 +1972,7 @@ document.addEventListener('keydown', e => {
   switch (e.code) {
     case 'Space':
       e.preventDefault();
-      if (audio.src) audio.paused ? audio.play().catch(() => {}) : audio.pause();
+      togglePlay();
       break;
     case 'ArrowLeft':
       e.preventDefault();
@@ -1840,10 +2004,22 @@ function currentFlatIdx() {
   return state.allMovements.findIndex(e => e.data === m);
 }
 
+// The flat-list entries Prev and Next go to: those around the selected movement, or for a
+// selected work (see SELECT WORK) its first movement and the one before it
+function navNeighbors() {
+  const list = state.allMovements;
+  if (currentMovement()) {
+    const idx = currentFlatIdx();
+    return idx < 0 ? {} : { prev: list[idx - 1], next: list[idx + 1] };
+  }
+  const first = list.findIndex(e => e.work === currentWork());
+  return first < 0 ? {} : { prev: list[first - 1], next: list[first] };
+}
+
 function updateNavButtons() {
-  const idx = currentFlatIdx();
-  document.getElementById('btn-prev').disabled = idx <= 0;
-  document.getElementById('btn-next').disabled = idx < 0 || idx >= state.allMovements.length - 1;
+  const { prev, next } = navNeighbors();
+  document.getElementById('btn-prev').disabled = !prev;
+  document.getElementById('btn-next').disabled = !next;
 }
 
 function resetProgress() {
@@ -1884,5 +2060,5 @@ loadArtists().then(() => {
   buildTree();
   updateNavButtons();
   updateTimingPanel();
-  selectInitialMovement();
+  selectInitialItem();
 });

@@ -137,6 +137,14 @@ body {
   color: var(--text-primary);
 }
 
+/* The selected work (see SELECT WORK in app.js), highlighted like the selected movement */
+.tree-work-header.active {
+  background: var(--nav-active);
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+  padding-left: 22px;
+}
+
 .tree-toggle {
   font-size: 0.65rem;
   display: inline-block;

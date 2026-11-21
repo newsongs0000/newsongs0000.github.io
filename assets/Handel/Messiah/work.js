@@ -10,6 +10,7 @@ onePageMp3Work({
   opusNumber: "HWV 56",
   premiered: "Dublin, 13 April 1742",
   premieredTranslation: "都柏林，1742年4月13日",
+  thumbnail: "Handel.jpg",  // shown when the work is selected, and for any movement without a picture of its own
   description: "Oratorio in three parts for soloists, chorus and orchestra. Words selected from the Bible by Charles Jennens.\nRecording (complete, original instrumentation): Heather Harper, soprano; Helen Watts, contralto; John Wakefield, tenor; John Shirley-Quirk, bass; London Symphony Choir (chorus master John Alldis); London Symphony Orchestra; Colin Davis, conductor. Philips PHS 3-992 (3 LPs), 1966.\nSource: Internet Archive, https://archive.org/details/lp_messiah_georg-friedrich-hndel-the-london-symphony",
   descriptionTranslation: "为独唱、合唱与管弦乐队而作的清唱剧，共三部分，歌词由查尔斯·詹宁斯选自圣经。\n录音（全曲，原始配器）：女高音希瑟·哈珀、女低音海伦·沃茨、男高音约翰·韦克菲尔德、男低音约翰·雪利-夸克；伦敦交响合唱团（合唱指导约翰·奥尔迪斯）；伦敦交响乐团；指挥科林·戴维斯。Philips PHS 3-992（3张唱片），1966年。\n来源：Internet Archive, https://archive.org/details/lp_messiah_georg-friedrich-hndel-the-london-symphony",
   // One movement per band of the LP set; the numbers (Overture, then Nos. 1–52) are the ones printed in its booklet
@@ -25,7 +26,6 @@ onePageMp3Work({
       voicingTranslation: "管弦乐",
       description: "Sinfony (Overture): Grave, Allegro moderato.",
       audio: "Chapter1.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter1-bg.jpg"
     },
     {
@@ -39,7 +39,6 @@ onePageMp3Work({
       voicingTranslation: "男高音、男低音、女低音，合唱",
       description: "1 Comfort ye (recitative, tenor); 2 Ev’ry valley shall be exalted (air, tenor); 3 And the glory of the Lord (chorus); 4 Thus saith the Lord (recitative, bass); 5 But who may abide the day of His coming (air, contralto); 6 And He shall purify (chorus).",
       audio: "Chapter2.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter2-bg.jpg"
     },
     {
@@ -53,7 +52,6 @@ onePageMp3Work({
       voicingTranslation: "女低音、男低音、女高音，合唱",
       description: "7 Behold, a virgin shall conceive (recitative, contralto); 8–9 O thou that tellest good tidings to Zion (air, contralto, and chorus); 10 For behold, darkness shall cover the earth (recitative, bass); 11 The people that walked in darkness (air, bass); 12 For unto us a Child is born (chorus); 13 Pifa (Pastoral Symphony); 14 There were shepherds abiding in the field (recitative, soprano); 15 Glory to God (chorus).",
       audio: "Chapter3.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter3-bg.jpg"
     },
     {
@@ -67,7 +65,6 @@ onePageMp3Work({
       voicingTranslation: "女高音、女低音，合唱",
       description: "16 Rejoice greatly, O daughter of Zion (air, soprano); 17 Then shall the eyes of the blind be opened (recitative, contralto); 18 He shall feed His flock (air, contralto and soprano); 19 His yoke is easy (chorus).",
       audio: "Chapter4.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter4-bg.jpg"
     },
     {
@@ -81,7 +78,6 @@ onePageMp3Work({
       voicingTranslation: "合唱，女低音",
       description: "20 Behold the Lamb of God (chorus); 21 He was despised (air, contralto).",
       audio: "Chapter5.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter5-bg.jpg"
     },
     {
@@ -95,7 +91,6 @@ onePageMp3Work({
       voicingTranslation: "合唱，男高音、男低音",
       description: "22 Surely He hath borne our griefs (chorus); 23 And with His stripes we are healed (chorus); 24 All we like sheep have gone astray (chorus); 25 All they that see Him (recitative, tenor); 26 He trusted in God (chorus); 27 Thy rebuke hath broken His heart (recitative, tenor); 28 Behold, and see if there be any sorrow (air, tenor); 29 He was cut off out of the land of the living (recitative, tenor); 30 But Thou didst not leave His soul in hell (air, tenor); 31 Lift up your heads, O ye gates (chorus); 32 Unto which of the angels (recitative, tenor); 33 Let all the angels of God worship Him (chorus); 34 Thou art gone up on high (air, bass).",
       audio: "Chapter6.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter6-bg.jpg"
     },
     {
@@ -109,7 +104,6 @@ onePageMp3Work({
       voicingTranslation: "合唱，女高音、男低音、男高音",
       description: "35 The Lord gave the word (chorus); 36 How beautiful are the feet (air, soprano); 37 Their sound is gone out (chorus); 38 Why do the nations so furiously rage together (air, bass); 39 Let us break their bonds asunder (chorus); 40 He that dwelleth in heaven (recitative, tenor); 41 Thou shalt break them (air, tenor); 42 Hallelujah (chorus).",
       audio: "Chapter7.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter7-bg.jpg"
     },
     {
@@ -123,7 +117,6 @@ onePageMp3Work({
       voicingTranslation: "女高音，合唱",
       description: "43 I know that my Redeemer liveth (air, soprano); 44 Since by man came death (chorus).",
       audio: "Chapter8.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter8-bg.jpg"
     },
     {
@@ -137,7 +130,6 @@ onePageMp3Work({
       voicingTranslation: "男低音、女低音、男高音、女高音，合唱",
       description: "45 Behold, I tell you a mystery (recitative, bass); 46 The trumpet shall sound (air, bass); 47 Then shall be brought to pass (recitative, contralto); 48 O death, where is thy sting? (duet, contralto and tenor); 49 But thanks be to God (chorus); 50 If God be for us (air, soprano); 51 Worthy is the Lamb that was slain (chorus); 52 Amen (chorus).",
       audio: "Chapter9.mp3",
-      thumbnail: "Handel.jpg",
       background: "Chapter9-bg.jpg"
     }
   ]

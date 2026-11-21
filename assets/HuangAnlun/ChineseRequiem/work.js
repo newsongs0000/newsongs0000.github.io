@@ -11,6 +11,7 @@ onePageMp3Work({
   premiered: "Toronto, May 2004",
   // The Image set buttons' tooltips (see PICTURE VERSIONS in app.js): set 1 is background, set 2 background2
   pictureVersions: ["1: 基督教绘画 Christian paintings", "2: 中国山水画 Chinese landscape paintings"],
+  thumbnail: "HuangAnlun.jpg",  // shown when the work is selected, and for any movement without a picture of its own
   description: "为男高音、女中音及无伴奏合唱而作的安魂曲（Op.63），共8个乐章，由香港圣乐团委约。\n词：唐佑之（根据圣经），曲：黄安伦。",
   movements: [
     {
@@ -24,10 +25,8 @@ onePageMp3Work({
       voicingTranslation: "Chorus",
       description: "第一乐章“永远安息”是安魂曲的开篇，表达了对逝者的哀悼和对永恒安息的祈愿。",
       audio: "Chapter1.mp3",
-      thumbnail: "HuangAnlun.jpg",
       background: "Chapter1-bg.jpg",
-      background2: "Chapter1-bg2.jpg",
-      thumbnail1: "An-lun Huang.png"
+      background2: "Chapter1-bg2.jpg"
     },
     {
       id: "ch2",
@@ -39,7 +38,6 @@ onePageMp3Work({
       voicing: "女中音独唱与合唱",
       voicingTranslation: "Mezzo-soprano solo and Chorus",
       audio: "Chapter2.mp3",
-      thumbnail: "Chapter2.jpg",
       background: "Chapter2-bg.jpg",
       background2: "Chapter2-bg2.jpg"
     },
@@ -53,7 +51,6 @@ onePageMp3Work({
       voicing: "合唱",
       voicingTranslation: "Chorus",
       audio: "Chapter3.mp3",
-      thumbnail: "Chapter3.jpg",
       background: "Chapter3-bg.jpg",
       background2: "Chapter3-bg2.jpg"
     },
@@ -67,7 +64,6 @@ onePageMp3Work({
       voicing: "合唱",
       voicingTranslation: "Chorus",
       audio: "Chapter4.mp3",
-      thumbnail: "Chapter4.jpg",
       background: "Chapter4-bg.jpg",
       background2: "Chapter4-bg2.jpg"
     },
@@ -81,7 +77,6 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter5.mp3",
-      thumbnail: "Chapter5.jpg",
       background: "Chapter5-bg.jpg",
       background2: "Chapter5-bg2.jpg"
     },
@@ -95,7 +90,6 @@ onePageMp3Work({
       voicing: "男高音独唱，合唱",
       voicingTranslation: "Tenor solo and Chorus",
       audio: "Chapter6.mp3",
-      thumbnail: "Chapter6.jpg",
       background: "Chapter6-bg.jpg",
       background2: "Chapter6-bg2.jpg"
     },
@@ -109,7 +103,6 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter7.mp3",
-      thumbnail: "Chapter7.jpg",
       background: "Chapter7-bg.jpg",
       background2: "Chapter7-bg2.jpg"
     },
@@ -123,7 +116,6 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter8.mp3",
-      thumbnail: "Chapter8.jpg",
       background: "Chapter8-bg.jpg",
       background2: "Chapter8-bg2.jpg"
     }

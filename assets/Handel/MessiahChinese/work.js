@@ -10,6 +10,7 @@ onePageMp3Work({
   opusNumber: "HWV 56",
   premiered: "都柏林，1742年4月13日",
   premieredTranslation: "Dublin, 13 April 1742",
+  thumbnail: "../Messiah/Handel.jpg",  // shown when the work is selected, and for any movement without a picture of its own
   description: "为独唱、合唱与管弦乐队而作的清唱剧，共三部分，歌词由查尔斯·詹宁斯选自圣经。此为中文演唱版本，共55首（序曲为第1首），编号、中文标题与唱词均依照来源视频的字幕。\n录音：中文版全曲，演唱者与乐团不详；音频整理、字幕、注释及配图：发呆界小青瓜。\n来源：哔哩哔哩 https://www.bilibili.com/video/BV1eb4y1h7Va/",
   descriptionTranslation: "Oratorio in three parts for soloists, chorus and orchestra. Words selected from the Bible by Charles Jennens. Sung in Chinese, in 55 numbers (the Sinfonia is No. 1); the numbering, Chinese titles and lyrics follow the subtitles of the source video.\nRecording: complete Chinese version, performers unknown; audio restoration, subtitles, notes and pictures by 发呆界小青瓜.\nSource: Bilibili, https://www.bilibili.com/video/BV1eb4y1h7Va/",
   // Grouped into the same 9 chapters as the English Messiah (assets/Handel/Messiah), cut at the silences between numbers
@@ -25,7 +26,6 @@ onePageMp3Work({
       voicingTranslation: "Orchestra",
       description: "1 序曲：庄板，中庸的快板。",
       audio: "Chapter1.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter1-bg.jpg"
     },
     {
@@ -39,7 +39,6 @@ onePageMp3Work({
       voicingTranslation: "Tenor, bass, contralto, chorus",
       description: "2 安慰我的百姓（宣叙调，男高音）；3 一切山谷都要填满（咏叹调，男高音）；4 主的荣耀（合唱）；5 主如此说（宣叙调，男低音）；6 他来的日子谁能当得起呢（咏叹调，女低音）；7 他必要洁净那利未的子孙（合唱）。",
       audio: "Chapter2.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter2-bg.jpg"
     },
     {
@@ -53,7 +52,6 @@ onePageMp3Work({
       voicingTranslation: "Contralto, bass, soprano, chorus",
       description: "8 看哪 必有童女怀孕生子（宣叙调与咏叹调，女低音）；9 传报好信息给锡安的（合唱）；10 看哪 黑暗要笼罩大地（宣叙调，男低音）；11 在黑暗中行走的百姓（咏叹调，男低音）；12 为我们圣婴孩诞降（合唱）；13 田园牧曲（管弦乐）；14 有牧羊人在野地里；15 请看 有主的使者临到他们；16 天使对他们说 不要惧怕；17 忽然有一大队天军（宣叙调，女高音）；18 荣耀归神（合唱）。",
       audio: "Chapter3.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter3-bg.jpg"
     },
     {
@@ -67,7 +65,6 @@ onePageMp3Work({
       voicingTranslation: "Soprano, contralto, chorus",
       description: "19 锡安的儿女 快乐欢欣（咏叹调，女高音）；20 那时瞎子的眼睛必睁开（宣叙调，女低音）；21 他必像牧人喂养羊群（咏叹调，女低音、女高音）；22 他的轭是容易 他的担子轻省（合唱）。",
       audio: "Chapter4.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter4-bg.jpg"
     },
     {
@@ -81,7 +78,6 @@ onePageMp3Work({
       voicingTranslation: "Chorus, contralto",
       description: "23 请看，上帝的羔羊（合唱）；24 他被藐视（咏叹调，女低音）。",
       audio: "Chapter5.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter5-bg.jpg"
     },
     {
@@ -95,7 +91,6 @@ onePageMp3Work({
       voicingTranslation: "Chorus, tenor, bass",
       description: "25 他诚然担当我们的忧患；26 因他受的鞭伤 我们得医治；27 我们都如羊走迷（合唱）；28 他们看见他都戏笑他（宣叙调，男高音）；29 他信靠上帝 他的神必能拯救他（合唱）；30 你的辱骂伤透他的心（宣叙调，男高音）；31 请看他所受的痛苦（咏叹调，男高音）；32 他被剪除（宣叙调，男高音）；33 但你不会将他的灵撇在阴间（咏叹调，男高音）；34 众城门哪 抬起头来（合唱）；35 他曾对哪一个天使说过（宣叙调，男高音）；36 上帝的使者都来崇拜他（合唱）；37 你升上高天（咏叹调，男低音）。",
       audio: "Chapter6.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter6-bg.jpg"
     },
     {
@@ -109,7 +104,6 @@ onePageMp3Work({
       voicingTranslation: "Chorus, soprano, bass, tenor",
       description: "38 上主宣告说（合唱）；39 他们的脚踪何等佳美（咏叹调，女高音）；40 他们的声音传遍天下（合唱）；41 万邦为何暴怒争闹（咏叹调，男低音）；42 我们要挣脱他们的捆绑（合唱）；43 那坐在天上的主（宣叙调，男高音）；44 你必打破他们（咏叹调，男高音）；45 哈利路亚（合唱）。",
       audio: "Chapter7.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter7-bg.jpg"
     },
     {
@@ -123,7 +117,6 @@ onePageMp3Work({
       voicingTranslation: "Soprano, chorus",
       description: "46 我知道我的救赎主活着（咏叹调，女高音）；47 死既因一人而有（合唱）。",
       audio: "Chapter8.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter8-bg.jpg"
     },
     {
@@ -137,7 +130,6 @@ onePageMp3Work({
       voicingTranslation: "Bass, contralto, tenor, soprano, chorus",
       description: "48 看哪 我把奥秘告诉你们（宣叙调，男低音）；49 号筒要吹响（咏叹调，男低音）；50 正如经上所记（宣叙调，女低音）；51 死亡啊 你的毒钩在哪里（二重唱，女低音、男高音）；52 感谢上帝（合唱）；53 若有上帝帮助 谁能敌挡我们（咏叹调，女高音）；54 大哉圣羔羊曾被杀（合唱）；55 终曲：阿们颂（合唱）。",
       audio: "Chapter9.mp3",
-      thumbnail: "../Messiah/Handel.jpg",
       background: "../Messiah/Chapter9-bg.jpg"
     }
   ]
