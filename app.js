@@ -84,12 +84,12 @@ function resolveArtistPaths(artist, artistUrl) {
   artist.workFiles = (artist.workFiles ?? []).map(file => dir + file);
 }
 
-// A work's movement files (audio, thumbnail) are named relative to its work.js file:
-// make them relative to index.html, as the rest of app.js uses them
+// A work's movement files (audio, thumbnail, background) are named relative to its work.js
+// file: make them relative to index.html, as the rest of app.js uses them
 function resolveWorkPaths(work, workUrl) {
   const dir = dirOf(workUrl);
   (work.movements ?? []).forEach(movement => {
-    ['audio', 'thumbnail'].forEach(key => {
+    ['audio', 'thumbnail', 'background'].forEach(key => {
       if (movement[key]) movement[key] = dir + movement[key];
     });
   });
@@ -113,8 +113,10 @@ async function loadArtists() {
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
    Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too
    (mute is used only by index.html; index1.html is always silent, see MUTE):
-   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed
+   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed&bg=image
    (see VIEW OPTIONS IN URL)
+   The lyrics background's picture, dimming and blur: index.html?bg=image&bg-image=pic.jpg&bg-dim=75&bg-blur=10
+   (see BACKGROUND)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
 ================================================================ */
@@ -362,7 +364,8 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open
+     bg              none | graphics | image, the lyrics background (default image; see BACKGROUND)
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&bg=image
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -426,6 +429,7 @@ function loadMovement(composer, work, movement, autoplay = false) {
   });
 
   updateNowPlaying(work, movement);
+  updateBackground();
 
   // Update info pane
   document.getElementById('info-composer').textContent = composer.name;
@@ -845,6 +849,91 @@ muteBox.addEventListener('change', () => {
   const fromUrl = Number(urlParam('font'));
   apply(urlParam('font') && isFinite(fromUrl) ? Math.round(fromUrl) : 100);
 })();
+
+/* ================================================================
+   BACKGROUND
+   What is behind the lyrics panel, picked with the Background buttons:
+     none      the plain page color
+     graphics  soft colored lights that drift slowly while the music
+               plays; their hue comes from the movement, so each
+               movement has its own colors
+     image     a picture: the one in the URL parameter bg-image (named
+               relative to index.html, the same for every movement), else
+               the movement's background in work.js, else its thumbnail.
+               A movement without one, or whose picture can't be loaded,
+               gets the graphics instead.
+   The page color covers the background at bg-dim percent (0-95, default
+   75) and the picture is blurred by bg-blur px (0-40, default 10), so the
+   lyrics stay easy to read; both come from the URL only (see common.css
+   for the defaults, --bg-dim and --bg-blur). Image is the default; the
+   choice is kept in the URL parameter bg (see VIEW OPTIONS IN URL).
+================================================================ */
+const BACKGROUNDS     = ['none', 'graphics', 'image'];
+const songDisplay     = document.getElementById('song-display');
+const lyricsBg        = document.getElementById('lyrics-bg');
+const lyricsBgImage   = lyricsBg.querySelector('.bg-image');
+const backgroundBtns  = [...document.querySelectorAll('#background-toggle .ctrl-btn')];
+
+function setBackground(kind) {
+  songDisplay.dataset.bg = kind;
+  rewriteUrlParams({ bg: kind });
+  backgroundBtns.forEach(btn => {
+    const on = btn.dataset.bg === kind;
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on);
+  });
+  updateBackground();
+}
+
+// Fit the background to the current movement: the graphics' hue, and in image mode its picture.
+// The same picture as before (e.g. one portrait for a whole work) is kept as it is, without a flash.
+function updateBackground() {
+  const movement = currentMovement();
+  songDisplay.style.setProperty('--bg-hue', movement ? backgroundHue(movementKey(movement)) : 220);
+  if (songDisplay.dataset.bg !== 'image') return;
+  const src = urlParam('bg-image') || movement?.background || movement?.thumbnail;
+  if (!src) {
+    lyricsBgImage.removeAttribute('src');
+    lyricsBg.classList.remove('has-image');
+  } else if (lyricsBgImage.getAttribute('src') !== src) {
+    lyricsBg.classList.remove('has-image');  // the graphics until it has loaded
+    lyricsBgImage.src = src;
+  }
+}
+
+lyricsBgImage.addEventListener('load',  () => lyricsBg.classList.add('has-image'));
+lyricsBgImage.addEventListener('error', () => {
+  lyricsBg.classList.remove('has-image');
+  console.warn('Cannot load the background picture:', lyricsBgImage.getAttribute('src'));
+});
+
+// A hue from 190 (cyan) through blue and violet to 330 (magenta), picked by the movement key,
+// so neighboring movements get unrelated colors and the gold highlight stays apart from them
+function backgroundHue(key) {
+  let h = 0;
+  for (const ch of key) h = Math.imul(h, 31) + ch.codePointAt(0) | 0;
+  h = Math.imul(h ^ (h >>> 16), 0x85ebca6b);  // mix the bits (MurmurHash3's finalizer)
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+  return 190 + ((h ^ (h >>> 16)) >>> 0) % 141;
+}
+
+// bg-dim and bg-blur, from the URL only; a missing or invalid value keeps common.css's default
+{
+  const number = name => (urlParam(name) && isFinite(Number(urlParam(name)))) ? Number(urlParam(name)) : null;
+  const dim  = number('bg-dim');
+  const blur = number('bg-blur');
+  if (dim  !== null) document.documentElement.style.setProperty('--bg-dim', Math.min(95, Math.max(0, dim)) / 100);
+  if (blur !== null) document.documentElement.style.setProperty('--bg-blur', `${Math.min(40, Math.max(0, blur))}px`);
+}
+
+backgroundBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    setBackground(btn.dataset.bg);
+    btn.blur();  // so Space doesn't re-activate the button
+  });
+});
+
+setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'image');
 
 /* ================================================================
    BILINGUAL LYRICS DIVIDER
@@ -1524,6 +1613,7 @@ function showPlaying(playing) {
   const icon = playing ? '&#9646;&#9646;' : '&#9654;';
   document.getElementById('btn-play-pause').innerHTML = icon;
   document.getElementById('btn-play-pause-max').innerHTML = icon;  // top bar, maximized lyrics mode
+  songDisplay.classList.toggle('playing', playing);  // the background graphics drift only then (see BACKGROUND)
   state.isPlaying = playing;
 }
 

@@ -13,6 +13,8 @@
   --lyrics-current-border: #c9a227;
   --lyrics-chinese-width: 45%;   /* bilingual lyrics: the Chinese column (default; drag the divider to change) */
   --lyrics-original-width: var(--lyrics-chinese-width);  /* the left column (see "Bilingual lyrics" below) */
+  --bg-dim: 0.75;   /* lyrics background: how much of it the page color covers, 0 to 0.95 (URL: bg-dim, percent) */
+  --bg-blur: 10px;  /* lyrics background: blur of the picture (URL: bg-blur, px) */
 
   --bg-primary:   #0d1117;
   --bg-secondary: #161b22;
@@ -465,6 +467,104 @@ body {
 
 #lyrics-container[data-mode="manual"] { touch-action: none; }  /* swipes step the lines, see SWIPE in app.js */
 
+/* ─── Lyrics background (see BACKGROUND in app.js) ───
+   #song-display's data-bg is none, graphics or image. The background fills the song area behind the lyrics: its own
+   stacking context (isolation) lets z-index -1 put it above the song area's color and below everything in it. The
+   page color covers it at --bg-dim, so the lyrics stay easy to read. Image mode shows the picture once it has loaded
+   (.has-image), the graphics until then and when there is none */
+#song-display { isolation: isolate; }
+
+#lyrics-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  display: none;
+}
+#song-display[data-bg="graphics"] #lyrics-bg,
+#song-display[data-bg="image"] #lyrics-bg { display: block; }
+
+#lyrics-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--bg-primary);
+  opacity: var(--bg-dim);
+}
+
+.bg-image,
+.bg-graphics { display: none; }
+#song-display[data-bg="graphics"] .bg-graphics,
+#song-display[data-bg="image"] #lyrics-bg:not(.has-image) .bg-graphics { display: block; }
+#song-display[data-bg="image"] #lyrics-bg.has-image .bg-image { display: block; }
+
+/* The picture covers the area; scaled up a little so the blur doesn't leave pale edges */
+.bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;  /* a portrait's face rather than its chest */
+  filter: blur(var(--bg-blur)) saturate(0.85);
+  transform: scale(1.08);
+}
+
+/* Graphics: three soft lights, two in the movement's hue (--bg-hue, set by app.js) and one in the accent gold,
+   drifting slowly while the music plays (#song-display.playing) and still otherwise. Only transforms are animated,
+   so the browser doesn't repaint them */
+.bg-graphics {
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--bg-hue, 220) 45% 7%);
+}
+
+.bg-graphics span {
+  position: absolute;
+  width: 75%;
+  height: 90%;
+  border-radius: 50%;
+  will-change: transform;
+  animation: 31s ease-in-out infinite alternate bg-drift-1;
+  animation-play-state: paused;
+}
+.bg-graphics span:nth-child(1) {
+  left: -15%;
+  top: -25%;
+  background: radial-gradient(closest-side, hsl(var(--bg-hue, 220) 75% 58%), transparent);
+}
+.bg-graphics span:nth-child(2) {
+  right: -20%;
+  bottom: -30%;
+  background: radial-gradient(closest-side, hsl(calc(var(--bg-hue, 220) + 50) 70% 52% / 0.9), transparent);
+  animation-name: bg-drift-2;
+  animation-duration: 43s;
+}
+.bg-graphics span:nth-child(3) {
+  left: 25%;
+  top: 20%;
+  width: 55%;
+  height: 65%;
+  background: radial-gradient(closest-side, rgba(201, 162, 39, 0.55), transparent);
+  animation-name: bg-drift-3;
+  animation-duration: 37s;
+}
+#song-display.playing .bg-graphics span { animation-play-state: running; }
+
+@keyframes bg-drift-1 { to { transform: translate(30%, 25%) scale(1.25); } }
+@keyframes bg-drift-2 { to { transform: translate(-35%, -20%) scale(0.85); } }
+@keyframes bg-drift-3 { to { transform: translate(-30%, 15%) rotate(40deg) scale(1.3); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-graphics span { animation: none; }
+}
+
+/* A shadow under the lyrics' letters keeps them clear of the background's brighter spots */
+#song-display:is([data-bg="graphics"], [data-bg="image"]) :is(.lyric-line, .lyric-meta) {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
 #lyrics-container {
   height: 100%;
   overflow-y: auto;
@@ -778,15 +878,19 @@ body {
   text-align: right;
 }
 
-/* ─── Lyrics highlight mode toggle ─── */
-#mode-toggle {
+/* ─── Lyrics highlight mode toggle, and the background toggle (a row of its own, the last of the View Options) ─── */
+#mode-toggle,
+#background-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
 }
 
-#mode-toggle-label {
+#background-toggle { flex-basis: 100%; }
+
+#mode-toggle-label,
+#background-toggle-label {
   font-size: 0.72rem;
   color: var(--text-muted);
   margin-right: 2px;

@@ -112,6 +112,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 │ Show: ☑ Orig. │                                                             │
 │   ☑ Transl.   │                                                             │
 │ Font: A− A+   │                                                             │
+│ Background:   │                                                             │
+│ [None|Graph…] │                                                             │
 └───────────────┴─────────────────────────────────────────────────────────────┘
 ```
 
@@ -133,12 +135,14 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
+  - **Background: None | Graphics | Image** (the last row) chooses what is behind the lyrics panel. See
+    **Background** below.
   - **Smartphone layout** (window 700 px wide or narrower). The playback controls are at the top of the screen, then
     the navigation pane, then the rest of the player (song navigation, lyrics, info pane). The navigation pane is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
     lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders or the whole
     **SONGS** panel. The **SONGS** title bar stays at the top of the pane while the tree scrolls. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
-    **Show** and the last row (**Audio:** or **Font:**) is titled **VIEW OPTIONS** and is collapsible there: it starts
+    **Show**, **Audio:** (or **Font:**) and **Background** is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
@@ -185,6 +189,17 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
+  - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
+    and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `image` by default).
+    - **None**: the plain page color.
+    - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
+      Their hue comes from the movement, so each movement has its own colors.
+    - **Image**: a picture, blurred and darkened. It is the `bg-image` URL parameter if given (one picture for
+      every movement), else the movement's `background` in `work.js`, else its `thumbnail`. A movement with no
+      picture, or one that cannot be loaded, shows the Graphics instead.
+
+    Either way the page color covers the background at 75% (`bg-dim`) and the lyrics get a soft shadow, so they stay
+    easy to read. With the system's "reduce motion" setting on, the graphics never move.
 - **Bottom info pane.** Shows the artist's name, the work's title with its opus number and year, the premiere
   (`Premiere: …`) and the work's description.
 
@@ -284,6 +299,10 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `below-bg` | Background of the lines below the current line | `transparent` |
 | `highlight-mode` | `auto` starts in Auto mode; anything else starts in Manual | `manual` |
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
+| `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `image` |
+| `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
+| `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `75` |
+| `bg-blur` | Blur of the `image` background, in pixels (0 to 40) | `10` |
 | `t` | The audio position of the `movement` above, in whole seconds (rounded down), e.g. `83` (used only with `movement`). The app rewrites it about once a second while the audio plays or you seek, so reloading or sharing the URL continues from there; it is removed when you select another movement | `0` |
 
 For example:
@@ -403,7 +422,7 @@ source material only, and the app does not read them.
 ## Flow: adding an artist, work or movement
 
 The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `workFiles` in an
-`artist.js` file are relative to that `artist.js` file, a movement's `audio` and `thumbnail` in a `work.js` file
+`artist.js` file are relative to that `artist.js` file, a movement's `audio`, `thumbnail` and `background` in a `work.js` file
 are relative to that `work.js` file, and the `audio` in a `.timing.js` file is relative to that `.timing.js` file, so
 they are short when the files sit next to each other.
 
@@ -458,7 +477,8 @@ onePageMp3Work({
       voicing: "合唱",             // lyrics heading, second line (optional)
       voicingTranslation: "Chorus",          // translation column's heading (optional)
       audio: "Chapter1.mp3",
-      thumbnail: "Chapter1.jpg"   // optional
+      thumbnail: "Chapter1.jpg",  // optional
+      background: "Chapter1-bg.jpg"  // optional: the Image background (defaults to the thumbnail)
     }
   ]
 });
