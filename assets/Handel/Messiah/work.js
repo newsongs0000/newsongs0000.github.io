@@ -1,7 +1,7 @@
 /* Work data for OnePageMP3: loaded by app.js from its artist's workFiles list */
 onePageMp3Work({
   id: "messiah",
-  title: "Messiah 弥赛亚",
+  title: "Messiah",
   titleTranslation: "弥赛亚",
   titleSort: "Messiah",
   language: "en",

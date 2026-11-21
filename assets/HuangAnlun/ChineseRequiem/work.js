@@ -1,7 +1,7 @@
 /* Work data for OnePageMP3: loaded by app.js from its artist's workFiles list */
 onePageMp3Work({
   id: "chinese-requiem",
-  title: "安魂曲 Requiem",
+  title: "安魂曲",
   titleTranslation: "Requiem",
   titleSort: "Chinese Requiem",
   language: "zh",

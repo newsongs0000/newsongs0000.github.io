@@ -1,7 +1,7 @@
 /* Work data for OnePageMP3: loaded by app.js from its artist's workFiles list */
 onePageMp3Work({
   id: "mozart-requiem",
-  title: "Requiem 安魂曲",
+  title: "Requiem",
   titleTranslation: "安魂曲",
   titleSort: "Requiem",
   language: "la",

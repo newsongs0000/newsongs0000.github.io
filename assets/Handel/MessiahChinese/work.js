@@ -1,8 +1,8 @@
 /* Work data for OnePageMP3: loaded by app.js from its artist's workFiles list */
 onePageMp3Work({
   id: "messiah-zh",
-  title: "弥赛亚（中文版） Messiah (Chinese)",
-  titleTranslation: "Messiah (Chinese version)",
+  title: "弥赛亚",
+  titleTranslation: "Messiah",
   titleSort: "Messiah (Chinese)",
   language: "zh",
   translationLanguage: "en",
