@@ -934,10 +934,11 @@ body {
   #song-nav .ctrl-btn { padding: 7px 10px; }
   /* The time and Max at the right end of their row (if they don't fit after the buttons, a row of their own); the
      progress bar always on a row of its own below them (the sizes and spaces: see the next section). The bar's
-     12px box reaches into the 3px gap above it and the 6px padding below it, so its row is only 3px tall, as with the
-     browser's own bar, and the track sits halfway between the buttons and the bottom edge */
+     12px box reaches into the 6px padding below it; its 1px top margin plus the 3px gap above it leave a little
+     space between the buttons and the bar. (Maximized, the playback controls are hidden, so this is the normal
+     lyrics mode only) */
   #playback-controls { flex-wrap: wrap; justify-content: center; }
-  #progress-bar { flex: 1 1 100%; order: 1; margin: -3px 0 -6px; }
+  #progress-bar { flex: 1 1 100%; order: 1; margin: 1px 0 -6px; }
   #time-max { flex: 1 0 auto; justify-content: flex-end; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; }
 }
