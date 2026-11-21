@@ -138,8 +138,9 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
-  - **Background: None | Graphics | Image** (the last row) chooses what is behind the lyrics panel. See
-    **Background** below.
+  - **Background: None | Graphics | Image** chooses what is behind the lyrics panel. See **Background** below.
+  - **Image set: 1 | 2** (the last row; only in the Image background mode, for a movement that has two sets of
+    pictures, such as 安魂曲) picks which set the Image background shows. See **Background** below.
   - **Smartphone layout** (window 700 px wide or narrower). The playback controls are at the top of the screen, then
     the navigation pane, then the rest of the player (song navigation, lyrics, info pane). The navigation pane is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
@@ -204,8 +205,17 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`. A movement with no
       picture, or one that cannot be loaded, shows the Graphics instead. Every movement of the bundled works has a
       `background` of its own: a public-domain painting from Wikimedia Commons that fits its text, e.g. Zurbarán's
-      *Agnus Dei* for "Behold the Lamb of God", or Emperor Huizong's *Auspicious Cranes* for 永享自由. The
+      *Agnus Dei* for "Behold the Lamb of God", or Xu Jihua's *The Wedding at Cana* for 诗篇二十三. The
       `backgrounds.md` file in each work's folder lists them, with their sources and licenses.
+    - **Image sets.** A movement may have a second set of pictures, `background2` in `work.js`, picked with
+      **Image set: 1 | 2** and kept in the `pictures` URL parameter (`1` by default). 安魂曲 has Christian paintings
+      as set 1 (Christian art made in China, from a Tang-dynasty mural to the 1930s paintings of Xu Jihua 徐济华,
+      all in the public domain) and Chinese landscape paintings (Song–Yuan) as set 2.
+    - **Pictures on this computer only.** A `background` or `background2` may list several files, tried in order
+      until one loads. A work can list first a picture in its `local/` folder, which `.gitignore` keeps out of git,
+      then a published one: this computer shows the local picture and GitHub Pages, which lacks it, the published
+      one. On GitHub Pages the browser's console then reports each missing local picture as a 404; that is
+      expected.
 
     Either way the page color covers the background at 70% (`bg-dim`) and the lyrics get a soft shadow, so they stay
     easy to read. With the system's "reduce motion" setting on, the graphics never move.
@@ -309,6 +319,7 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `highlight-mode` | `auto` starts in Auto mode; anything else starts in Manual | `manual` |
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
 | `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `image` |
+| `pictures` | Which image set the `image` background shows, `1` or `2`, for a movement that has two (see **Image sets** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `1` |
 | `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
 | `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `70` |
 | `bg-blur` | Blur of the `image` background, in pixels (0 to 40) | `4` |
@@ -469,6 +480,7 @@ onePageMp3Work({
   title: "安魂曲",                 // shown in the tree, top bar and info pane
   titleTranslation: "Requiem",    // top bar: "安魂曲 I. 永远安息  Requiem I. Eternal Rest" (optional)
   titleSort: "Chinese Requiem",   // tree sort key (optional; defaults to title)
+  pictureVersions: ["1: 基督教绘画", "2: 中国山水画"],  // tooltips of the Image set 1 | 2 buttons (optional)
   language: "zh",                 // language of the lyrics' "text"; the "zh" column gets 45% of the lyrics width
   translationLanguage: "en",      // language of the lyrics' "translation"
   year: 2004,                     // info pane: "title Op. 63 (2004)"
@@ -487,7 +499,9 @@ onePageMp3Work({
       voicingTranslation: "Chorus",          // translation column's heading (optional)
       audio: "Chapter1.mp3",
       thumbnail: "Chapter1.jpg",  // optional
-      background: "Chapter1-bg.jpg"  // optional: the Image background (defaults to the thumbnail)
+      background: "Chapter1-bg.jpg",  // optional: the Image background (defaults to the thumbnail)
+      background2: "Chapter1-bg2.jpg"  // optional: image set 2 (either may be a list of files, tried in order
+                                  // until one loads: see Pictures on this computer only)
     }
   ]
 });
@@ -569,7 +583,8 @@ assets/
       work.js
       Chapter1..8.mp3      audio
       Chapter1..8.jpg      pictures
-      Chapter1..8-bg.jpg   Image backgrounds: Chinese paintings (Song–Yuan), credited in backgrounds.md
+      Chapter1..8-bg.jpg   Image backgrounds, set 1: Christian art made in China, credited in backgrounds.md
+      Chapter1..8-bg2.jpg  Image backgrounds, set 2: Chinese paintings (Song–Yuan), credited in backgrounds.md
       Chapter1..8.timing.js  lyrics + timing
       Lyrics.txt, *.pdf, *.md  source material and notes (not read by the app)
   Handel/                  亨德尔 — Messiah (弥赛亚, HWV 56), 9 movements: one per band of the 1966 Philips LP set

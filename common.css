@@ -915,17 +915,21 @@ body {
 
 /* ─── Lyrics highlight mode toggle, and the background toggle (a row of its own, the last of the View Options) ─── */
 #mode-toggle,
-#background-toggle {
+#background-toggle,
+#pictures-toggle {
   display: flex;
   align-items: center;
   gap: 4px;
   flex-shrink: 0;
 }
 
-#background-toggle { flex-basis: 100%; }
+#background-toggle,
+#pictures-toggle { flex-basis: 100%; }
+#pictures-toggle[hidden] { display: none; }  /* display: flex above would override the hidden attribute */
 
 #mode-toggle-label,
-#background-toggle-label {
+#background-toggle-label,
+#pictures-toggle-label {
   font-size: 0.72rem;
   color: var(--text-muted);
   margin-right: 2px;

@@ -223,3 +223,65 @@ Fix:
 
 Verified in headless Chrome on desktop and an emulated touch phone (390 px, hover: none), paused and playing: the
 button is 38.1 × 26 px everywhere with the icon centered, and after a tap its background stays rgb(201, 162, 39).
+
+---
+
+## Ask
+
+> For the ChineseRequiem by HuangAnlun, use Christian faith theme paintings, I google "Chinese christian paintings",
+> got some like https://artandtheology.org/tag/chinese-christian-art/
+
+then
+
+> For the ChineseRequiem by HuangAnlun, use Christian faith theme paintings, I google "华人基督徒的绘画", download
+> them as version 2
+
+Answers to my questions: modern works **local only** (not published); the two versions **switched in View Options**.
+
+## Response
+
+**Copyright.** The paintings that page and the search turn up are mostly modern: Lu Hongnian (d. 1989), Hua Xiaoxian
+(1948), Lu Lan (b. 1972), and above all 何崎 He Qi (living). They are under copyright, and the site is public on GitHub
+Pages. He Qi licenses his images (from $9.99 an image for church websites and digital presentations, one-time use,
+with the line "He Qi © 2021 All rights Reserved"). The Fu Jen painter Wang Su-ta (d. 1963) is also likely still under
+US copyright.
+
+**Version 1** stays the Chinese landscape paintings (`ChapterN-bg.jpg`, restored from git after the first download
+had overwritten them).
+
+**Version 2**, published: Christian art made in China, all public domain (`ChapterN-bg2.jpg`):
+
+| Movement | Picture |
+|---|---|
+| I 永远安息 | Xu Jihua 徐济华 (1912–1937), *Jesus Preaching from a Boat on Lake Tiberias* |
+| II 深处祷告 | Aleni 艾儒略, *天主降生出像經解* (1637), 耶穌步海 |
+| III 称颂耶稣 | Palm Sunday wall painting, Church of the East temple at Khocho 高昌 (683–770) |
+| IV 圣洁颂歌 | Aleni, 天主降生聖像 |
+| V 羔羊赞颂 | Aleni, 耶穌被釘靈蹟疊現 (the Crucifixion) |
+| VI 永享自由 | Aleni, 起三十八年之癱 (the man sick 38 years made whole) |
+| VII 永远照耀 | Aleni, 世界終盡降臨審判生死 |
+| VIII 诗篇二十三 | Xu Jihua, *The Wedding at Cana* |
+
+Xu Jihua's copyright expired in China before 1996, so his work is public domain in the US as well.
+
+**Version 2, this computer only**: He Qi's paintings in `assets/HuangAnlun/ChineseRequiem/local/` (git-ignored via
+`assets/**/local/` in `.gitignore`): *Sleeping Elijah*, *Praying at Gethsemane*, *Triumphant Entry into Jerusalem*,
+*The Seven Trumpets*, *Crucifixion*, *Peter Delivered from Prison*, *The Risen Lord*, *Elijah & the Ravens*. Their
+sources are listed in `local/SOURCES.md`.
+
+**App**:
+
+- `work.js`: `background2` beside `background`. A picture may be a list of files tried in order until one loads, here
+  `["local/ChapterN-bg2.jpg", "ChapterN-bg2.jpg"]`: the local He Qi picture where it exists, else the published one.
+  `pictureVersions` gives the buttons' tooltips.
+- View Options: a **Pictures: 1 | 2** row, shown only in Image mode for a movement with a `background2`, kept in the
+  URL parameter `pictures` (default 1).
+- `app.js` (PICTURE VERSIONS in BACKGROUND): `backgroundCandidates`, `showNextBackground` (a fallback chain that warns
+  only when every picture fails), and `setPictureVersion`. `resolveWorkPaths` resolves lists and `background2`.
+- `common.css`, `index.html`, `index1.html`: the new row.
+- `backgrounds.md` (Chinese Requiem): a Version 2 section with sources and licenses. README: the row, the parameter,
+  the keys, the `local/` folder, and the project structure.
+
+Verified in headless Chrome: version 1 shows the landscape; version 2 shows the local He Qi picture; with `local/`
+blocked, as on GitHub Pages, version 2 falls back to the published picture without a warning. On a Messiah movement
+and in Graphics mode the row is hidden.

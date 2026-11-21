@@ -19,3 +19,6 @@ _.log
 
 # Python
 __pycache__/
+
+# Pictures kept on this computer only (e.g. copyrighted ones): see "Pictures on this computer only" in README.md
+assets/**/local/

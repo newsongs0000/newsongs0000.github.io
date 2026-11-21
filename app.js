@@ -84,13 +84,16 @@ function resolveArtistPaths(artist, artistUrl) {
   artist.workFiles = (artist.workFiles ?? []).map(file => dir + file);
 }
 
-// A work's movement files (audio, thumbnail, background) are named relative to its work.js
-// file: make them relative to index.html, as the rest of app.js uses them
+// A work's movement files (audio, thumbnail, background, background2) are named relative to its
+// work.js file: make them relative to index.html, as the rest of app.js uses them. A background
+// may be a list of files (see BACKGROUND)
 function resolveWorkPaths(work, workUrl) {
   const dir = dirOf(workUrl);
   (work.movements ?? []).forEach(movement => {
-    ['audio', 'thumbnail', 'background'].forEach(key => {
-      if (movement[key]) movement[key] = dir + movement[key];
+    ['audio', 'thumbnail', 'background', 'background2'].forEach(key => {
+      const value = movement[key];
+      if (Array.isArray(value)) movement[key] = value.map(file => dir + file);
+      else if (value) movement[key] = dir + value;
     });
   });
 }
@@ -365,6 +368,8 @@ function updateTimeInUrl() {
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
      bg              none | graphics | image, the lyrics background (default image; see BACKGROUND)
+     pictures        1 | 2, which version of the movements' pictures the image background shows
+                     (default 1; see PICTURE VERSIONS)
    index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&bg=image
 ================================================================ */
 function urlParam(name) {
@@ -859,9 +864,23 @@ muteBox.addEventListener('change', () => {
                movement has its own colors
      image     a picture: the one in the URL parameter bg-image (named
                relative to index.html, the same for every movement), else
-               the movement's background in work.js, else its thumbnail.
-               A movement without one, or whose picture can't be loaded,
-               gets the graphics instead.
+               the movement's background in work.js (or its background2,
+               see PICTURE VERSIONS), else its thumbnail. A movement
+               without one, or whose pictures can't be loaded, gets the
+               graphics instead.
+   A background (or background2) may be a list of files: they are tried
+   in order until one loads. So a work can name first a picture kept only
+   on this computer (in a git-ignored local/ folder: e.g. a copyrighted
+   one, never published) and then the published one, which a server
+   without the local file shows instead.
+
+   PICTURE VERSIONS
+   A movement may have a second set of pictures: background2 beside
+   background in work.js. The Image set buttons (1 | 2, shown in Image
+   mode for a movement that has a background2; their tooltips come from
+   the work's pictureVersions) pick which set Image mode shows. The choice
+   applies to every movement that has a background2 and is kept in the URL
+   parameter pictures (see VIEW OPTIONS IN URL).
    The page color covers the background at bg-dim percent (0-95, default
    70) and the picture is blurred by bg-blur px (0-40, default 4), so the
    lyrics stay easy to read; both come from the URL only (see common.css
@@ -873,6 +892,11 @@ const songDisplay     = document.getElementById('song-display');
 const lyricsBg        = document.getElementById('lyrics-bg');
 const lyricsBgImage   = lyricsBg.querySelector('.bg-image');
 const backgroundBtns  = [...document.querySelectorAll('#background-toggle .ctrl-btn')];
+const picturesRow     = document.getElementById('pictures-toggle');
+const picturesBtns    = [...picturesRow.querySelectorAll('.ctrl-btn')];
+const PICTURE_VERSIONS = ['1', '2'];
+let pictureVersion    = '1';
+let bgCandidates      = [];  // pictures still to try after the one loading or shown (see showNextBackground)
 
 function setBackground(kind) {
   songDisplay.dataset.bg = kind;
@@ -885,17 +909,51 @@ function setBackground(kind) {
   updateBackground();
 }
 
-// Fit the background to the current movement: the graphics' hue, and in image mode its picture.
-// The same picture as before (e.g. one portrait for a whole work) is kept as it is, without a flash.
+function setPictureVersion(version) {
+  pictureVersion = version;
+  rewriteUrlParams({ pictures: version });
+  picturesBtns.forEach(btn => {
+    const on = btn.dataset.pictures === version;
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on);
+  });
+  updateBackground();
+}
+
+// The pictures Image mode tries for a movement, in order (see BACKGROUND and PICTURE VERSIONS)
+function backgroundCandidates(movement) {
+  if (urlParam('bg-image')) return [urlParam('bg-image')];
+  const list = value => [value ?? []].flat();
+  const version2 = pictureVersion === '2' ? list(movement?.background2) : [];
+  return [...version2, ...list(movement?.background), ...list(movement?.thumbnail)];
+}
+
+// Fit the background to the current movement: the graphics' hue, the Image set buttons, and in image
+// mode its picture. The same pictures as before (e.g. one portrait for a whole work) are kept as they
+// are, without a flash.
 function updateBackground() {
   const movement = currentMovement();
   songDisplay.style.setProperty('--bg-hue', movement ? backgroundHue(movementKey(movement)) : 220);
+  picturesRow.hidden = songDisplay.dataset.bg !== 'image' || !movement?.background2;
+  const names = currentWork()?.pictureVersions ?? [];
+  picturesBtns.forEach((btn, i) => { btn.title = names[i] || `Image set ${i + 1}`; });
   if (songDisplay.dataset.bg !== 'image') return;
-  const src = urlParam('bg-image') || movement?.background || movement?.thumbnail;
+  const candidates = backgroundCandidates(movement);
+  if (candidates.join('\n') === lyricsBg.dataset.candidates) return;
+  lyricsBg.dataset.candidates = candidates.join('\n');
+  bgCandidates = candidates;
+  showNextBackground();
+}
+
+// Show the next picture to try, or none (the graphics) when none is left
+function showNextBackground() {
+  const src = bgCandidates.shift();
   if (!src) {
     lyricsBgImage.removeAttribute('src');
     lyricsBg.classList.remove('has-image');
-  } else if (lyricsBgImage.getAttribute('src') !== src) {
+  } else if (src === lyricsBgImage.getAttribute('src') && lyricsBgImage.complete && lyricsBgImage.naturalWidth) {
+    lyricsBg.classList.add('has-image');  // already loaded: no new load event comes
+  } else {
     lyricsBg.classList.remove('has-image');  // the graphics until it has loaded
     lyricsBgImage.src = src;
   }
@@ -903,8 +961,9 @@ function updateBackground() {
 
 lyricsBgImage.addEventListener('load',  () => lyricsBg.classList.add('has-image'));
 lyricsBgImage.addEventListener('error', () => {
-  lyricsBg.classList.remove('has-image');
-  console.warn('Cannot load the background picture:', lyricsBgImage.getAttribute('src'));
+  if (!lyricsBgImage.getAttribute('src')) return;
+  if (!bgCandidates.length) console.warn('Cannot load the background picture:', lyricsBgImage.getAttribute('src'));
+  showNextBackground();  // e.g. a local/ picture that is not on this server: the published one
 });
 
 // A hue from 190 (cyan) through blue and violet to 330 (magenta), picked by the movement key,
@@ -933,6 +992,14 @@ backgroundBtns.forEach(btn => {
   });
 });
 
+picturesBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    setPictureVersion(btn.dataset.pictures);
+    btn.blur();  // so Space doesn't re-activate the button
+  });
+});
+
+setPictureVersion(PICTURE_VERSIONS.includes(urlParam('pictures')) ? urlParam('pictures') : '1');
 setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'image');
 
 /* ================================================================
