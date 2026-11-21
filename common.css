@@ -830,9 +830,28 @@ body {
   color: #000;
 }
 
+/* A touch screen keeps :hover after a tap, which would leave the button in the lighter hover color: there it keeps
+   its own color, as it does on a computer once the mouse moves off */
+@media (hover: none) {
+  #btn-play-pause:hover,
+  #btn-play-pause-max:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+/* The play / pause icon (an SVG, see showPlaying in app.js): one size for both, so the button keeps its width */
+#btn-play-pause svg,
+#btn-play-pause-max svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+}
+
 /* The five playback buttons (Max, inside #time-max, is not a direct child): compact */
 #playback-controls > .ctrl-btn { padding: 4px 8px; font-size: 0.72rem; }
-#playback-controls > #btn-play-pause { padding: 4px 12px; min-width: 36px; font-size: 0.88rem; }
+#playback-controls > #btn-play-pause { padding: 4px 11px; min-width: 36px; font-size: 0.88rem; }
 
 /* Max: a larger icon */
 #btn-maximize { padding: 3px 9px; font-size: 1rem; }

@@ -1608,10 +1608,13 @@ audio.addEventListener('loadedmetadata', () => {
   }
 });
 
-// The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise (followed by U+FE0E, so a phone
-// draws it as text, not as an emoji)
+// The play / pause button shows what a click does: ❚❚ while playing, ▶ otherwise. They are SVG drawings, not text
+// characters, so they look the same on every device: no font has to supply them, and a phone can't draw ▶ as an emoji
+const PLAY_ICON  = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.25 11 6l-8.5 4.75z"/></svg>';
+const PAUSE_ICON = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.6 2h3.9v8H1.6zM7.1 2H11v8H7.1z"/></svg>';
+
 function showPlaying(playing) {
-  const icon = playing ? '&#9646;&#9646;' : '&#9654;&#xFE0E;';
+  const icon = playing ? PAUSE_ICON : PLAY_ICON;
   document.getElementById('btn-play-pause').innerHTML = icon;
   document.getElementById('btn-play-pause-max').innerHTML = icon;  // top bar, maximized lyrics mode
   songDisplay.classList.toggle('playing', playing);  // the background graphics drift only then (see BACKGROUND)

@@ -190,3 +190,36 @@ Changes:
   `301 Location: /index`), so local links should leave out `index.html` or use `http-server`.
 
 The remote (GitHub Pages) needs these changes committed and pushed.
+
+---
+
+## Ask
+
+> After I asked you "On mobile devices, the style of the first 5 buttons in the playback-controls panel are different
+> from desktop, make them as desktop", you fix 4 of them, only the btn-play-pause button is still different
+
+## Response
+
+The play button's CSS was already the same on desktop and phones: same rules, and the same measured size in headless
+Chrome at phone sizes. What still differed was the device:
+
+1. **Its icons were font characters.** ▶ (U+25B6) and the pause bars ▮▮ (U+25AE) are not in Georgia, so every device
+   draws them from its own fallback font. The play button shows them larger than the other buttons (0.88rem) and
+   swaps them while playing. On a phone the fallback glyphs can differ in shape, weight and width. Even on desktop the
+   button jumped from 38 px wide (▶) to 43 px (▮▮).
+2. **Touch screens keep `:hover` after a tap**, so the play button stayed in its lighter hover gold after being tapped.
+
+Fix:
+
+- The play and pause icons are now inline SVG drawings (`PLAY_ICON` / `PAUSE_ICON` in `app.js`, written by
+  `showPlaying`; the initial ▶ in `index.html` and `index1.html`), the same approach as the Max button's icon. No
+  font is involved, so every device draws them the same. Both are 1em square, filled with the text color. The
+  triangle is sized to match the old desktop ▶.
+- The padding went from 12px to 11px, so the button is 38 × 26 px in both states on every device. It no longer widens
+  when playback starts.
+- `@media (hover: none)`: after a tap, the play buttons keep their normal gold, as on a computer once the mouse moves
+  off.
+- The maximized view's play button (`#btn-play-pause-max`) gets the same icons and hover rule.
+
+Verified in headless Chrome on desktop and an emulated touch phone (390 px, hover: none), paused and playing: the
+button is 38.1 × 26 px everywhere with the icon centered, and after a tap its background stays rgb(201, 162, 39).
