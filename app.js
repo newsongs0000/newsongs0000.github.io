@@ -351,7 +351,7 @@ function updateTimeInUrl() {
    reloading or sharing the link restores them (a missing or invalid value
    gives the default):
      highlight-mode  auto | manual                 (default auto; see LYRICS HIGHLIGHT MODE)
-     mute            1 | 0                         (default 0, unmuted; see MUTE)
+     mute            1 | 0                         (default 0, unmuted; ignored on a mobile device; see MUTE)
      show            original | translation | both (default both; see LYRICS SHOWN)
      font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
      chinese-width   the Chinese lyrics column's percent of the width, 20-80 (default 45;
@@ -750,7 +750,10 @@ lyricsShownBoxes.forEach(box => {
    index1.html (the silent page) ships the box checked and disabled (and
    hidden): the audio is then always silent, the URL parameter mute is ignored
    and not written, and the user cannot unmute. index.html (the default page)
-   has the usual, visible, unchecked box.
+   has the usual, visible, unchecked box, except on a mobile device (a touch
+   screen without a mouse), where the CSS hides it (the device's volume buttons
+   do that job): the audio is then never muted, whatever the URL parameter mute
+   says, so a link with mute=1 shared from a computer isn't silent on a phone.
 
    The silent page (index1.html) does NOT set audio.muted: on mobile browsers (iOS Safari
    in particular) an element that is muted from the start gets no audio
@@ -788,7 +791,9 @@ function silenceAudioViaWebAudio() {
   }
 }
 
-audio.muted = muteLocked ? !silenceAudioViaWebAudio() : urlParam('mute') === '1';
+// The same media query as the CSS rule that hides the Mute box on a mobile device
+const muteBoxHidden = matchMedia('(pointer: coarse) and (hover: none)').matches;
+audio.muted = muteLocked ? !silenceAudioViaWebAudio() : !muteBoxHidden && urlParam('mute') === '1';
 muteBox.checked = muteLocked || audio.muted;  // also overrides a box state a reload brings back (Firefox)
 if (!muteLocked) rewriteUrlParams({ mute: audio.muted ? 1 : 0 });
 

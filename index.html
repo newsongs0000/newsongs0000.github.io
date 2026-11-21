@@ -72,8 +72,9 @@
           <label><input type="checkbox" value="original"    checked> Original</label>
           <label><input type="checkbox" value="translation" checked> Translation</label>
         </div>
-        <div id="audio-options" role="group" aria-label="Audio">
-          <span id="audio-options-label">Audio:</span>
+        <!-- On a mobile device the Mute box is hidden and the row is titled Font: instead (see common.css) -->
+        <div id="audio-options" role="group" aria-labelledby="audio-options-label">
+          <span id="audio-options-label"><span class="label-audio">Audio:</span><span class="label-font">Font:</span></span>
           <label title="Silence the audio; it keeps playing, so the lyrics follow it as usual"><input type="checkbox" id="chk-mute"> Mute</label>
           <span id="font-size-ctl" title="Lyrics font size">
             <button class="ctrl-btn" id="btn-font-down" aria-label="Smaller lyrics">A&minus;</button>

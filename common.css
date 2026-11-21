@@ -336,6 +336,17 @@ body {
 /* index1.html hides the Mute box (display: flex above would override the hidden attribute) */
 #audio-options label[hidden] { display: none; }
 
+/* index.html titles the row Audio: (Mute and the font size), or Font: where the Mute box is hidden (below) */
+#audio-options-label .label-font { display: none; }
+
+/* A mobile device (a touch screen without a mouse) has its own volume buttons: no Mute box there, so the row holds only
+   the font size and is titled Font:, as on index1.html. app.js keeps the audio unmuted there (see MUTE) */
+@media (pointer: coarse) and (hover: none) {
+  #audio-options label:has(#chk-mute) { display: none; }
+  #audio-options-label .label-audio { display: none; }
+  #audio-options-label .label-font { display: inline; }
+}
+
 #lyrics-shown input,
 #audio-options input { accent-color: var(--accent); cursor: pointer; }
 
