@@ -833,22 +833,24 @@ body {
 
   #song-nav { padding: 6px 8px; gap: 6px; }
   #song-nav .ctrl-btn { padding: 7px 10px; }
-  /* Smaller buttons; the time and Max at the right end of their row (if they don't fit after the buttons, a row of
-     their own); the progress bar always on a row of its own below them. Less padding on the right */
-  #playback-controls { flex-wrap: wrap; justify-content: center; padding: 6px 4px 6px 8px; gap: 4px; }
-  #playback-controls .ctrl-btn { padding: 4px 7px; }
-  #playback-controls #btn-play-pause { padding: 4px 10px; min-width: 34px; }
+  /* The time and Max at the right end of their row (if they don't fit after the buttons, a row of their own); the
+     progress bar always on a row of its own below them (the sizes and spaces: see the next section) */
+  #playback-controls { flex-wrap: wrap; justify-content: center; }
   #progress-bar { flex: 1 1 100%; order: 1; }
-  #time-max { flex: 1 0 auto; justify-content: flex-end; gap: 8px; }
-  #time-display { min-width: 0; }
+  #time-max { flex: 1 0 auto; justify-content: flex-end; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; }
 }
 
-/* ─── Smartphone font sizes: in portrait (the layout above) and also in landscape, where the phone is wider than
-   700px and gets the two-pane layout, so turning the phone doesn't make the right side's text larger ─── */
+/* ─── Smartphone sizes: in portrait (the layout above) and also in landscape, where the phone is wider than 700px
+   and gets the two-pane layout, so turning the phone doesn't make the right side's text, the playback buttons and
+   the spaces between them larger (which could push Max out of sight) ─── */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  #playback-controls .ctrl-btn { font-size: 0.72rem; }
-  #playback-controls #btn-play-pause { font-size: 0.85rem; }
+  /* Smaller buttons, closer together; less padding on the right */
+  #playback-controls { padding: 6px 4px 6px 8px; gap: 4px; }
+  #playback-controls .ctrl-btn { padding: 4px 7px; font-size: 0.72rem; }
+  #playback-controls #btn-play-pause { padding: 4px 10px; min-width: 34px; font-size: 0.85rem; }
+  #time-max { gap: 8px; }
+  #time-display { min-width: 0; }
   #info-pane { font-size: 0.85em; }
 
   /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
