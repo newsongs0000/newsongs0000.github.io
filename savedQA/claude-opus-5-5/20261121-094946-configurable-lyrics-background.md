@@ -155,3 +155,38 @@ which cut Isaiah's head off. The crop now starts at 1 px.
 
 Verified in headless Chrome: all 32 movements load their own picture, and Messiah V and 安魂曲 VI stay readable behind
 the lyrics.
+
+---
+
+## Ask
+
+> New background images are not showing, both local server and remote, I also restarted local server
+
+## Response
+
+Both servers did serve the new pictures, and the page loaded them: in headless Chrome `Chapter1-bg.jpg` loaded
+(1024 px) on GitHub Pages and on the local `npx serve`. They weren't visible in practice:
+
+1. **Before playback** the "▶ Click to play" overlay covered the lyrics area with an opaque panel holding the
+   movement's `thumbnail`. That is still the same composer portrait for every movement, so the new pictures never
+   showed there.
+2. **During playback** the picture showed, but darkened 75% and blurred 10 px, which made a painting like *The Light of
+   the World* an unrecognizable dark blur.
+
+Changes:
+
+- **Image mode before playback** (`common.css`): the overlay becomes see-through (no thumbnail, no opaque panel), so
+  the movement's painting fills the lyrics area, sharp and not dimmed, with "▶ Click to play" centered over it. The
+  lyrics stay hidden until playback, as before. When the music starts the painting blurs and dims over 0.8 s while
+  the lyrics fade in. In None and Graphics modes, and for a movement without a picture, the usual thumbnail overlay
+  shows.
+- **Lighter defaults**: `--bg-dim` went from 0.75 to 0.7 and `--bg-blur` from 10px to 4px, so the painting stays
+  recognizable behind the lyrics. Checked on a dark painting (Holman Hunt), a light silk painting (Huang Gongwang)
+  and Dürer's blue paper: the current and nearby lines stay clearly readable. `app.js` comments and the README table
+  were updated to match.
+- The "Click to play" pill is now 80% black (was 55%), so it stays readable over a light painting.
+- README: the Picture and Background descriptions explain the pre-play view. A note under "Running an HTTP server"
+  explains that `npx serve` redirects `/index.html?…` to `/index` and drops the parameters (confirmed with `curl -I`:
+  `301 Location: /index`), so local links should leave out `index.html` or use `http-server`.
+
+The remote (GitHub Pages) needs these changes committed and pushed.

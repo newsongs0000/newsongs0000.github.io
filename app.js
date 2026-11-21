@@ -115,7 +115,7 @@ async function loadArtists() {
    (mute is used only by index.html; index1.html is always silent, see MUTE):
    index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed&bg=image
    (see VIEW OPTIONS IN URL)
-   The lyrics background's picture, dimming and blur: index.html?bg=image&bg-image=pic.jpg&bg-dim=75&bg-blur=10
+   The lyrics background's picture, dimming and blur: index.html?bg=image&bg-image=pic.jpg&bg-dim=70&bg-blur=4
    (see BACKGROUND)
    Selected movement: index.html?movement=<artist id>/<work id>/<movement id>
    (see MOVEMENT IN URL), at a position in whole seconds: &t=83 (see POSITION IN URL)
@@ -863,7 +863,7 @@ muteBox.addEventListener('change', () => {
                A movement without one, or whose picture can't be loaded,
                gets the graphics instead.
    The page color covers the background at bg-dim percent (0-95, default
-   75) and the picture is blurred by bg-blur px (0-40, default 10), so the
+   70) and the picture is blurred by bg-blur px (0-40, default 4), so the
    lyrics stay easy to read; both come from the URL only (see common.css
    for the defaults, --bg-dim and --bg-blur). Image is the default; the
    choice is kept in the URL parameter bg (see VIEW OPTIONS IN URL).

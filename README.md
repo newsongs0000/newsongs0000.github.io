@@ -76,6 +76,9 @@ Run one of these commands in the project folder (the folder that contains `index
   `-p 9000` to use another port, or `-a 127.0.0.1` to accept connections from this computer only.
 - **Other devices.** `http-server` lists the addresses it listens on, including the network one (e.g.
   `http://192.168.1.20:8080`). Open that address on the other device. Your firewall may ask whether to allow it.
+- **`serve` and links to `index.html`.** `serve` redirects `/index.html?…` to `/index` and drops everything after
+  the `?`, so a link such as `index.html?movement=…&bg=graphics` opens the first movement with the default options.
+  Leave out `index.html` (`http://localhost:3000/?movement=…`), or use `http-server`, which keeps the link as it is.
 - Press **Ctrl+C** in the terminal to stop the server.
 
 To check that a server supports Range requests, ask it for part of an MP3. It should answer `206`, not `200`:
@@ -185,7 +188,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It turns gold under the mouse. Double-click it to go back to 45% for the Chinese column. The new width belongs to
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
-  - **Picture.** The movement's picture (`thumbnail`) covers the lyrics until playback starts, with "▶ Click to play".
+  - **Picture.** The movement's picture (`thumbnail`) covers the lyrics until playback starts, with "▶ Click to play"
+    (in the Image background mode, the background picture does instead: see **Background** below).
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
@@ -194,14 +198,16 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     - **None**: the plain page color.
     - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
       Their hue comes from the movement, so each movement has its own colors.
-    - **Image**: a picture, blurred and darkened. It is the `bg-image` URL parameter if given (one picture for
+    - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with "▶ Click to play" over it
+      (instead of the thumbnail); when the music starts it blurs and darkens behind the lyrics. It is the `bg-image` URL
+      parameter if given (one picture for
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`. A movement with no
       picture, or one that cannot be loaded, shows the Graphics instead. Every movement of the bundled works has a
       `background` of its own: a public-domain painting from Wikimedia Commons that fits its text, e.g. Zurbarán's
       *Agnus Dei* for "Behold the Lamb of God", or Emperor Huizong's *Auspicious Cranes* for 永享自由. The
       `backgrounds.md` file in each work's folder lists them, with their sources and licenses.
 
-    Either way the page color covers the background at 75% (`bg-dim`) and the lyrics get a soft shadow, so they stay
+    Either way the page color covers the background at 70% (`bg-dim`) and the lyrics get a soft shadow, so they stay
     easy to read. With the system's "reduce motion" setting on, the graphics never move.
 - **Bottom info pane.** Shows the artist's name, the work's title with its opus number and year, the premiere
   (`Premiere: …`) and the work's description.
@@ -304,8 +310,8 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
 | `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `image` |
 | `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
-| `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `75` |
-| `bg-blur` | Blur of the `image` background, in pixels (0 to 40) | `10` |
+| `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `70` |
+| `bg-blur` | Blur of the `image` background, in pixels (0 to 40) | `4` |
 | `t` | The audio position of the `movement` above, in whole seconds (rounded down), e.g. `83` (used only with `movement`). The app rewrites it about once a second while the audio plays or you seek, so reloading or sharing the URL continues from there; it is removed when you select another movement | `0` |
 
 For example:

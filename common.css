@@ -13,8 +13,8 @@
   --lyrics-current-border: #c9a227;
   --lyrics-chinese-width: 45%;   /* bilingual lyrics: the Chinese column (default; drag the divider to change) */
   --lyrics-original-width: var(--lyrics-chinese-width);  /* the left column (see "Bilingual lyrics" below) */
-  --bg-dim: 0.75;   /* lyrics background: how much of it the page color covers, 0 to 0.95 (URL: bg-dim, percent) */
-  --bg-blur: 10px;  /* lyrics background: blur of the picture (URL: bg-blur, px) */
+  --bg-dim: 0.7;    /* lyrics background: how much of it the page color covers, 0 to 0.95 (URL: bg-dim, percent) */
+  --bg-blur: 4px;   /* lyrics background: blur of the picture (URL: bg-blur, px) */
 
   --bg-primary:   #0d1117;
   --bg-secondary: #161b22;
@@ -491,6 +491,7 @@ body {
   inset: 0;
   background: var(--bg-primary);
   opacity: var(--bg-dim);
+  transition: opacity 0.8s ease;
 }
 
 .bg-image,
@@ -509,7 +510,22 @@ body {
   object-position: center 30%;  /* a portrait's face rather than its chest */
   filter: blur(var(--bg-blur)) saturate(0.85);
   transform: scale(1.08);
+  transition: filter 0.8s ease, transform 0.8s ease;
 }
+
+/* Image mode before playback, while the thumbnail overlay is up (see "Thumbnail overlay" below): the movement's
+   picture is shown as it is, sharp and not dimmed, filling the song area, with "▶ Click to play" over it; the overlay
+   is see-through, its thumbnail and the lyrics hidden. When the music starts (the overlay goes) the picture blurs and
+   dims behind the lyrics as they fade in. Without a picture (.has-image) the usual thumbnail overlay shows */
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-overlay { background: transparent; }
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) .thumbnail-panel { visibility: hidden; }
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-play-hint { left: 50%; }
+#lyrics-container { transition: opacity 0.6s ease; }
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image):has(#thumbnail-overlay:not(.hidden)) #lyrics-container {
+  opacity: 0;
+}
+#song-display[data-bg="image"]:has(#thumbnail-overlay:not(.hidden)) #lyrics-bg::after { opacity: 0; }
+#song-display[data-bg="image"]:has(#thumbnail-overlay:not(.hidden)) .bg-image { filter: none; transform: none; }
 
 /* Graphics: three soft lights, two in the movement's hue (--bg-hue, set by app.js) and one in the accent gold,
    drifting slowly while the music plays (#song-display.playing) and still otherwise. Only transforms are animated,
@@ -743,7 +759,7 @@ body {
   bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.8);  /* dark enough to read over a light picture too (Image background mode) */
   color: var(--accent);
   font-size: 0.8rem;
   padding: 5px 14px;
