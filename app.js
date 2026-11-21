@@ -1041,7 +1041,12 @@ function updateBackground() {
   picturesRow.hidden = songDisplay.dataset.bg !== 'image' || !movement?.background2;
   const names = currentWork()?.pictureVersions ?? [];
   picturesBtns.forEach((btn, i) => { btn.title = names[i] || `Image set ${i + 1}`; });
-  if (songDisplay.dataset.bg !== 'image') return;
+  if (songDisplay.dataset.bg === 'image') updateBackgroundImage(movement);
+  updatePictureCaption();
+}
+
+// Image mode: show the movement's picture, unless it is the one already shown or loading
+function updateBackgroundImage(movement) {
   const candidates = backgroundCandidates(movement, currentWork());
   if (candidates.join('\n') === lyricsBg.dataset.candidates) return;
   lyricsBg.dataset.candidates = candidates.join('\n');
@@ -1063,11 +1068,15 @@ function showNextBackground() {
   }
 }
 
-lyricsBgImage.addEventListener('load',  () => lyricsBg.classList.add('has-image'));
+lyricsBgImage.addEventListener('load', () => {
+  lyricsBg.classList.add('has-image');
+  updatePictureCaption();
+});
 lyricsBgImage.addEventListener('error', () => {
   if (!lyricsBgImage.getAttribute('src')) return;
   if (!bgCandidates.length) console.warn('Cannot load the background picture:', lyricsBgImage.getAttribute('src'));
   showNextBackground();  // e.g. a local/ picture that is not on this server: the published one
+  updatePictureCaption();
 });
 
 /* ================================================================
@@ -1108,15 +1117,62 @@ function showNextOverlayPicture() {
   else pictureOverlayImg.removeAttribute('src');
 }
 
+pictureOverlayImg.addEventListener('load', updatePictureCaption);
 pictureOverlayImg.addEventListener('error', () => {
   if (!pictureOverlayImg.getAttribute('src')) return;
   if (!overlayCandidates.length) console.warn('Cannot load the picture:', pictureOverlayImg.getAttribute('src'));
   showNextOverlayPicture();
+  updatePictureCaption();
 });
 
 // A new selection: the overlay covers the lyrics until playback starts, if there is a picture
 function showPictureOverlay() {
   pictureOverlay.classList.toggle('hidden', overlayPictures().length === 0);
+}
+
+/* ================================================================
+   PICTURE CAPTION
+   While a movement's background picture is shown before playback (in the
+   overlay, or filling the area in Image mode), a caption above "▶ Click to
+   play" names it: its title, then "by" its painter, from work.js —
+   backgroundTitle and backgroundPainter for the background, and
+   background2Title and background2Painter for the background2 (see
+   PICTURE VERSIONS). A thumbnail, the bg-image URL parameter's picture, or
+   a picture without a title has no caption. It goes with the overlay when
+   the music starts.
+================================================================ */
+const pictureCaption = document.getElementById('picture-caption');
+
+// The title and painter of a picture of the selected movement, or null
+function pictureCaptionFor(src) {
+  const movement = currentMovement();
+  if (!movement || !src) return null;
+  for (const key of ['background2', 'background']) {
+    if (movement[`${key}Title`] && pictureList(movement[key]).includes(src)) {
+      return { title: movement[`${key}Title`], painter: movement[`${key}Painter`] };
+    }
+  }
+  return null;
+}
+
+// The picture shown before playback: Image mode's once it has loaded, else the overlay's once it has
+function shownPicture() {
+  if (songDisplay.dataset.bg === 'image' && lyricsBg.classList.contains('has-image')) {
+    return lyricsBgImage.getAttribute('src');
+  }
+  const img = pictureOverlayImg;
+  return img.complete && img.naturalWidth ? img.getAttribute('src') : null;
+}
+
+function updatePictureCaption() {
+  const caption = pictureCaptionFor(shownPicture());
+  pictureCaption.hidden = !caption;
+  pictureCaption.replaceChildren();
+  if (!caption) return;
+  const title = document.createElement('cite');
+  title.textContent = caption.title;
+  pictureCaption.append(title);
+  if (caption.painter) pictureCaption.append(` by ${caption.painter}`);
 }
 
 // A hue from 190 (cyan) through blue and violet to 330 (magenta), picked by the movement key,

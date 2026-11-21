@@ -527,7 +527,7 @@ body {
    dims behind the lyrics as they fade in. Without a picture (.has-image) the usual thumbnail overlay shows */
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-overlay { background: transparent; }
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image) .thumbnail-panel { visibility: hidden; }
-#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-play-hint { left: 50%; }
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-labels { left: 16px; }
 #lyrics-container { transition: opacity 0.6s ease; }
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image):has(#thumbnail-overlay:not(.hidden)) #lyrics-container {
   opacity: 0;
@@ -762,11 +762,33 @@ body {
   display: block;
 }
 
-#thumbnail-play-hint {
+/* The picture's caption (see PICTURE CAPTION in app.js) above the hint, centered at the bottom */
+#thumbnail-labels {
   position: absolute;
   bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+#picture-caption {
+  max-width: 40em;
+  background: rgba(0,0,0,0.7);  /* readable over any picture */
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  padding: 4px 12px;
+  border-radius: 12px;
+  text-align: center;
+}
+#picture-caption[hidden] { display: none; }
+#picture-caption cite { font-style: italic; }
+
+#thumbnail-play-hint {
   background: rgba(0,0,0,0.8);  /* dark enough to read over a light picture too (Image background mode) */
   color: var(--accent);
   font-size: 0.8rem;
@@ -777,9 +799,9 @@ body {
   pointer-events: none;
 }
 
-/* Bilingual: the hint is centered in the second panel */
-#right-pane:has(#lyrics-inner.bilingual) #thumbnail-play-hint {
-  left: calc(var(--lyrics-original-width) + (100% - var(--lyrics-original-width)) / 2);
+/* Bilingual: the caption and hint are centered in the second panel, beside the picture */
+#right-pane:has(#lyrics-inner.bilingual) #thumbnail-labels {
+  left: calc(var(--lyrics-original-width) + 16px);
 }
 
 /* ─── Playback controls (first panel of the right pane) ─── */

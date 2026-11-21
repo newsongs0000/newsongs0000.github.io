@@ -199,6 +199,11 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
+  - **Caption.** While a movement's background picture is shown before playback (in either mode), a caption above
+    "▶ Click to play" names it: its title, then "by" its painter, e.g. *Agnus Dei* by Francisco de Zurbarán. They come
+    from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and `background2Painter` for image
+    set 2). A thumbnail, a `bg-image` picture, or a picture without a title has no caption; the caption goes with the
+    picture when the music starts.
   - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
     and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `none` by default).
     - **None**: the plain page color.
@@ -510,8 +515,12 @@ onePageMp3Work({
       audio: "Chapter1.mp3",
       thumbnail: "Chapter1.jpg",  // optional (defaults to the work's): leave it out when every movement has the same
       background: "Chapter1-bg.jpg",  // optional: the movement's picture (defaults to the thumbnail)
-      background2: "Chapter1-bg2.jpg"  // optional: image set 2 (either may be a list of files, tried in order
+      backgroundTitle: "Jesus Preaching from a Boat on Lake Tiberias",  // the picture's caption: title (optional)
+      backgroundPainter: "Xu Jihua 徐济华",  // ... "by" painter (optional)
+      background2: "Chapter1-bg2.jpg",  // optional: image set 2 (either may be a list of files, tried in order
                                   // until one loads: see Pictures on this computer only)
+      background2Title: "富春山居图 Dwelling in the Fuchun Mountains (detail)",  // image set 2's caption (optional)
+      background2Painter: "Huang Gongwang 黄公望"
     }
   ]
 });

@@ -108,3 +108,50 @@ remove all movement level thumbnail in 安魂曲 (Chinese Requiem),
   picture, not a movement `Chapter1.jpg`.
 - `Chapter1.jpg` … `Chapter8.jpg` are still in the folder and tracked by git, but nothing uses them now. They were not
   deleted.
+
+## Ask
+
+When the background image is displayed, display a title to descript the image followed text "by <painter>"
+
+## Answer
+
+While a movement's background picture is shown before playback, a caption above "▶ Click to play" now reads
+"*Title* by Painter". It shows in both cases:
+
+- None and Graphics modes, where the picture is in the overlay.
+- Image mode, where the picture fills the area, sharp.
+
+In the two-column (bilingual) layout the caption sits in the second column, beside the picture. It is hidden with the
+picture when the music starts, so it never covers the lyrics.
+
+- **Data** (work.js): new movement fields `backgroundTitle` and `backgroundPainter`, and `background2Title` and
+  `background2Painter` for image set 2. They were filled for all 32 pictures (Messiah 9, 弥赛亚 9, Mozart Requiem 6,
+  安魂曲 8 + 8), from each folder's `backgrounds.md`. The Chinese pictures have Chinese and English titles and
+  painters, e.g. "溪山行旅图 Travelers Among Mountains and Streams by Fan Kuan 范宽".
+- **app.js**: new section PICTURE CAPTION. The caption is for the picture actually on screen: Image mode's picture
+  once it has loaded, otherwise the overlay's. It matches that picture against the movement's `background` and
+  `background2` lists. A work or movement thumbnail, a `bg-image` URL picture, or a picture without a title shows no
+  caption. The caption updates on each picture's load and error, on a selection change, on an image set change and
+  on a Background mode change.
+- **index.html / index1.html**: `#picture-caption` and the hint are wrapped in `#thumbnail-labels`.
+- **common.css**: `#thumbnail-labels` positions the caption and hint together, bottom center, or centered in the
+  second column when bilingual. `#picture-caption` is a dark rounded box with the title in italics.
+- **README**: added a **Caption** item under Screen layout, and the four fields in the `work.js` example.
+
+Tested in headless Chrome:
+
+- Messiah I shows "The Light of the World by William Holman Hunt".
+- A selected work shows no caption.
+- 安魂曲 II shows "耶穌步海 Jesus Walks on the Sea by Giulio Aleni 艾儒略". In image set 2 it shows Fan Kuan's
+  picture, and the same in Image mode.
+- The caption fades out with the overlay on play.
+- `bg-image=…` shows no caption.
+- The bilingual and phone-width layouts are correct.
+
+Choices worth checking:
+
+- Messiah VII's mosaic is "by an unknown Byzantine artist". The source names only the photographer.
+- 安魂曲 III's Khocho wall painting is "by an unknown Church of the East artist".
+- The Ghent Altarpiece is "by Hubert and Jan van Eyck", the usual attribution; `backgrounds.md` says Jan van Eyck.
+- The 天主降生出像經解 woodcuts are credited to Giulio Aleni 艾儒略, as in `backgrounds.md`. He wrote the book; the
+  woodcut artist is not named.

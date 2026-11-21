@@ -153,7 +153,11 @@
       <div id="thumbnail-overlay" class="hidden">
         <div class="thumbnail-panel"><img id="thumbnail-img" src="" alt=""></div>
         <div class="thumbnail-panel thumbnail-panel-2"></div>
-        <div id="thumbnail-play-hint">&#9654; Click to play</div>
+        <!-- The picture's title and painter (see PICTURE CAPTION in app.js), above the hint -->
+        <div id="thumbnail-labels">
+          <div id="picture-caption" hidden></div>
+          <div id="thumbnail-play-hint">&#9654; Click to play</div>
+        </div>
       </div>
       <div id="manual-hint" hidden><span id="rec-indicator" hidden>&#9679; REC</span>&darr;&rarr; next &nbsp; &uarr;&larr; back &nbsp; (swipe: up = next, down = back)</div>
       <div id="lyrics-container">

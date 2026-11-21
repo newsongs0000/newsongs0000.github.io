@@ -26,7 +26,11 @@ onePageMp3Work({
       description: "第一乐章“永远安息”是安魂曲的开篇，表达了对逝者的哀悼和对永恒安息的祈愿。",
       audio: "Chapter1.mp3",
       background: "Chapter1-bg.jpg",
-      background2: "Chapter1-bg2.jpg"
+      backgroundTitle: "Jesus Preaching from a Boat on Lake Tiberias",
+      backgroundPainter: "Xu Jihua 徐济华",
+      background2: "Chapter1-bg2.jpg",
+      background2Title: "富春山居图 Dwelling in the Fuchun Mountains (detail)",
+      background2Painter: "Huang Gongwang 黄公望"
     },
     {
       id: "ch2",
@@ -39,7 +43,11 @@ onePageMp3Work({
       voicingTranslation: "Mezzo-soprano solo and Chorus",
       audio: "Chapter2.mp3",
       background: "Chapter2-bg.jpg",
-      background2: "Chapter2-bg2.jpg"
+      backgroundTitle: "耶穌步海 Jesus Walks on the Sea",
+      backgroundPainter: "Giulio Aleni 艾儒略",
+      background2: "Chapter2-bg2.jpg",
+      background2Title: "溪山行旅图 Travelers Among Mountains and Streams",
+      background2Painter: "Fan Kuan 范宽"
     },
     {
       id: "ch3",
@@ -52,7 +60,11 @@ onePageMp3Work({
       voicingTranslation: "Chorus",
       audio: "Chapter3.mp3",
       background: "Chapter3-bg.jpg",
-      background2: "Chapter3-bg2.jpg"
+      backgroundTitle: "Palm Sunday (probably), wall painting at Khocho 高昌",
+      backgroundPainter: "an unknown Church of the East artist",
+      background2: "Chapter3-bg2.jpg",
+      background2Title: "千里江山图 A Thousand Li of Rivers and Mountains (detail)",
+      background2Painter: "Wang Ximeng 王希孟"
     },
     {
       id: "ch4",
@@ -65,7 +77,11 @@ onePageMp3Work({
       voicingTranslation: "Chorus",
       audio: "Chapter4.mp3",
       background: "Chapter4-bg.jpg",
-      background2: "Chapter4-bg2.jpg"
+      backgroundTitle: "天主降生聖像 The Holy Image of the Incarnate Lord",
+      backgroundPainter: "Giulio Aleni 艾儒略",
+      background2: "Chapter4-bg2.jpg",
+      background2Title: "早春图 Early Spring",
+      background2Painter: "Guo Xi 郭熙"
     },
     {
       id: "ch5",
@@ -78,7 +94,11 @@ onePageMp3Work({
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter5.mp3",
       background: "Chapter5-bg.jpg",
-      background2: "Chapter5-bg2.jpg"
+      backgroundTitle: "耶穌被釘靈蹟疊現 The Crucifixion",
+      backgroundPainter: "Giulio Aleni 艾儒略",
+      background2: "Chapter5-bg2.jpg",
+      background2Title: "二羊图 Sheep and Goat",
+      background2Painter: "Zhao Mengfu 赵孟頫"
     },
     {
       id: "ch6",
@@ -91,7 +111,11 @@ onePageMp3Work({
       voicingTranslation: "Tenor solo and Chorus",
       audio: "Chapter6.mp3",
       background: "Chapter6-bg.jpg",
-      background2: "Chapter6-bg2.jpg"
+      backgroundTitle: "起三十八年之癱 Healing the Man Sick for 38 Years",
+      backgroundPainter: "Giulio Aleni 艾儒略",
+      background2: "Chapter6-bg2.jpg",
+      background2Title: "瑞鹤图 Auspicious Cranes",
+      background2Painter: "Emperor Huizong of Song 宋徽宗"
     },
     {
       id: "ch7",
@@ -104,7 +128,11 @@ onePageMp3Work({
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter7.mp3",
       background: "Chapter7-bg.jpg",
-      background2: "Chapter7-bg2.jpg"
+      backgroundTitle: "世界終盡降臨審判生死 The Last Judgment",
+      backgroundPainter: "Giulio Aleni 艾儒略",
+      background2: "Chapter7-bg2.jpg",
+      background2Title: "云生沧海 Clouds Rising from the Green Sea",
+      background2Painter: "Ma Yuan 马远"
     },
     {
       id: "ch8",
@@ -117,7 +145,11 @@ onePageMp3Work({
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter8.mp3",
       background: "Chapter8-bg.jpg",
-      background2: "Chapter8-bg2.jpg"
+      backgroundTitle: "The Wedding at Cana",
+      backgroundPainter: "Xu Jihua 徐济华",
+      background2: "Chapter8-bg2.jpg",
+      background2Title: "鹊华秋色图 Autumn Colors on the Qiao and Hua Mountains",
+      background2Painter: "Zhao Mengfu 赵孟頫"
     }
   ]
 });
