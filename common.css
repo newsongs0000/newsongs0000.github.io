@@ -71,7 +71,8 @@ body {
 }
 
 /* ─── Songs panel: the tree under a title bar with an arrow; open by default ─── */
-/* It keeps the pane's free height even when collapsed, so the panels under it stay docked at the bottom */
+/* It keeps the pane's free height even when collapsed, so the panels under it stay docked at the bottom (not on a
+   mobile device, where the timing panel is hidden: see below) */
 #tree-panel {
   flex: 1;
   min-height: 0;
@@ -220,9 +221,11 @@ body {
 #timing-panel.collapsed #timing-body { display: none; }
 
 /* The lyrics timing recorder is for a computer: never shown on a mobile device (a phone in portrait or landscape, a
-   tablet: a touch screen without a mouse), nor in a window as narrow as a phone's */
+   tablet: a touch screen without a mouse), nor in a window as narrow as a phone's. With nothing to keep docked at the
+   bottom, the collapsed Songs panel shrinks to its title bar, so the View Options panel moves up under it */
 @media (max-width: 700px), (pointer: coarse) and (hover: none) {
   #timing-panel { display: none; }
+  #tree-panel.collapsed { flex: none; }
 }
 
 #timing-status {
