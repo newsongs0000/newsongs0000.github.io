@@ -196,7 +196,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
       Their hue comes from the movement, so each movement has its own colors.
     - **Image**: a picture, blurred and darkened. It is the `bg-image` URL parameter if given (one picture for
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`. A movement with no
-      picture, or one that cannot be loaded, shows the Graphics instead.
+      picture, or one that cannot be loaded, shows the Graphics instead. Every movement of the bundled works has a
+      `background` of its own: a public-domain painting from Wikimedia Commons that fits its text, e.g. Zurbarán's
+      *Agnus Dei* for "Behold the Lamb of God", or Emperor Huizong's *Auspicious Cranes* for 永享自由. The
+      `backgrounds.md` file in each work's folder lists them, with their sources and licenses.
 
     Either way the page color covers the background at 75% (`bg-dim`) and the lyrics get a soft shadow, so they stay
     easy to read. With the system's "reduce motion" setting on, the graphics never move.
@@ -560,6 +563,7 @@ assets/
       work.js
       Chapter1..8.mp3      audio
       Chapter1..8.jpg      pictures
+      Chapter1..8-bg.jpg   Image backgrounds: Chinese paintings (Song–Yuan), credited in backgrounds.md
       Chapter1..8.timing.js  lyrics + timing
       Lyrics.txt, *.pdf, *.md  source material and notes (not read by the app)
   Handel/                  亨德尔 — Messiah (弥赛亚, HWV 56), 9 movements: one per band of the 1966 Philips LP set
@@ -568,19 +572,21 @@ assets/
       work.js
       Chapter1..9.mp3      audio: Overture, then Nos. 1–52 in 8 tracks
       Handel.jpg           picture shared by all movements (Thomas Hudson's 1749 portrait, public domain)
+      Chapter1..9-bg.jpg   Image backgrounds: paintings of each movement's text, credited in backgrounds.md
       Chapter1..9.timing.js  lyrics: English libretto as sung (repeats included) + 和合本 translation, a heading
                            line per number; timed from a Whisper transcription of the recording
     MessiahChinese/        弥赛亚（中文版）: the same oratorio sung in Chinese (performers unknown), from
       work.js              https://www.bilibili.com/video/BV1eb4y1h7Va/, in the same 9 chapters as Messiah/
       Chapter1..9.mp3      audio: Nos. 1–55 as numbered in the video (Sinfonia = No. 1, Amen = No. 55)
       Chapter1..9.timing.js  lyrics: Chinese as sung + English libretto, timed from the video's subtitles;
-                           the picture is Messiah/Handel.jpg
+                           the picture is Messiah/Handel.jpg, the backgrounds Messiah/Chapter1..9-bg.jpg
   Mozart/                  莫扎特 — Requiem (安魂曲, K. 626), 6 movements: one per band of the 1971 Deutsche
     artist.js              Grammophon LP (Karl Böhm, Wiener Philharmoniker), from the Internet Archive
     Requiem/
       work.js
       Chapter1..6.mp3      audio: Nos. 1–7 (side 1) in one track, then Nos. 8–12 one track each
       Mozart.jpg           picture shared by all movements (Barbara Krafft's 1819 portrait, public domain)
+      Chapter1..6-bg.jpg   Image backgrounds: paintings of each movement's text, credited in backgrounds.md
       Chapter1..6.timing.js  lyrics: Latin text + Chinese translation, a heading line per number
     Symphony40/            example entry (its audio and lyrics are a placeholder copy of Chinese Requiem I)
   Mahler/                  example entry that shows the layout for more artists

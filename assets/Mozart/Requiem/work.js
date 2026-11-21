@@ -26,7 +26,8 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音、女低音、男高音、男低音",
       description: "1 Requiem aeternam – Kyrie (chorus, soprano); 2 Dies irae (chorus); 3 Tuba mirum (soloists); 4 Rex tremendae (chorus); 5 Recordare (soloists); 6 Confutatis (chorus); 7 Lacrimosa (chorus).",
       audio: "Chapter1.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter1-bg.jpg"
     },
     {
       id: "ch2",
@@ -39,7 +40,8 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音、女低音、男高音、男低音",
       description: "8 Domine Jesu (chorus, soloists), ending with the fugue Quam olim Abrahae.",
       audio: "Chapter2.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter2-bg.jpg"
     },
     {
       id: "ch3",
@@ -52,7 +54,8 @@ onePageMp3Work({
       voicingTranslation: "合唱",
       description: "9 Hostias (chorus), ending with the fugue Quam olim Abrahae repeated from No. 8.",
       audio: "Chapter3.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter3-bg.jpg"
     },
     {
       id: "ch4",
@@ -65,7 +68,8 @@ onePageMp3Work({
       voicingTranslation: "合唱",
       description: "10 Sanctus (chorus), ending with the fugue Hosanna in excelsis.",
       audio: "Chapter4.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter4-bg.jpg"
     },
     {
       id: "ch5",
@@ -78,7 +82,8 @@ onePageMp3Work({
       voicingTranslation: "女高音、女低音、男高音、男低音；合唱",
       description: "11 Benedictus (soloists), ending with the Hosanna fugue (chorus).",
       audio: "Chapter5.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter5-bg.jpg"
     },
     {
       id: "ch6",
@@ -91,7 +96,8 @@ onePageMp3Work({
       voicingTranslation: "合唱；女高音",
       description: "12 Agnus Dei (chorus), followed by the Communio Lux aeterna (soprano, chorus), which returns to the music of the Introitus and the Kyrie fugue.",
       audio: "Chapter6.mp3",
-      thumbnail: "Mozart.jpg"
+      thumbnail: "Mozart.jpg",
+      background: "Chapter6-bg.jpg"
     }
   ]
 });

@@ -99,3 +99,59 @@ At 320 px the time and Max wrap to their own row, as the README already describe
 225 px.
 
 Not changed: Prev / Next keep their smaller phone size, and their ◀ ▶ could still show as emoji on an iPhone.
+
+---
+
+## Ask
+
+> Find different background image for different movements if you can find on internet; if you can't find any more,
+> just use the same ones.
+
+(Mid-way: "downloading is stuck?")
+
+## Response
+
+Every movement now has its own Image background. That's 23 pictures for 32 movements: the Chinese Messiah reuses the
+English Messiah's, movement for movement. Each is a painting from Wikimedia Commons whose subject fits the movement's
+text. All are public domain except El Greco's *Christ Healing the Blind*, which the Met released as CC0.
+
+| Movement | Picture |
+|---|---|
+| Messiah I Overture | Holman Hunt, *The Light of the World* |
+| Messiah II Comfort ye (Isaiah 40) | Michelangelo, *Isaiah* (Sistine ceiling) |
+| Messiah III Nos. 7–15 (the shepherds) | Govert Flinck, *Angels Announcing the Birth of Christ to the Shepherds* |
+| Messiah IV the eyes of the blind | El Greco, *Christ Healing the Blind* |
+| Messiah V Behold the Lamb of God | Zurbarán, *Agnus Dei* |
+| Messiah VI the Passion | Velázquez, *Christ Crucified* |
+| Messiah VII Hallelujah | Christ Pantocrator, Deesis mosaic, Hagia Sophia |
+| Messiah VIII I know that my Redeemer liveth | Piero della Francesca, *Resurrection* |
+| Messiah IX Worthy is the Lamb | van Eyck, *Adoration of the Mystic Lamb* |
+| Mozart I Dies irae … Lacrimosa | Michelangelo, *The Last Judgment* |
+| Mozart II Domine Jesu (St Michael) | Guido Reni, *St Michael* |
+| Mozart III Hostias (prayers) | Dürer, *Praying Hands* |
+| Mozart IV Sanctus | Doré, *Paradiso* Canto 31 (the heavenly rose) |
+| Mozart V Benedictus | Giotto, *Entry into Jerusalem* |
+| Mozart VI Lux aeterna | Bosch, *Ascent of the Blessed* |
+| 安魂曲 I 永远安息 | 黄公望《富春山居图》 |
+| 安魂曲 II 深处祷告 | 范宽《溪山行旅图》 |
+| 安魂曲 III 称颂耶稣 | 王希孟《千里江山图》 |
+| 安魂曲 IV 圣洁颂歌 | 郭熙《早春图》 |
+| 安魂曲 V 羔羊赞颂 | 赵孟頫《二羊图》 |
+| 安魂曲 VI 永享自由 | 宋徽宗《瑞鹤图》 |
+| 安魂曲 VII 永远照耀 | 马远《水图·云生苍海》 |
+| 安魂曲 VIII 诗篇二十三 | 赵孟頫《鹊华秋色图》 |
+
+- Files: `assets/<Artist>/<Work>/ChapterN-bg.jpg`, each cropped to 3:2 around its subject (a face, the Lamb, the
+  light) and saved 1024 px wide at JPEG quality 50. They total 3.5 MB; a blurred background needs no more.
+- `work.js`: every movement has a `background`. `MessiahChinese` uses `../Messiah/ChapterN-bg.jpg`.
+- Credits: a `backgrounds.md` in each work folder lists every file with the movement text it illustrates, the Commons
+  page, the artist, the date and the license.
+- `README.md`: the Background section and the project structure mention the new pictures.
+
+On "downloading is stuck?": yes. Commons kept answering HTTP 429 (too many requests) for non-standard thumbnail sizes
+(e.g. 1098 px) and for downloads of original files, and the script kept waiting and retrying. Changing it to request
+only Wikimedia's standard thumbnail widths fixed it. A second problem: `sips` treats a crop offset of 0 as "center",
+which cut Isaiah's head off. The crop now starts at 1 px.
+
+Verified in headless Chrome: all 32 movements load their own picture, and Messiah V and 安魂曲 VI stay readable behind
+the lyrics.

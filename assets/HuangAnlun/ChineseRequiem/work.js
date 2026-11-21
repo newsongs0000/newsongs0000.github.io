@@ -23,6 +23,7 @@ onePageMp3Work({
       description: "第一乐章“永远安息”是安魂曲的开篇，表达了对逝者的哀悼和对永恒安息的祈愿。",
       audio: "Chapter1.mp3",
       thumbnail: "HuangAnlun.jpg",
+      background: "Chapter1-bg.jpg",
       thumbnail1: "An-lun Huang.png"
     },
     {
@@ -35,7 +36,8 @@ onePageMp3Work({
       voicing: "女中音独唱与合唱",
       voicingTranslation: "Mezzo-soprano solo and Chorus",
       audio: "Chapter2.mp3",
-      thumbnail: "Chapter2.jpg"
+      thumbnail: "Chapter2.jpg",
+      background: "Chapter2-bg.jpg"
     },
     {
       id: "ch3",
@@ -47,7 +49,8 @@ onePageMp3Work({
       voicing: "合唱",
       voicingTranslation: "Chorus",
       audio: "Chapter3.mp3",
-      thumbnail: "Chapter3.jpg"
+      thumbnail: "Chapter3.jpg",
+      background: "Chapter3-bg.jpg"
     },
     {
       id: "ch4",
@@ -59,7 +62,8 @@ onePageMp3Work({
       voicing: "合唱",
       voicingTranslation: "Chorus",
       audio: "Chapter4.mp3",
-      thumbnail: "Chapter4.jpg"
+      thumbnail: "Chapter4.jpg",
+      background: "Chapter4-bg.jpg"
     },
     {
       id: "ch5",
@@ -71,7 +75,8 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter5.mp3",
-      thumbnail: "Chapter5.jpg"
+      thumbnail: "Chapter5.jpg",
+      background: "Chapter5-bg.jpg"
     },
     {
       id: "ch6",
@@ -83,7 +88,8 @@ onePageMp3Work({
       voicing: "男高音独唱，合唱",
       voicingTranslation: "Tenor solo and Chorus",
       audio: "Chapter6.mp3",
-      thumbnail: "Chapter6.jpg"
+      thumbnail: "Chapter6.jpg",
+      background: "Chapter6-bg.jpg"
     },
     {
       id: "ch7",
@@ -95,7 +101,8 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter7.mp3",
-      thumbnail: "Chapter7.jpg"
+      thumbnail: "Chapter7.jpg",
+      background: "Chapter7-bg.jpg"
     },
     {
       id: "ch8",
@@ -107,7 +114,8 @@ onePageMp3Work({
       voicing: "男高音、女中音领唱，合唱",
       voicingTranslation: "Tenor and Mezzo-soprano solo, Chorus",
       audio: "Chapter8.mp3",
-      thumbnail: "Chapter8.jpg"
+      thumbnail: "Chapter8.jpg",
+      background: "Chapter8-bg.jpg"
     }
   ]
 });
