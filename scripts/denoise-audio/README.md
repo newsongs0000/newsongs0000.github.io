@@ -1,7 +1,12 @@
 # denoise-audio
 
 Scripts to find and remove high-frequency noise in the MP3 files under `assets/`, with ffmpeg and NumPy. Run
-everything from the repository root. Requirements: [ffmpeg](https://ffmpeg.org/) (with libmp3lame) and Python 3 with
+everything from the repository root.
+
+> For `assets/Handel/MessiahChinese` these notch filters were not enough, and they have been replaced by
+> [denoise-audio-v2](../denoise-audio-v2/README.md). The tones described below wobble ±22 Hz twice a second, and
+> they carry sidebands every 49.9 Hz, which the notches leave in place. Those files also have a white hiss floor
+> (about −95 dBFS per bin in the pauses), not covered here. Requirements: [ffmpeg](https://ffmpeg.org/) (with libmp3lame) and Python 3 with
 NumPy.
 
 | Script | Does |

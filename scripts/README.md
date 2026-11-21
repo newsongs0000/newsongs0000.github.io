@@ -8,6 +8,9 @@ Helper scripts for maintaining the assets. Run everything from the repository ro
   OpenAI Whisper, and ffmpeg.
 - The [denoise-audio](denoise-audio/README.md) scripts, which find and remove high-frequency noise from MP3 files,
   need Python 3 with NumPy, and ffmpeg.
+- The [denoise-audio-v2](denoise-audio-v2/README.md) scripts, which remove the wobbling whines and the hiss from
+  `assets/Handel/MessiahChinese` (replacing the notch filters of denoise-audio for those files), need Python 3 with
+  NumPy, and ffmpeg.
 
 | Script | Output (next to each `work.js`) |
 | --- | --- |
