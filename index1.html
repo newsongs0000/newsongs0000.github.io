@@ -101,8 +101,9 @@
       <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
       <!-- The time and Max stay together: on a phone they wrap to their own row as one -->
       <div id="time-max">
-        <span   id="time-display">0:00 / 0:00</span>
-        <button class="ctrl-btn" id="btn-maximize" title="Maximize lyrics panel (Esc to restore)">&#x2922; Max</button>
+        <span   id="time-display">0:00/0:00</span>
+        <button class="ctrl-btn" id="btn-maximize" title="Maximize lyrics panel (Esc to restore)"
+                aria-label="Maximize lyrics panel">&#x2922;</button>
       </div>
     </div>
 
@@ -116,8 +117,9 @@
       </div>
       <button class="ctrl-btn" id="btn-next">Next &#9654;</button>
       <button class="ctrl-btn" id="btn-play-pause-max" title="Play / Pause (Space)" hidden>&#9654;</button>
-      <button class="ctrl-btn" id="btn-restore" title="Back to the normal layout (Esc)" hidden><svg viewBox="0 0 12 12"
-              aria-hidden="true"><path d="M11 1 7 5M7 2.5V5h2.5M1 11l4-4M2.5 7H5v2.5"/></svg> Norm</button>
+      <button class="ctrl-btn" id="btn-restore" title="Back to the normal layout (Esc)"
+              aria-label="Back to the normal layout" hidden><svg viewBox="0 0 12 12"
+              aria-hidden="true"><path d="M11 1 7 5M7 2.5V5h2.5M1 11l4-4M2.5 7H5v2.5"/></svg></button>
     </div>
 
     <!-- Song playing section -->

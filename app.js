@@ -1668,7 +1668,7 @@ function resetProgress() {
 
 function setTimeDisplay(current, duration) {
   document.getElementById('time-display').textContent =
-    `${fmt(current)} / ${fmt(duration)}`;
+    `${fmt(current)}/${fmt(duration)}`;
 }
 
 function fmt(s) {

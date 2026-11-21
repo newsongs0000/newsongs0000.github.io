@@ -675,7 +675,7 @@ body {
   color: var(--text-muted);
   font-family: 'Courier New', monospace;
   white-space: nowrap;
-  min-width: 90px;
+  min-width: 9ch;
   text-align: right;
 }
 
@@ -762,7 +762,7 @@ body {
 #app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
 #app.lyrics-maximized #btn-play-pause-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
-/* Norm's icon: two arrows pointing in to the middle, the reverse of Max's ⤢ */
+/* The restore button's icon (no label): two arrows pointing in to the middle, the reverse of the maximize button's ⤢ */
 #btn-restore svg {
   width: 0.9em;
   height: 0.9em;

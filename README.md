@@ -96,7 +96,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 
 ```
 ┌───────────────┬─────────────────────────────────────────────────────────────┐
-│ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶  ━━━━━━━●━━━━━━━  1:23 / 5:40   ⤢ Max │  playback controls
+│ ♫ / Lyrics    │ ◀◀  −15s  ▶  +15s  ▶▶  ━━━━━━━━━━━●━━━━━━━━━━━  1:23/5:40  ⤢ │  playback controls
 │ SONGS       ˄ ├─────────────────────────────────────────────────────────────┤
 │ ▾ Artist      │ ◀ Prev               Work · Movement                 Next ▶ │  song navigation
 │   ▾ Work      ├────────────────────────┬────────────────────────────────────┤
@@ -143,8 +143,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
   beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
-  and the elapsed / total time, then, a little apart at the right end, **⤢ Max**, which shows only the lyrics (see
-  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons are smaller, the time and **⤢ Max** are at
+  and the elapsed / total time, then, a little apart at the right end, the **⤢** (maximize) button, which shows only the lyrics (see
+  [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons are smaller, the time and **⤢** are at
   the right end of the button row (on a row of their own on a very narrow screen, about 320 px), and the progress bar
   is always on a row of its own below them.
 - **Song navigation section** (below the playback controls)
@@ -254,9 +254,9 @@ audio, for example for live singing. When you switch back to Auto, the highlight
 
 ## Maximized lyrics
 
-**⤢ Max** (in the playback controls) hides the left pane, the playback controls, the info pane and the song navigation buttons. Only the "now playing"
+The **⤢** (maximize) button, at the right end of the playback controls, hides the left pane, the playback controls, the info pane and the song navigation buttons. Only the "now playing"
 title and the lyrics remain, in a larger font. This suits projecting lyrics for an audience. The keyboard still works:
-Space plays and pauses, and the arrow keys seek or step through lines. **Esc**, or the **Norm** button (arrows
+Space plays and pauses, and the arrow keys seek or step through lines. **Esc**, or the restore button (arrows
 pointing in, at the top right), restores the normal layout.
 
 ## Keyboard shortcuts
