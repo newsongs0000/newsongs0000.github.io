@@ -729,6 +729,44 @@ body {
   min-width: 40px;
 }
 
+/* A mobile device (a touch screen without a mouse) or a window as narrow as a phone's: a thinner bar than the
+   browser's own (whose thumb is 16px across), drawn here: a 2px track and a 10px thumb, in a 12px-tall box so it is
+   still easy to touch. The played part of the track is filled up to the thumb's center from --progress (0 to 1, set by
+   setProgress in app.js); Firefox fills it by itself (::-moz-range-progress) */
+@media (max-width: 700px), (pointer: coarse) and (hover: none) {
+  #progress-bar {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    background: transparent;
+  }
+  #progress-bar::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(to right,
+      var(--accent) calc(5px + (100% - 10px) * var(--progress, 0)), var(--text-muted) 0);
+  }
+  #progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 10px;
+    height: 10px;
+    margin-top: -4px;  /* centered on the track: (2px - 10px) / 2 */
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  #progress-bar::-moz-range-track { height: 2px; border-radius: 1px; background: var(--text-muted); }
+  #progress-bar::-moz-range-progress { height: 2px; border-radius: 1px; background: var(--accent); }
+  #progress-bar::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+}
+
 /* The time: bright, in the page's font (Courier New's thin strokes were hard to read); digits of equal width, so
    the text doesn't shift as the time changes */
 #time-display {
@@ -895,9 +933,11 @@ body {
   #song-nav { padding: 6px 8px; gap: 6px; }
   #song-nav .ctrl-btn { padding: 7px 10px; }
   /* The time and Max at the right end of their row (if they don't fit after the buttons, a row of their own); the
-     progress bar always on a row of its own below them (the sizes and spaces: see the next section) */
+     progress bar always on a row of its own below them (the sizes and spaces: see the next section). The bar's
+     12px box reaches into the 3px gap above it and the 6px padding below it, so its row is only 3px tall, as with the
+     browser's own bar, and the track sits halfway between the buttons and the bottom edge */
   #playback-controls { flex-wrap: wrap; justify-content: center; }
-  #progress-bar { flex: 1 1 100%; order: 1; }
+  #progress-bar { flex: 1 1 100%; order: 1; margin: -3px 0 -6px; }
   #time-max { flex: 1 0 auto; justify-content: flex-end; }
   #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; }
 }

@@ -1498,8 +1498,7 @@ function pickLineBeingPlayed() {
 
 audio.addEventListener('timeupdate', () => {
   if (audio.duration && isFinite(audio.duration)) {
-    const ratio = audio.currentTime / audio.duration;
-    document.getElementById('progress-bar').value = Math.round(ratio * 10000);
+    setProgress(audio.currentTime / audio.duration);
     setTimeDisplay(audio.currentTime, audio.duration);
   }
 
@@ -1591,6 +1590,7 @@ document.getElementById('btn-ff-end').addEventListener('click', () => {
 });
 
 document.getElementById('progress-bar').addEventListener('input', e => {
+  setProgress(e.target.value / 10000);
   if (isFinite(audio.duration)) {
     audio.currentTime = (e.target.value / 10000) * audio.duration;
   }
@@ -1686,8 +1686,16 @@ function updateNavButtons() {
 }
 
 function resetProgress() {
-  document.getElementById('progress-bar').value = 0;
+  setProgress(0);
   setTimeDisplay(0, 0);
+}
+
+// The progress bar at `ratio` (0 to 1) of the song. --progress, the same ratio, fills the played part of the track
+// on a mobile device, where common.css draws the bar instead of the browser
+function setProgress(ratio) {
+  const bar = document.getElementById('progress-bar');
+  bar.value = Math.round(ratio * 10000);
+  bar.style.setProperty('--progress', bar.value / 10000);
 }
 
 function setTimeDisplay(current, duration) {
