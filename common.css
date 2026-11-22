@@ -709,8 +709,9 @@ body {
 /* Same (invisible) left border as a line, so the heading's columns line up with the lines' */
 #lyrics-inner.bilingual .lyric-meta { border-left: 3px solid transparent; }
 
-#lyrics-inner.bilingual .lyric-original    { padding: 0 24px 0 14px; }
-#lyrics-inner.bilingual .lyric-translation { padding: 0 14px 0 24px; }
+/* Little space between the columns: 8px each side of the divider, just clear of its 13px grab area */
+#lyrics-inner.bilingual .lyric-original    { padding: 0 8px 0 14px; }
+#lyrics-inner.bilingual .lyric-translation { padding: 0 14px 0 8px; }
 
 .no-song-msg {
   color: var(--text-muted);
