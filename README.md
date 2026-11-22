@@ -647,6 +647,16 @@ assets/
       Chapter1..6-bg.jpg   Image backgrounds: paintings of each movement's text, credited in backgrounds.md
       Chapter1..6.timing.js  lyrics: Latin text + Chinese translation, a heading line per number
     Symphony40/            example entry (its audio and lyrics are a placeholder copy of Chinese Requiem I)
+  Verdi/                   威尔第 — Requiem (安魂曲, Messa da Requiem), 8 movements: one per band of the 1961 RCA
+    artist.js              Victor 2-LP set (Fritz Reiner, Wiener Philharmoniker), from the Internet Archive
+    Verdi.jpg              the artist's picture (Giovanni Boldini's 1886 portrait, public domain)
+    Requiem/
+      work.js
+      work.jpg             the work's picture: the title page of the first edition (1874), credited in backgrounds.md
+      Chapter1..8.mp3      audio: Verdi's Nos. 1–7; No. 2 (Dies irae) is two bands, split before Rex tremendae
+      Chapter1..8-bg.jpg   Image backgrounds: Signorelli's Orvieto frescoes (as in the LP's booklet) and other
+                           paintings of each movement's text, credited in backgrounds.md
+      Chapter1..8.timing.js  lyrics: Latin text + Chinese translation, a heading line per section
   Mahler/                  example entry that shows the layout for more artists
                            (its audio and lyrics are a placeholder copy of Chinese Requiem I)
 workItems/                 work items: draft / todo / wip / completed / blocked / archived

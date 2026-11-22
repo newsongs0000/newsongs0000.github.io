@@ -1,0 +1,142 @@
+/* Work data for OnePageMP3: loaded by app.js from its artist's workFiles list */
+onePageMp3Work({
+  id: "verdi-requiem",
+  title: "Requiem",
+  titleTranslation: "安魂曲",
+  titleSort: "Requiem",
+  language: "la",
+  translationLanguage: "zh",
+  year: 1874,
+  premiered: "Milan, San Marco, 22 May 1874",
+  premieredTranslation: "米兰圣马可教堂，1874年5月22日",
+  thumbnail: "work.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+                         // (the title page of the first edition; see backgrounds.md)
+  thumbnailTitle: "Messa da Requiem, title page of the first edition (1874)",  // the thumbnail's caption: title, then "by" maker
+  thumbnailPainter: "G. Ricordi & C.",
+  description: "Messa da Requiem for soprano, mezzo-soprano, tenor and bass soloists, chorus and orchestra, on the Latin text of the Mass for the Dead. Written in memory of the novelist and poet Alessandro Manzoni, and first performed on the first anniversary of his death, conducted by Verdi.\nRecording: Leontyne Price, soprano; Rosalind Elias, mezzo-soprano; Jussi Björling, tenor; Giorgio Tozzi, bass; Singverein der Gesellschaft der Musikfreunde in Wien; Wiener Philharmoniker; Fritz Reiner, conductor. Recorded in Vienna, June 1960. RCA Victor Red Seal LD 6091 (2 LPs), 1961.\nSource: Internet Archive, https://archive.org/details/lp_verdi-requiem_fritz-reiner-wiener-philharmoniker",
+  descriptionTranslation: "为女高音、女中音、男高音、男低音独唱，合唱与管弦乐队而作的安魂弥撒，歌词为拉丁文追思弥撒经文。为纪念意大利小说家、诗人亚历山德罗·曼佐尼而作，在他逝世一周年时首演，由威尔第亲自指挥。\n录音：女高音莱昂汀·普赖斯、女中音罗莎琳德·埃利亚斯、男高音尤西·比约林、男低音乔治·托齐；维也纳音乐之友协会合唱团；维也纳爱乐乐团；指挥弗里茨·莱纳。1960年6月录于维也纳。RCA Victor Red Seal LD 6091（2张唱片），1961年。\n来源：Internet Archive, https://archive.org/details/lp_verdi-requiem_fritz-reiner-wiener-philharmoniker",
+  // One movement per band of the LP set. The numbers (1–7) are Verdi's; No. 2, the Dies irae, takes
+  // two bands: the end of side 1 (up to Quid sum miser) and the whole of side 2.
+  movements: [
+    {
+      id: "ch1",
+      number: "I",
+      title: "Requiem e Kyrie",
+      titleTranslation: "安息经与垂怜经",
+      subtitle: "No. 1",
+      subtitleTranslation: "第1首",
+      voicing: "Chorus; soprano, mezzo-soprano, tenor, bass",
+      voicingTranslation: "合唱；女高音、女中音、男高音、男低音",
+      description: "1 Requiem aeternam (chorus), with Te decet hymnus for unaccompanied chorus; Kyrie (soloists, chorus).",
+      audio: "Chapter1.mp3",
+      background: "Chapter1-bg.jpg",
+      backgroundTitle: "Lamentation over the Dead Christ",
+      backgroundPainter: "Luca Signorelli"
+    },
+    {
+      id: "ch2",
+      number: "II",
+      title: "Dies irae (1)",
+      titleTranslation: "震怒之日（一）",
+      subtitle: "No. 2 · Sequentia: Dies irae – Quid sum miser",
+      subtitleTranslation: "第2首 · 继抒咏：震怒之日至可怜的我",
+      voicing: "Chorus; bass, mezzo-soprano, soprano, tenor",
+      voicingTranslation: "合唱；男低音、女中音、女高音、男高音",
+      description: "2 Dies irae (chorus); Tuba mirum (chorus); Mors stupebit (bass); Liber scriptus (mezzo-soprano, chorus), ending with the Dies irae again; Quid sum miser (soprano, mezzo-soprano, tenor).",
+      audio: "Chapter2.mp3",
+      background: "Chapter2-bg.jpg",
+      backgroundTitle: "The Resurrection of the Flesh",
+      backgroundPainter: "Luca Signorelli"
+    },
+    {
+      id: "ch3",
+      number: "III",
+      title: "Dies irae (2)",
+      titleTranslation: "震怒之日（二）",
+      subtitle: "No. 2 (concluded) · Rex tremendae – Lacrymosa",
+      subtitleTranslation: "第2首（续完）· 威严的君王至流泪之日",
+      voicing: "Soprano, mezzo-soprano, tenor, bass; chorus",
+      voicingTranslation: "女高音、女中音、男高音、男低音；合唱",
+      description: "Rex tremendae (soloists, chorus); Recordare (soprano, mezzo-soprano); Ingemisco (tenor); Confutatis (bass), followed by the Dies irae again (chorus); Lacrymosa (soloists, chorus).",
+      audio: "Chapter3.mp3",
+      background: "Chapter3-bg.jpg",
+      backgroundTitle: "The Damned",
+      backgroundPainter: "Luca Signorelli"
+    },
+    {
+      id: "ch4",
+      number: "IV",
+      title: "Offertorio",
+      titleTranslation: "奉献经",
+      subtitle: "No. 3 · Domine Jesu Christe, Hostias",
+      subtitleTranslation: "第3首 · 主耶稣基督、祭献",
+      voicing: "Soprano, mezzo-soprano, tenor, bass",
+      voicingTranslation: "女高音、女中音、男高音、男低音",
+      description: "3 Offertorio for the four soloists: Domine Jesu Christe, then Hostias, which begins with the tenor.",
+      audio: "Chapter4.mp3",
+      background: "Chapter4-bg.jpg",
+      backgroundTitle: "The Elect",
+      backgroundPainter: "Luca Signorelli"
+    },
+    {
+      id: "ch5",
+      number: "V",
+      title: "Sanctus",
+      titleTranslation: "圣哉经",
+      subtitle: "No. 4",
+      subtitleTranslation: "第4首",
+      voicing: "Double chorus",
+      voicingTranslation: "双合唱",
+      description: "4 Sanctus: a fugue for double chorus, with the Benedictus and Hosanna.",
+      audio: "Chapter5.mp3",
+      background: "Chapter5-bg.jpg",
+      backgroundTitle: "Singing Angels (Ghent Altarpiece, detail)",
+      backgroundPainter: "Jan van Eyck"
+    },
+    {
+      id: "ch6",
+      number: "VI",
+      title: "Agnus Dei",
+      titleTranslation: "羔羊经",
+      subtitle: "No. 5",
+      subtitleTranslation: "第5首",
+      voicing: "Soprano, mezzo-soprano; chorus",
+      voicingTranslation: "女高音、女中音；合唱",
+      description: "5 Agnus Dei: the soprano and mezzo-soprano in octaves, unaccompanied, answered each time by the chorus.",
+      audio: "Chapter6.mp3",
+      background: "Chapter6-bg.jpg",
+      backgroundTitle: "Adoration of the Mystic Lamb (Ghent Altarpiece)",
+      backgroundPainter: "Jan van Eyck"
+    },
+    {
+      id: "ch7",
+      number: "VII",
+      title: "Lux aeterna",
+      titleTranslation: "永恒之光",
+      subtitle: "No. 6 · Communio",
+      subtitleTranslation: "第6首 · 领主咏",
+      voicing: "Mezzo-soprano, tenor, bass",
+      voicingTranslation: "女中音、男高音、男低音",
+      description: "6 Lux aeterna (mezzo-soprano, tenor, bass).",
+      audio: "Chapter7.mp3",
+      background: "Chapter7-bg.jpg",
+      backgroundTitle: "The Last Judgment (detail: Paradise)",
+      backgroundPainter: "Fra Angelico"
+    },
+    {
+      id: "ch8",
+      number: "VIII",
+      title: "Libera me",
+      titleTranslation: "求你拯救我",
+      subtitle: "No. 7 · Responsorium",
+      subtitleTranslation: "第7首 · 答唱咏",
+      voicing: "Soprano; chorus",
+      voicingTranslation: "女高音；合唱",
+      description: "7 Libera me (soprano, chorus), with the Dies irae again and the Requiem aeternam of No. 1 for soprano and unaccompanied chorus, ending with a fugue.",
+      audio: "Chapter8.mp3",
+      background: "Chapter8-bg.jpg",
+      backgroundTitle: "The Great Day of His Wrath",
+      backgroundPainter: "John Martin"
+    }
+  ]
+});

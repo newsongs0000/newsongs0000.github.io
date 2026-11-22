@@ -1,0 +1,31 @@
+onePageMp3Timing({
+  "format": "onepagemp3-lyrics-timing",
+  "version": 1,
+  "composer": "verdi",
+  "work": "verdi-requiem",
+  "movement": "ch4",
+  "audio": "Chapter4.mp3",
+  "lines": [
+    {"time":0,"text":"No. 3 · Offertorio: Domine Jesu Christe (soloists)","translation":"第3首 · 奉献经：主耶稣基督（独唱）"},
+    {"time":null,"text":"(Mezzo-soprano, tenor) Domine Jesu Christe, Rex gloriae,","translation":"（女中音、男高音）主耶稣基督，荣耀的君王，"},
+    {"time":null,"text":"libera animas omnium fidelium defunctorum","translation":"求你拯救一切已逝信徒的灵魂，"},
+    {"time":null,"text":"de poenis inferni et de profundo lacu.","translation":"脱离阴间的刑罚和无底的深坑。"},
+    {"time":null,"text":"Libera eas de ore leonis,","translation":"求你救他们脱离狮子的口，"},
+    {"time":null,"text":"ne absorbeat eas tartarus,","translation":"免得地狱吞灭他们，"},
+    {"time":null,"text":"ne cadant in obscurum.","translation":"免得他们坠入黑暗。"},
+    {"time":null,"text":"(Soprano) Sed signifer sanctus Michael","translation":"（女高音）愿执旗的圣米迦勒"},
+    {"time":null,"text":"repraesentet eas in lucem sanctam,","translation":"领他们进入圣洁的光中，"},
+    {"time":null,"text":"(Soloists) Quam olim Abrahae promisisti, et semini ejus.","translation":"（独唱）就是你从前应许亚伯拉罕和他后裔的。"},
+    {"time":320.5,"text":"Hostias (tenor, soloists)","translation":"祭献（男高音，独唱）"},
+    {"time":null,"text":"(Tenor) Hostias et preces tibi, Domine,","translation":"（男高音）主啊，我们向你"},
+    {"time":null,"text":"laudis offerimus:","translation":"献上赞美的祭和祈祷；"},
+    {"time":null,"text":"tu suscipe pro animabus illis,","translation":"求你为那些灵魂悦纳，"},
+    {"time":null,"text":"quarum hodie memoriam facimus.","translation":"就是我们今日所纪念的。"},
+    {"time":null,"text":"Fac eas, Domine,","translation":"主啊，求你使他们"},
+    {"time":null,"text":"de morte transire ad vitam.","translation":"出死入生。"},
+    {"time":null,"text":"(Soloists) Quam olim Abrahae promisisti, et semini ejus.","translation":"（独唱）就是你从前应许亚伯拉罕和他后裔的。"},
+    {"time":null,"text":"Libera animas omnium fidelium defunctorum","translation":"求你拯救一切已逝信徒的灵魂，"},
+    {"time":null,"text":"de poenis inferni.","translation":"脱离阴间的刑罚。"},
+    {"time":null,"text":"Fac eas de morte transire ad vitam.","translation":"求你使他们出死入生。"}
+  ]
+});
