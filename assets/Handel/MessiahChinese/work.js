@@ -10,7 +10,11 @@ onePageMp3Work({
   opusNumber: "HWV 56",
   premiered: "都柏林，1742年4月13日",
   premieredTranslation: "Dublin, 13 April 1742",
-  thumbnail: "../Messiah/Handel.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+  thumbnail: "work.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+                         // (Handel's autograph score: the end of the Hallelujah chorus, dated 6 September 1741;
+                         // see ../Messiah/backgrounds.md)
+  thumbnailTitle: "Hallelujah, autograph score, final bars (6 September 1741)",  // the thumbnail's caption
+  thumbnailPainter: "George Frideric Handel",
   description: "为独唱、合唱与管弦乐队而作的清唱剧，共三部分，歌词由查尔斯·詹宁斯选自圣经。此为中文演唱版本，共55首（序曲为第1首），编号、中文标题与唱词均依照来源视频的字幕。\n录音：中文版全曲，演唱者与乐团不详；音频整理、字幕、注释及配图：发呆界小青瓜。\n来源：哔哩哔哩 https://www.bilibili.com/video/BV1eb4y1h7Va/",
   descriptionTranslation: "Oratorio in three parts for soloists, chorus and orchestra. Words selected from the Bible by Charles Jennens. Sung in Chinese, in 55 numbers (the Sinfonia is No. 1); the numbering, Chinese titles and lyrics follow the subtitles of the source video.\nRecording: complete Chinese version, performers unknown; audio restoration, subtitles, notes and pictures by 发呆界小青瓜.\nSource: Bilibili, https://www.bilibili.com/video/BV1eb4y1h7Va/",
   // Grouped into the same 9 chapters as the English Messiah (assets/Handel/Messiah), cut at the silences between numbers

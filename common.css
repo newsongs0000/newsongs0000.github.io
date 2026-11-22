@@ -145,6 +145,13 @@ body {
   padding-left: 22px;
 }
 
+/* The selected artist (see SELECT ARTIST in app.js), highlighted the same way */
+.tree-composer-header.active {
+  background: var(--nav-active);
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+}
+
 .tree-toggle {
   font-size: 0.65rem;
   display: inline-block;

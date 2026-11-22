@@ -16,3 +16,15 @@ and saved 1024 px wide (the backgrounds are shown blurred). The source page has 
 | Chapter7-bg.jpg | Hallelujah: King of Kings, and Lord of Lords | [Christ Pantocrator Deesis mosaic Hagia Sophia.jpg](https://commons.wikimedia.org/wiki/File:Christ_Pantocrator_Deesis_mosaic_Hagia_Sophia.jpg) — Photograph: Myrabella, 2012-11-08 | Public domain |
 | Chapter8-bg.jpg | I know that my Redeemer liveth; Since by man came death (the Resurrection) | [Piero della Francesca - Resurrection - WGA17609.jpg](https://commons.wikimedia.org/wiki/File:Piero_della_Francesca_-_Resurrection_-_WGA17609.jpg) — Piero della Francesca, between 1463 and 1465 | Public domain |
 | Chapter9-bg.jpg | Worthy is the Lamb that was slain (Revelation 5) | [Ghent Altarpiece - Adoration of the Mystic Lamb.jpg](https://commons.wikimedia.org/wiki/File:Ghent_Altarpiece_-_Adoration_of_the_Mystic_Lamb.jpg) — Jan Van Eyck, c. 1430-32 | Public domain |
+
+## Thumbnails
+
+`work.jpg` is the work's thumbnail (`thumbnail` in `work.js`), shown when the work is selected; `../MessiahChinese/work.jpg`
+is the Chinese version's. Both are pages of Handel's autograph score of the Hallelujah chorus, from Wikimedia Commons,
+saved 1280 px wide and not cropped. The composer's portrait, shown when the artist is selected, is `../Handel.jpg`
+(`thumbnail` in `../artist.js`).
+
+| File | Picture | License |
+|---|---|---|
+| work.jpg | [Händel Beginning of Hallelujah Autograph.jpg](https://commons.wikimedia.org/wiki/File:H%C3%A4ndel_Beginning_of_Hallelujah_Autograph.jpg) — the opening of the Hallelujah chorus, Handel's autograph, 1741 | Public domain |
+| ../MessiahChinese/work.jpg | [Hallelujah score 1741.jpg](https://commons.wikimedia.org/wiki/File:Hallelujah_score_1741.jpg) — the final bars of the Hallelujah chorus, Handel's autograph, dated 6 September 1741 | Public domain |

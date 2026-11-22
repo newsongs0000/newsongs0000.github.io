@@ -10,7 +10,10 @@ onePageMp3Work({
   opusNumber: "HWV 56",
   premiered: "Dublin, 13 April 1742",
   premieredTranslation: "都柏林，1742年4月13日",
-  thumbnail: "Handel.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+  thumbnail: "work.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+                         // (Handel's autograph score, 1741: the beginning of the Hallelujah chorus; see backgrounds.md)
+  thumbnailTitle: "Hallelujah, autograph score (1741)",  // the thumbnail's caption: title, then "by" painter
+  thumbnailPainter: "George Frideric Handel",
   description: "Oratorio in three parts for soloists, chorus and orchestra. Words selected from the Bible by Charles Jennens.\nRecording (complete, original instrumentation): Heather Harper, soprano; Helen Watts, contralto; John Wakefield, tenor; John Shirley-Quirk, bass; London Symphony Choir (chorus master John Alldis); London Symphony Orchestra; Colin Davis, conductor. Philips PHS 3-992 (3 LPs), 1966.\nSource: Internet Archive, https://archive.org/details/lp_messiah_georg-friedrich-hndel-the-london-symphony",
   descriptionTranslation: "为独唱、合唱与管弦乐队而作的清唱剧，共三部分，歌词由查尔斯·詹宁斯选自圣经。\n录音（全曲，原始配器）：女高音希瑟·哈珀、女低音海伦·沃茨、男高音约翰·韦克菲尔德、男低音约翰·雪利-夸克；伦敦交响合唱团（合唱指导约翰·奥尔迪斯）；伦敦交响乐团；指挥科林·戴维斯。Philips PHS 3-992（3张唱片），1966年。\n来源：Internet Archive, https://archive.org/details/lp_messiah_georg-friedrich-hndel-the-london-symphony",
   // One movement per band of the LP set; the numbers (Overture, then Nos. 1–52) are the ones printed in its booklet

@@ -123,10 +123,11 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 - **Left navigation pane**
   - **Tree.** Artists, then works, then movements. Artists are sorted alphabetically by `nameSort` and works by
     `titleSort`. Movements keep the order they have in `work.js`. Artist and work folders start collapsed; click one
-    to open or close it. Opening a work also selects it, unless music is playing (so browsing the tree never stops
-    it): its picture (`thumbnail`) and information show, nothing plays yet, and ▶, Space or a click on the picture
-    plays its first movement; **Next** selects its first movement and **Prev** the movement before it. Closing a
-    work changes nothing. The selected work or movement is highlighted. The tree is under a **SONGS** title bar, whose
+    to open or close it. Opening an artist or a work also selects it, unless music is playing (so browsing the tree
+    never stops it): its picture (`thumbnail`) and information show, nothing plays yet, and ▶, Space or a click on the
+    picture plays its first movement (an artist's: the first movement of its first work in `workFiles`); **Next**
+    selects that movement and **Prev** the movement before it. Closing an artist or a work changes nothing. The
+    selected artist, work or movement is highlighted. The tree is under a **SONGS** title bar, whose
     arrow button collapses the whole tree to that bar and opens it again. It is open by default; the state is kept in
     the `songs` URL parameter (`open` or `collapsed`). On a wider window the panels below the tree stay at the bottom of
     the pane when it is collapsed.
@@ -193,17 +194,21 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
   - **Picture.** The selection's picture covers the lyrics until playback starts, with "▶ Click to play": a selected
-    work's `thumbnail`, or a selected movement's `background` (`background2` in image set 2), else its own
+    artist's `thumbnail` (a portrait of the composer; else its first work's), a selected work's `thumbnail` (a
+    picture of the work itself, e.g. a page of its autograph score), or a selected movement's `background`
+    (`background2` in image set 2), else its own
     `thumbnail`, else its work's (in the Image background mode, a movement's background picture fills the area
     instead: see **Background** below).
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
     are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
     the other. It is hidden while the music plays so it never makes the lyrics hard to read.
-  - **Caption.** While a movement's background picture is shown before playback (in either mode), a caption above
-    "▶ Click to play" names it: its title, then "by" its painter, e.g. *Agnus Dei* by Francisco de Zurbarán. They come
-    from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and `background2Painter` for image
-    set 2). A thumbnail, a `bg-image` picture, or a picture without a title has no caption; the caption goes with the
-    picture when the music starts.
+  - **Caption.** While the selection's picture is shown before playback (in either mode), a caption above
+    "▶ Click to play" names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
+    Zurbarán. They come from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and
+    `background2Painter` for image set 2), and for a thumbnail from `thumbnailTitle` and `thumbnailPainter` in
+    `work.js` (a work's or a movement's) or `artist.js` (an artist's), e.g. *Wolfgang Amadeus Mozart* by Barbara
+    Krafft. A work's thumbnail keeps its caption when a movement without a picture of its own shows it. A `bg-image`
+    picture, or a picture without a title, has no caption; the caption goes with the picture when the music starts.
   - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
     and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `none` by default).
     - **None**: the plain page color.
@@ -213,7 +218,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
       (instead of the thumbnail); when the music starts it blurs and darkens behind the lyrics. It is the `bg-image` URL
       parameter if given (one picture for
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`, else its work's. A
-      selected work shows its `thumbnail` as the **Picture** above does. A movement with no
+      selected artist or work shows its `thumbnail` as the **Picture** above does. A movement with no
       picture, or one that cannot be loaded, shows the Graphics instead. Every movement of the bundled works has a
       `background` of its own: a public-domain painting from Wikimedia Commons that fits its text, e.g. Zurbarán's
       *Agnus Dei* for "Behold the Lamb of God", or Xu Jihua's *The Wedding at Cana* for 诗篇二十三. The
@@ -231,11 +236,11 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     Either way the page color covers the background at 70% (`bg-dim`) and the lyrics get a soft shadow, so they stay
     easy to read. With the system's "reduce motion" setting on, the graphics never move.
 - **Bottom info pane.** Shows the artist's name, the work's title with its opus number and year, the premiere
-  (`Premiere: …`) and the work's description.
+  (`Premiere: …`) and the work's description; for a selected artist, its name and `bio`.
 
 ## Playing music
 
-1. In the left tree, open an artist and then a work (its picture and information appear), and click a movement. Its
+1. In the left tree, open an artist and then a work (each one's picture and information appear), and click a movement. Its
    lyrics, picture and work information appear.
 2. Click the picture, or press ▶ or Space, to play.
 3. When a movement ends, the next one starts automatically.
@@ -330,9 +335,10 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `highlight-mode` | `auto` starts in Auto mode; anything else starts in Manual | `manual` |
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
 | `work` | The work selected on load, as `<artist id>/<work id>`, used when there is no `movement`. The app writes it instead of `movement` when you select a work | — |
+| `artist` | The artist selected on load, as `<artist id>`, used when there is no `movement` or `work`. The app writes it instead of them when you select an artist | — |
 | `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `none` |
 | `pictures` | Which image set the `image` background shows, `1` or `2`, for a movement that has two (see **Image sets** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `1` |
-| `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Messiah/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
+| `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
 | `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `70` |
 | `bg-blur` | Blur of the `image` background, in pixels (0 to 40) | `4` |
 | `t` | The audio position of the `movement` above, in whole seconds (rounded down), e.g. `83` (used only with `movement`). The app rewrites it about once a second while the audio plays or you seek, so reloading or sharing the URL continues from there; it is removed when you select another movement | `0` |
@@ -453,8 +459,8 @@ source material only, and the app does not read them.
 
 ## Flow: adding an artist, work or movement
 
-The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `workFiles` in an
-`artist.js` file are relative to that `artist.js` file, a work's `thumbnail` and a movement's `audio`, `thumbnail` and
+The paths to `artist.js` files (`artistFiles` in `app.js`) are relative to `index.html`. The `thumbnail` and
+`workFiles` in an `artist.js` file are relative to that `artist.js` file, a work's `thumbnail` and a movement's `audio`, `thumbnail` and
 `background` in a `work.js` file are relative to that `work.js` file, and the `audio` in a `.timing.js` file is relative to that `.timing.js` file, so
 they are short when the files sit next to each other.
 
@@ -462,8 +468,9 @@ they are short when the files sit next to each other.
 
 ```
 assets/<Artist>/artist.js
+assets/<Artist>/Composer.jpg               # the artist's thumbnail, shown when the artist is selected (optional)
 assets/<Artist>/<Work>/work.js
-assets/<Artist>/<Work>/Composer.jpg        # the work's thumbnail, shown when the work is selected (optional)
+assets/<Artist>/<Work>/work.jpg            # the work's thumbnail, shown when the work is selected (optional)
 assets/<Artist>/<Work>/Chapter1.mp3        # audio
 assets/<Artist>/<Work>/Chapter1-bg.jpg     # the movement's picture, shown before playback (optional)
 assets/<Artist>/<Work>/Chapter1.timing.js  # lyrics + timing (optional: no file = no lyrics)
@@ -477,7 +484,10 @@ onePageMp3Artist({
   id: "anlun-huang",              // unique; used in each .timing.js "composer" field
   name: "黄安伦",                  // shown in the tree and info pane
   nameSort: "Huang, An-Lun",      // tree sort key (optional; defaults to name)
-  bio: "黄安伦（1949–），加拿大华人作曲家。",  // kept with the data; not displayed yet
+  bio: "黄安伦（1949–），加拿大华人作曲家。",  // info pane, when the artist is selected
+  thumbnail: "HuangAnlun.jpg",    // shown when the artist is selected (optional; defaults to its first work's)
+  thumbnailTitle: "黄安伦",        // the thumbnail's caption: title (optional)
+  thumbnailPainter: "…",          // ... "by" painter or maker (optional)
   workFiles: [
     "ChineseRequiem/work.js"
   ]
@@ -499,8 +509,10 @@ onePageMp3Work({
   year: 2004,                     // info pane: "title Op. 63 (2004)"
   opusNumber: "Op. 63",
   premiered: "Toronto, May 2004", // info pane: "Premiere: Toronto, May 2004"
-  thumbnail: "Composer.jpg",      // shown when the work is selected, and for a movement without a picture of its own
+  thumbnail: "work.jpg",          // shown when the work is selected, and for a movement without a picture of its own
                                   // (optional; defaults to the first movement's thumbnail)
+  thumbnailTitle: "大秦景教流行中國碑 The Nestorian Stele (781)",  // the thumbnail's caption: title (optional)
+  thumbnailPainter: "…",          // ... "by" painter or maker (optional)
   description: "…",               // info pane; "\n" starts a new line
   movements: [
     {
@@ -578,8 +590,8 @@ on), and the rest of the app keeps working.
 
 | File | Wrapper call | Holds | Loaded |
 |---|---|---|---|
-| `assets/<Artist>/artist.js` | `onePageMp3Artist({...})` | Artist: id, name, nameSort, bio, workFiles | At startup, from `APP_DATA.artistFiles` |
-| `assets/<Artist>/<Work>/work.js` | `onePageMp3Work({...})` | Work: id, title, titleSort, language, translationLanguage, year, opusNumber, premiered, description, movements | At startup, from the artist's `workFiles` |
+| `assets/<Artist>/artist.js` | `onePageMp3Artist({...})` | Artist: id, name, nameSort, bio, thumbnail, thumbnailTitle, thumbnailPainter, workFiles | At startup, from `APP_DATA.artistFiles` |
+| `assets/<Artist>/<Work>/work.js` | `onePageMp3Work({...})` | Work: id, title, titleSort, language, translationLanguage, year, opusNumber, premiered, thumbnail, thumbnailTitle, thumbnailPainter, description, movements | At startup, from the artist's `workFiles` |
 | `<mp3 name>.timing.js` | `onePageMp3Timing({...})` | The movement's lyrics, one `{time, text, translation}` per line (`translation` optional) | When the movement is first selected |
 
 Each file contains one call to a function that `app.js` defines, so it can be loaded with a `<script>` tag. This works
@@ -598,8 +610,10 @@ app.js                     all behavior; APP_DATA.artistFiles at the top
 assets/
   AnlunHuang/              黄安伦 — Chinese Requiem (安魂曲, Op. 63), 8 movements
     artist.js
+    HuangAnlun.jpg         the artist's picture (portrait of the composer)
     ChineseRequiem/
       work.js
+      work.jpg             the work's picture: the head of the Nestorian Stele (781), credited in backgrounds.md
       Chapter1..8.mp3      audio
       Chapter1..8.jpg      pictures
       Chapter1..8-bg.jpg   Image backgrounds, set 1: Christian art made in China, credited in backgrounds.md
@@ -608,24 +622,28 @@ assets/
       Lyrics.txt, *.pdf, *.md  source material and notes (not read by the app)
   Handel/                  亨德尔 — Messiah (弥赛亚, HWV 56), 9 movements: one per band of the 1966 Philips LP set
     artist.js              (Colin Davis, London Symphony Orchestra), from the Internet Archive
+    Handel.jpg             the artist's picture (Thomas Hudson's 1749 portrait, public domain)
     Messiah/
       work.js
+      work.jpg             the work's picture: Handel's autograph of the Hallelujah chorus, credited in backgrounds.md
       Chapter1..9.mp3      audio: Overture, then Nos. 1–52 in 8 tracks
-      Handel.jpg           picture shared by all movements (Thomas Hudson's 1749 portrait, public domain)
       Chapter1..9-bg.jpg   Image backgrounds: paintings of each movement's text, credited in backgrounds.md
       Chapter1..9.timing.js  lyrics: English libretto as sung (repeats included) + 和合本 translation, a heading
                            line per number; timed from a Whisper transcription of the recording
     MessiahChinese/        弥赛亚（中文版）: the same oratorio sung in Chinese (performers unknown), from
       work.js              https://www.bilibili.com/video/BV1eb4y1h7Va/, in the same 9 chapters as Messiah/
+      work.jpg             the work's picture: the end of the Hallelujah chorus in Handel's autograph,
+                           credited in ../Messiah/backgrounds.md
       Chapter1..9.mp3      audio: Nos. 1–55 as numbered in the video (Sinfonia = No. 1, Amen = No. 55)
       Chapter1..9.timing.js  lyrics: Chinese as sung + English libretto, timed from the video's subtitles;
-                           the picture is Messiah/Handel.jpg, the backgrounds Messiah/Chapter1..9-bg.jpg
+                           the backgrounds are Messiah/Chapter1..9-bg.jpg
   Mozart/                  莫扎特 — Requiem (安魂曲, K. 626), 6 movements: one per band of the 1971 Deutsche
     artist.js              Grammophon LP (Karl Böhm, Wiener Philharmoniker), from the Internet Archive
+    Mozart.jpg             the artist's picture (Barbara Krafft's 1819 portrait, public domain)
     Requiem/
       work.js
+      work.jpg             the work's picture: the first page of Mozart's autograph score, credited in backgrounds.md
       Chapter1..6.mp3      audio: Nos. 1–7 (side 1) in one track, then Nos. 8–12 one track each
-      Mozart.jpg           picture shared by all movements (Barbara Krafft's 1819 portrait, public domain)
       Chapter1..6-bg.jpg   Image backgrounds: paintings of each movement's text, credited in backgrounds.md
       Chapter1..6.timing.js  lyrics: Latin text + Chinese translation, a heading line per number
     Symphony40/            example entry (its audio and lyrics are a placeholder copy of Chinese Requiem I)

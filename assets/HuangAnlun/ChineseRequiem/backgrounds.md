@@ -34,3 +34,13 @@ cropped and saved as the pictures of set 1. The source page has the full-size or
 | Chapter6-bg2.jpg | 永享自由: cranes flying free over the roofs | [瑞鹤图（亮版）.jpg](https://commons.wikimedia.org/wiki/File:%E7%91%9E%E9%B9%A4%E5%9B%BE%EF%BC%88%E4%BA%AE%E7%89%88%EF%BC%89.jpg) — Emperor Huizong of Song, 1112年 | Public domain |
 | Chapter7-bg2.jpg | 永远照耀: 在云里与主相遇 (1 Thessalonians 4:17): clouds rising from the sea | [Ma Yuan - Water Album - Clouds Rising from the Green Sea.jpg](https://commons.wikimedia.org/wiki/File:Ma_Yuan_-_Water_Album_-_Clouds_Rising_from_the_Green_Sea.jpg) — Ma Yuan, from 1160 until 1225 | Public domain |
 | Chapter8-bg2.jpg | 诗篇二十三: 青草地上，可安歇的水边 (Psalm 23) | [Autumn Colors on the Qiao and Hua Mountains (cropped).jpg](https://commons.wikimedia.org/wiki/File:Autumn_Colors_on_the_Qiao_and_Hua_Mountains_(cropped).jpg) — Zhao Mengfu, 1295 | Public domain |
+
+## Thumbnail
+
+`work.jpg` is the work's thumbnail (`thumbnail` in `work.js`), shown when the work is selected: from Wikimedia Commons,
+saved 1280 px wide and not cropped. Like image set 1, it is Christian art made in China. The composer's picture, shown
+when the artist is selected, is `../HuangAnlun.jpg` (`thumbnail` in `../artist.js`).
+
+| File | Picture | License |
+|---|---|---|
+| work.jpg | [Nestorian stele 1.jpg](https://commons.wikimedia.org/wiki/File:Nestorian_stele_1.jpg) — the head of the Nestorian Stele 大秦景教流行中國碑 (781, Tang dynasty), with its cross above the title; Beilin Museum, Xi'an. Photograph: David Castor | Public domain |

@@ -11,7 +11,8 @@ onePageMp3Work({
   premiered: "Toronto, May 2004",
   // The Image set buttons' tooltips (see PICTURE VERSIONS in app.js): set 1 is background, set 2 background2
   pictureVersions: ["1: 基督教绘画 Christian paintings", "2: 中国山水画 Chinese landscape paintings"],
-  thumbnail: "HuangAnlun.jpg",  // shown when the work is selected, and for any movement without a picture of its own
+  thumbnail: "work.jpg",
+  thumbnailTitle: "",  // the thumbnail's caption (no painter)
   description: "为男高音、女中音及无伴奏合唱而作的安魂曲（Op.63），共8个乐章，由香港圣乐团委约。\n词：唐佑之（根据圣经），曲：黄安伦。",
   movements: [
     {
