@@ -121,7 +121,7 @@ async function loadArtists() {
    Example: index.html?above-color=%238888aa&below-bg=rgba(0,0,0,0.2)
    Lyrics highlight mode, audio mute, lyrics shown and font size are kept in the URL too
    (mute is used only by index.html; index1.html is always silent, see MUTE):
-   index.html?highlight-mode=auto&mute=0&show=both&font=100&chinese-width=45&timing=collapsed&bg=image
+   index.html?highlight-mode=auto&mute=0&show=both&font=80&chinese-width=45&timing=collapsed&bg=image
    (see VIEW OPTIONS IN URL)
    The lyrics background's picture, dimming and blur: index.html?bg=image&bg-image=pic.jpg&bg-dim=70&bg-blur=4
    (see BACKGROUND)
@@ -423,7 +423,7 @@ function updateTimeInUrl() {
      highlight-mode  auto | manual                 (default auto; see LYRICS HIGHLIGHT MODE)
      mute            1 | 0                         (default 0, unmuted; ignored on a mobile device; see MUTE)
      show            original | translation | both (default both; see LYRICS SHOWN)
-     font            lyrics font size in percent, 10-250 (default 100; see LYRICS FONT SIZE)
+     font            lyrics font size in percent, 10-250 (default 80; see LYRICS FONT SIZE)
      chinese-width   the Chinese lyrics column's percent of the width, 20-80 (default 45;
                      see BILINGUAL LYRICS DIVIDER)
      songs           open | collapsed, the Songs panel with the tree (default open; see
@@ -1010,10 +1010,12 @@ muteBox.addEventListener('change', () => {
 /* ================================================================
    LYRICS FONT SIZE
    A+ / A- scale the lyrics (--lyrics-font-scale, 10%-250%, steps of 10%);
-   click the percentage to reset. Kept in the URL parameter font (see VIEW OPTIONS IN URL).
+   default 80%, which clicking the percentage restores. Kept in the URL parameter font (see
+   VIEW OPTIONS IN URL).
 ================================================================ */
 (function () {
-  let pct = 100;
+  const DEFAULT_PCT = 80;
+  let pct = DEFAULT_PCT;
   const label = document.getElementById('font-size-value');
   function apply(v) {
     pct = Math.max(10, Math.min(250, v));
@@ -1025,9 +1027,9 @@ muteBox.addEventListener('change', () => {
     const b = document.getElementById(id);
     b.addEventListener('click', () => { apply(pct + d); b.blur(); });
   });
-  label.addEventListener('click', () => apply(100));
+  label.addEventListener('click', () => apply(DEFAULT_PCT));
   const fromUrl = Number(urlParam('font'));
-  apply(urlParam('font') && isFinite(fromUrl) ? Math.round(fromUrl) : 100);
+  apply(urlParam('font') && isFinite(fromUrl) ? Math.round(fromUrl) : DEFAULT_PCT);
 })();
 
 /* ================================================================

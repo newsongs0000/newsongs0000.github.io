@@ -172,7 +172,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
   - **Lyric lines.** The current line has a gold left border, a tinted background and a larger font. Up to 4 lines
     above and 4 below it use the "above" and "below" colors. Lines further away are faded. The current line is kept
     centered vertically. In the smartphone layout the lines are half the size they are in a wider window (maximized
-    too); **A− / A+** scale them from there.
+    too); **A− / A+** scale them from there (80% by default; click the percentage to go back to it). The size is kept
+    in the `font` URL parameter.
   - **Translation.** If any line of the movement has a `"translation"` (see
     [Flow: modifying lyrics](#flow-modifying-lyrics)), the panel is divided into two columns: the original lyrics on
     the left and the translation on the right. The column with the Chinese lyrics gets 45% of the width and the other
