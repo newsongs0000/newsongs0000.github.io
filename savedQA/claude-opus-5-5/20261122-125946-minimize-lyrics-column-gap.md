@@ -25,3 +25,31 @@ Changed in [common.css](../../common.css) (the "Bilingual lyrics" section):
 
 Note: when the Chinese lines are short, most of the visible blank space comes from the unused part of the 45%
 Chinese column, not from the padding. To reduce that, drag the divider, or set `?chinese-width=`.
+
+---
+
+## Ask
+
+Reduce the padding sizes of both sides of the two lyrics panels
+
+## Answer
+
+Reduced the padding on both sides of each bilingual column in [common.css](../../common.css):
+
+```css
+/* Small side padding: 6px at the outer edges, 4px each side of the divider (just clear of its 9px grab area) */
+#lyrics-inner.bilingual .lyric-original    { padding: 0 4px 0 6px; }
+#lyrics-inner.bilingual .lyric-translation { padding: 0 6px 0 4px; }
+```
+
+| Side                        | Before | After |
+|-----------------------------|--------|-------|
+| Outer edge (left / right)   | 14px   | 6px   |
+| Divider side (each column)  | 8px    | 4px   |
+
+- To keep the text clear of the divider, the divider's invisible drag area went from 13px to 9px wide
+  (`.lyrics-divider`: `width: 9px; margin-left: -4px`, and its line at `left: 4px`). It is still easy to grab with a
+  mouse and still turns gold on hover.
+- Only the two-column (bilingual) layout changed. A single full-width column keeps its 14px padding.
+- Checked in headless Chrome: 安魂曲 I, Messiah III (desktop and 390px phone width), and a simulated drag of the
+  divider (the Chinese width changed from 45% to 68.2% and was saved to the URL).
