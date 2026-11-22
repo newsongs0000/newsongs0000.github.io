@@ -200,9 +200,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     (`background2` in image set 2), else its own
     `thumbnail`, else its work's (in the Image background mode, a movement's background picture fills the area
     instead: see **Background** below).
-    It is a placeholder for the lyrics panels: it has exactly their size (the same side margins) and, while the lyrics
-    are bilingual, the same two columns and divider, with the picture in the original-language column and the hint in
-    the other. It is hidden while the music plays so it never makes the lyrics hard to read.
+    It is a placeholder for the lyrics panels: it has exactly their size (the same side margins), and the picture uses
+    its full width, across both columns while the lyrics are bilingual, scaled to fit whole, with the caption and
+    "▶ Click to play" centered at the bottom. It is hidden while the music plays so it never makes the lyrics hard to
+    read.
   - **Caption.** While the selection's picture is shown before playback (in either mode), a caption above
     "▶ Click to play" names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
     Zurbarán. They come from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and

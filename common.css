@@ -534,7 +534,6 @@ body {
    dims behind the lyrics as they fade in. Without a picture (.has-image) the usual thumbnail overlay shows */
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-overlay { background: transparent; }
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image) .thumbnail-panel { visibility: hidden; }
-#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-labels { left: 16px; }
 #lyrics-container { transition: opacity 0.6s ease; }
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image):has(#thumbnail-overlay:not(.hidden)) #lyrics-container {
   opacity: 0;
@@ -723,9 +722,9 @@ body {
 
 /* ─── Thumbnail overlay (shown before playback starts) ───
    It is the placeholder of the lyrics panel(s): the same box as the real lyrics (the song area less
-   the same side margins, --lyrics-side-pad), and, while the lyrics are bilingual, the same two
-   columns split at --lyrics-original-width, with the divider between them. The thumbnail sits in the
-   first (original) panel and the hint in the second. */
+   the same side margins, --lyrics-side-pad). The picture uses the full width of that box, across both
+   columns while the lyrics are bilingual, scaled to fit it whole; the caption and hint are centered at
+   the bottom. */
 #thumbnail-overlay {
   position: absolute;
   inset: 0 var(--lyrics-side-pad);
@@ -750,21 +749,10 @@ body {
   justify-content: center;
 }
 
-.thumbnail-panel-2 { display: none; }
-
-/* Two columns, like the lyrics (see "Bilingual lyrics" above) */
-#right-pane:has(#lyrics-inner.bilingual) #thumbnail-overlay {
-  display: grid;
-  grid-template-columns: var(--lyrics-original-width) 1fr;
-}
-#right-pane:has(#lyrics-inner.bilingual) .thumbnail-panel-2 {
-  display: block;
-  border-left: 1px solid var(--border);
-}
-
+/* As large as the panel allows, whole (scaled up too, so a smaller picture still fills the width or height) */
 #thumbnail-overlay img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
 }
@@ -806,10 +794,6 @@ body {
   pointer-events: none;
 }
 
-/* Bilingual: the caption and hint are centered in the second panel, beside the picture */
-#right-pane:has(#lyrics-inner.bilingual) #thumbnail-labels {
-  left: calc(var(--lyrics-original-width) + 16px);
-}
 
 /* ─── Playback controls (first panel of the right pane) ─── */
 #playback-controls {
