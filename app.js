@@ -432,7 +432,7 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-     bg              none | graphics | image, the lyrics background (default none; see BACKGROUND)
+     bg              none | graphics | image, the lyrics background (default graphics; see BACKGROUND)
      pictures        1 | 2, which version of the movements' pictures the image background shows
                      (default 1; see PICTURE VERSIONS)
    index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&bg=image
@@ -1061,7 +1061,7 @@ muteBox.addEventListener('change', () => {
    The page color covers the background at bg-dim percent (0-95, default
    70) and the picture is blurred by bg-blur px (0-40, default 4), so the
    lyrics stay easy to read; both come from the URL only (see common.css
-   for the defaults, --bg-dim and --bg-blur). Image is the default; the
+   for the defaults, --bg-dim and --bg-blur). Graphics is the default; the
    choice is kept in the URL parameter bg (see VIEW OPTIONS IN URL).
 ================================================================ */
 const BACKGROUNDS     = ['none', 'graphics', 'image'];
@@ -1317,7 +1317,7 @@ picturesBtns.forEach(btn => {
 });
 
 setPictureVersion(PICTURE_VERSIONS.includes(urlParam('pictures')) ? urlParam('pictures') : '1');
-setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'none');
+setBackground(BACKGROUNDS.includes(urlParam('bg')) ? urlParam('bg') : 'graphics');
 
 /* ================================================================
    BILINGUAL LYRICS DIVIDER

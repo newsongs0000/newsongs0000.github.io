@@ -77,7 +77,7 @@ Run one of these commands in the project folder (the folder that contains `index
 - **Other devices.** `http-server` lists the addresses it listens on, including the network one (e.g.
   `http://192.168.1.20:8080`). Open that address on the other device. Your firewall may ask whether to allow it.
 - **`serve` and links to `index.html`.** `serve` redirects `/index.html?…` to `/index` and drops everything after
-  the `?`, so a link such as `index.html?movement=…&bg=graphics` opens the first movement with the default options.
+  the `?`, so a link such as `index.html?movement=…&bg=image` opens the first movement with the default options.
   Leave out `index.html` (`http://localhost:3000/?movement=…`), or use `http-server`, which keeps the link as it is.
 - Press **Ctrl+C** in the terminal to stop the server.
 
@@ -210,7 +210,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     Krafft. A work's thumbnail keeps its caption when a movement without a picture of its own shows it. A `bg-image`
     picture, or a picture without a title, has no caption; the caption goes with the picture when the music starts.
   - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
-    and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `none` by default).
+    and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `graphics` by default).
     - **None**: the plain page color.
     - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
       Their hue comes from the movement, so each movement has its own colors.
@@ -336,7 +336,7 @@ Add parameters to the page URL. Colors are any CSS color, and `#` must be writte
 | `movement` | The movement selected on load, as `<artist id>/<work id>/<movement id>` (the `id`s in `artist.js` and `work.js`). The app rewrites it whenever you select a movement, so reloading or sharing the URL opens that movement | the first movement in the tree |
 | `work` | The work selected on load, as `<artist id>/<work id>`, used when there is no `movement`. The app writes it instead of `movement` when you select a work | — |
 | `artist` | The artist selected on load, as `<artist id>`, used when there is no `movement` or `work`. The app writes it instead of them when you select an artist | — |
-| `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `none` |
+| `bg` | The lyrics background: `none`, `graphics` or `image` (see **Background** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `graphics` |
 | `pictures` | Which image set the `image` background shows, `1` or `2`, for a movement that has two (see **Image sets** in [Screen layout](#screen-layout)). The app rewrites it when you pick one | `1` |
 | `bg-image` | The picture of the `image` background for every movement, a path relative to `index.html` or a URL, e.g. `assets/Handel/Handel.jpg`. Without it each movement shows its own `background` or `thumbnail` | — |
 | `bg-dim` | How much the page color covers the background, in percent (0 to 95). Lower shows more of the picture or graphics; higher keeps the lyrics clearer | `70` |
