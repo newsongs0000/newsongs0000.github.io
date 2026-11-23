@@ -2037,6 +2037,9 @@ audio.addEventListener('play', () => {
   pickLineOnPlay = true;
   pictureOverlay.classList.add('hidden');
   updateTimingPanel();
+  // Playing again after a pause: the lyrics may have been scrolled meanwhile, and the highlight
+  // stays on the same line, so it wouldn't be centered until the next line. Center it now
+  centerCurrentLine();
 });
 
 pictureOverlay.addEventListener('click', playSelection);

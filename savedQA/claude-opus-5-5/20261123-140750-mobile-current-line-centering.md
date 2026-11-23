@@ -49,3 +49,26 @@ Normal line-to-line scrolling is unchanged (smooth); verified with auto-mode pla
 
 The first and last few lines of a movement still can't reach the center: the spacers above and below the lyrics
 are only 40px, so the panel can't scroll further. This is by design and the same on desktop.
+
+---
+
+## Ask
+
+When the song is paused, then play agian, make sure the line being play is displayed at center
+
+## Answer
+
+On Play the highlight usually stays on the same line, and the lyrics were centered only when the highlight moved to
+another line. So if the lyrics had been scrolled during the pause, the line being played stayed off-center (often
+out of sight) until the next line began.
+
+[app.js](../../app.js), the audio `play` listener (AUDIO EVENTS) now calls `centerCurrentLine()`, a smooth scroll
+back to the highlighted line: in auto mode the line being played, in manual mode the operator's line. (A seek while
+paused already moves the highlight, so the highlight is up to date when playing starts.)
+
+Verified in headless Chrome at phone size:
+
+| Case                                                        | Before Play          | After Play                    |
+|-------------------------------------------------------------|----------------------|-------------------------------|
+| Auto mode, paused, lyrics scrolled to the end (same line)   | 2550px off, hidden   | 0px (smooth, settled ≈0.8s)   |
+| Manual mode, line 6, scrolled to the top                    | 158px off, hidden    | 0px                           |
