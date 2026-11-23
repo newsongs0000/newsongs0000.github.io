@@ -72,3 +72,35 @@ Verified in headless Chrome at phone size:
 |-------------------------------------------------------------|----------------------|-------------------------------|
 | Auto mode, paused, lyrics scrolled to the end (same line)   | 2550px off, hidden   | 0px (smooth, settled ≈0.8s)   |
 | Manual mode, line 6, scrolled to the top                    | 158px off, hidden    | 0px                           |
+
+---
+
+## Ask
+
+When the last line of a movement is being played, make sure the wrapped part is also visible
+
+## Answer
+
+Every line is centered except the last few: the space under the lyrics (the last `.lyrics-spacer`) was only 40px, so
+the panel couldn't scroll further, and the last line sat at the panel's bottom edge. In headless Chrome the wrapped
+part was still just inside (41px above the edge), but on a phone the bottom of the panel can be covered, e.g. by the
+browser's toolbar over the bottom of the screen (Max mode, where nothing is under the lyrics) or by the manual-mode
+hint, and that is where the wrapped part goes.
+
+[common.css](../../common.css):
+
+- `#lyrics-container` gets `container-type: size`, so its height can be used as `cqh`.
+- `.lyrics-spacer:last-child { min-height: 50cqh; }`: half the panel under the lyrics, so the last lines are
+  centered like every other line, wrapped part and all.
+
+Verified in headless Chrome, last line highlighted, movements whose last line wraps:
+
+| Layout          | Panel  | Last line             | Room under it (before → after) |
+|-----------------|--------|-----------------------|--------------------------------|
+| Phone           | 199px  | centered (0px off)    | 41px → 78px                    |
+| Phone, Max      | 799px  | centered              | → 359–383px                    |
+| Desktop         | 608px  | centered              | → 265–283px                    |
+
+Side effect: when a movement's lyrics are shorter than the panel (on a phone almost never; on a large desktop
+screen, Max, 13 of the 40 movements), they are no longer centered as a block: they end at the middle of the panel,
+so they sit higher (Messiah 1, the shortest, about 90px at 1920×1080).
