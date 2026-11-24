@@ -154,10 +154,13 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
-  beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
+  beginning, −15s, ▶ / ❚❚ play/pause, +15s, ▶▶ fast-forward to the end, and **⌖** (sync), which scrolls the lyrics
+  back to the highlighted line (in Auto mode the line being played) and shows it in the center, e.g. after you
+  scrolled the lyrics to read ahead. Next to them are a draggable progress bar
   and the elapsed / total time, then, a little apart at the right end, the **⤢** (maximize) button, which shows only the lyrics (see
   [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons look as they do on a computer, the time and **⤢** are at
-  the right end of the button row (on a row of their own on a very narrow screen, about 320 px), and the progress bar
+  the right end of the button row (on a row of their own on a very narrow screen, below about 350 px; at 380 px or
+  less the buttons are a little narrower so that 360 px still fits), and the progress bar
   is always on a row of its own below them.
 - **Song navigation section** (below the playback controls)
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.

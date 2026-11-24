@@ -2114,6 +2114,12 @@ document.getElementById('btn-ff-end').addEventListener('click', () => {
   if (isFinite(audio.duration)) audio.currentTime = audio.duration;
 });
 
+// Sync: back to the highlighted line (in auto mode the one being played), e.g. after scrolling the lyrics
+document.getElementById('btn-sync').addEventListener('click', e => {
+  e.currentTarget.blur();  // so Space doesn't re-activate the button
+  centerCurrentLine();
+});
+
 document.getElementById('progress-bar').addEventListener('input', e => {
   setProgress(e.target.value / 10000);
   if (isFinite(audio.duration)) {

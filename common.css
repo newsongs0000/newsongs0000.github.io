@@ -880,9 +880,21 @@ body {
   fill: currentColor;
 }
 
-/* The five playback buttons (Max, inside #time-max, is not a direct child): compact */
+/* The six playback buttons (Max, inside #time-max, is not a direct child): compact */
 #playback-controls > .ctrl-btn { padding: 4px 8px; font-size: 0.72rem; }
 #playback-controls > #btn-play-pause { padding: 4px 11px; min-width: 36px; font-size: 0.88rem; }
+
+/* Sync: a crosshair, drawn in lines as Max's arrows, with a dot in the middle; the size of the text beside it */
+#btn-sync svg {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.25em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+#btn-sync svg .dot { fill: currentColor; stroke: none; }
 
 /* Max: a larger icon */
 #btn-maximize { padding: 3px 9px; font-size: 1rem; }
@@ -1121,7 +1133,7 @@ body {
    and gets the two-pane layout, so turning the phone doesn't make the right side's text, the playback buttons and
    the spaces between them larger (which could push Max out of sight) ─── */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  /* The five playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
+  /* The six playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
      portrait, and the right pane is wide enough in landscape); a little less space between them and around the row */
   #playback-controls { padding: 6px 4px 6px 8px; gap: 3px; }
   #btn-maximize { padding: 2px 7px; font-size: 0.9rem; }
@@ -1132,6 +1144,13 @@ body {
   /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
   .lyric-line { font-size: calc(0.975rem * var(--lyrics-font-scale, 1)); }
   #app.lyrics-maximized .lyric-line { font-size: calc(1.35rem * var(--lyrics-font-scale, 1)); }
+}
+
+/* A narrow phone (e.g. 360px): the playback buttons 4px narrower each, so the time and Max still fit on their row
+   with the six buttons (24px; with the desktop's padding they would go to a row of their own below 375px) */
+@media (max-width: 380px) {
+  #playback-controls > .ctrl-btn { padding-left: 6px; padding-right: 6px; }
+  #playback-controls > #btn-play-pause { padding-left: 9px; padding-right: 9px; }
 }
 
 /* Lyrics font size adjuster (next to the Mute box) */

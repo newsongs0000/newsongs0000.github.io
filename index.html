@@ -115,6 +115,11 @@
               aria-label="Play / Pause"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.25 11 6l-8.5 4.75z"/></svg></button>
       <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
       <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#xFE0E;&#9654;&#xFE0E;</button>
+      <!-- Scrolls the lyrics back to the highlighted line, in the middle (a crosshair, as a map's "my location") -->
+      <button class="ctrl-btn" id="btn-sync"         title="Sync: show the selected lyric line in the center"
+              aria-label="Show the selected lyric line in the center"><svg viewBox="0 0 12 12"
+              aria-hidden="true"><circle cx="6" cy="6" r="3.5"/><circle class="dot" cx="6" cy="6" r="1"/><path
+              d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg></button>
       <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
       <!-- The time and Max stay together: on a phone they wrap to their own row as one -->
       <div id="time-max">
