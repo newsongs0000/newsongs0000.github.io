@@ -885,7 +885,8 @@ body {
 #playback-controls > #btn-play-pause { padding: 4px 11px; min-width: 36px; font-size: 0.88rem; }
 
 /* Sync: a crosshair, drawn in lines as Max's arrows, with a dot in the middle; the size of the text beside it */
-#btn-sync svg {
+#btn-sync svg,
+#btn-sync-max svg {
   width: 1.2em;
   height: 1.2em;
   vertical-align: -0.25em;
@@ -894,7 +895,8 @@ body {
   stroke-width: 1.4;
   stroke-linecap: round;
 }
-#btn-sync svg .dot { fill: currentColor; stroke: none; }
+#btn-sync svg .dot,
+#btn-sync-max svg .dot { fill: currentColor; stroke: none; }
 
 /* Max: a larger icon */
 #btn-maximize { padding: 3px 9px; font-size: 1rem; }
@@ -1048,8 +1050,12 @@ body {
 #app.lyrics-maximized #left-pane,
 #app.lyrics-maximized #playback-controls,
 #app.lyrics-maximized #info-pane,
-#app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
+#app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-sync-max):not(#btn-restore) {
+  display: none;
+}
+/* Maximized, the top bar has its own play / pause, Sync and restore buttons (the playback controls are hidden) */
 #app.lyrics-maximized #btn-play-pause-max,
+#app.lyrics-maximized #btn-sync-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
 /* The maximize and restore buttons' icons (no labels): two arrows pointing out to the corners (maximize), and the
    reverse, two arrows pointing in to the middle (restore). Sized in rem, not em, so both are the same size although

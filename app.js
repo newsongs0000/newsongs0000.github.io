@@ -898,8 +898,9 @@ document.querySelectorAll('#mode-toggle .ctrl-btn').forEach(btn => {
    MAXIMIZE LYRICS PANEL
    Max (last in the playback controls) hides the left nav pane,
    the playback controls (including Max), the song navigation buttons and
-   the info pane; lyrics font grows (CSS). Esc restores. Space / arrow keys
-   still control playback.
+   the info pane; lyrics font grows (CSS). The top bar shows its own play /
+   pause, Sync and restore buttons. Esc restores. Space / arrow keys still
+   control playback.
 ================================================================ */
 function setLyricsMaximized(on) {
   const app = document.getElementById('app');
@@ -2114,10 +2115,13 @@ document.getElementById('btn-ff-end').addEventListener('click', () => {
   if (isFinite(audio.duration)) audio.currentTime = audio.duration;
 });
 
-// Sync: back to the highlighted line (in auto mode the one being played), e.g. after scrolling the lyrics
-document.getElementById('btn-sync').addEventListener('click', e => {
-  e.currentTarget.blur();  // so Space doesn't re-activate the button
-  centerCurrentLine();
+// Sync: back to the highlighted line (in auto mode the one being played), e.g. after scrolling the lyrics. The
+// playback controls' button, and the top bar's in maximized lyrics mode
+['btn-sync', 'btn-sync-max'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    e.currentTarget.blur();  // so Space doesn't re-activate the button
+    centerCurrentLine();
+  });
 });
 
 document.getElementById('progress-bar').addEventListener('input', e => {
