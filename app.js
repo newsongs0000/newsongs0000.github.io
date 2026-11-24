@@ -432,10 +432,12 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
+     info            open | collapsed, the info pane under the lyrics (default open; see
+                     setInfoPaneOpen)
      bg              none | graphics | image, the lyrics background (default graphics; see BACKGROUND)
      pictures        1 | 2, which version of the movements' pictures the image background shows
                      (default 1; see PICTURE VERSIONS)
-   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&bg=image
+   index.html?highlight-mode=manual&mute=1&show=translation&font=150&chinese-width=45&songs=open&timing=open&view-options=open&info=open&bg=image
 ================================================================ */
 function urlParam(name) {
   return new URLSearchParams(location.search).get(name);
@@ -1911,6 +1913,25 @@ setViewPanelOpen(urlParam('view-options') === 'open');
 document.getElementById('btn-view-toggle').addEventListener('click', e => {
   const btn = e.currentTarget;
   setViewPanelOpen(btn.getAttribute('aria-expanded') !== 'true');
+  btn.blur();  // so Space doesn't re-activate the button
+});
+
+// The info pane (#info-pane: artist, work, dates and description, under the lyrics) is open
+// unless the URL says collapsed (see VIEW OPTIONS IN URL); its arrow button collapses it to its
+// INFO title bar, giving the lyrics the room, and opens it again, and the URL follows
+function setInfoPaneOpen(open) {
+  const btn = document.getElementById('btn-info-toggle');
+  document.getElementById('info-pane').classList.toggle('collapsed', !open);
+  btn.setAttribute('aria-expanded', open);
+  btn.title = open ? 'Hide info' : 'Show info';
+  rewriteUrlParams({ info: open ? 'open' : 'collapsed' });
+}
+
+setInfoPaneOpen(urlParam('info') !== 'collapsed');
+
+document.getElementById('btn-info-toggle').addEventListener('click', e => {
+  const btn = e.currentTarget;
+  setInfoPaneOpen(btn.getAttribute('aria-expanded') !== 'true');
   btn.blur();  // so Space doesn't re-activate the button
 });
 
