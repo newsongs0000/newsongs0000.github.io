@@ -243,7 +243,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 - **Bottom info pane.** Shows the artist's name, the work's title with its opus number and year, the premiere
   (`Premiere: …`) and the work's description; for a selected artist, its name and `bio`. The arrow button at its
   top right collapses it to an **INFO** title bar, giving the lyrics the room, and opens it again. It is open by
-  default; the state is kept in the `info` URL parameter (`open` or `collapsed`).
+  default; the state is kept in the `info` URL parameter (`open` or `collapsed`). On a mobile device (phone or
+  tablet) in landscape the pane collapses by itself, when the page loads or the device is turned; the arrow still
+  opens it. Turned back to portrait, it is as you last left it with the arrow (the `info` parameter, which the
+  automatic collapse doesn't change).
 
 ## Playing music
 

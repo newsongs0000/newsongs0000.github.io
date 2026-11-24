@@ -432,8 +432,9 @@ function updateTimeInUrl() {
                      setTimingPanelOpen)
      view-options    open | collapsed, the View Options panel, which only a smartphone layout can
                      collapse (default collapsed; see setViewPanelOpen)
-     info            open | collapsed, the info pane under the lyrics (default open; see
-                     setInfoPaneOpen)
+     info            open | collapsed, the info pane under the lyrics (default open; on a mobile
+                     device in landscape it starts collapsed whatever this says; see
+                     setInfoPaneOpen and mobileLandscape)
      bg              none | graphics | image, the lyrics background (default graphics; see BACKGROUND)
      pictures        1 | 2, which version of the movements' pictures the image background shows
                      (default 1; see PICTURE VERSIONS)
@@ -1918,16 +1919,29 @@ document.getElementById('btn-view-toggle').addEventListener('click', e => {
 
 // The info pane (#info-pane: artist, work, dates and description, under the lyrics) is open
 // unless the URL says collapsed (see VIEW OPTIONS IN URL); its arrow button collapses it to its
-// INFO title bar, giving the lyrics the room, and opens it again, and the URL follows
-function setInfoPaneOpen(open) {
+// INFO title bar, giving the lyrics the room, and opens it again, and the URL follows (unless
+// keepUrl: see mobileLandscape below)
+function setInfoPaneOpen(open, keepUrl = false) {
   const btn = document.getElementById('btn-info-toggle');
   document.getElementById('info-pane').classList.toggle('collapsed', !open);
   btn.setAttribute('aria-expanded', open);
   btn.title = open ? 'Hide info' : 'Show info';
-  rewriteUrlParams({ info: open ? 'open' : 'collapsed' });
+  if (!keepUrl) rewriteUrlParams({ info: open ? 'open' : 'collapsed' });
 }
 
+// On a mobile device (a phone or tablet: a touch screen without a mouse) in landscape, where
+// height is short, the info pane collapses when the page loads or the device is turned; its
+// button still opens it. Turned back to portrait, the pane is as the info URL parameter says:
+// the last choice made with the button. Collapsing it this way leaves the URL alone, so that
+// choice stays there (and a link shared from a phone in landscape opens the pane as chosen)
+const mobileLandscape = matchMedia('(orientation: landscape) and (pointer: coarse) and (hover: none)');
+
 setInfoPaneOpen(urlParam('info') !== 'collapsed');
+if (mobileLandscape.matches) setInfoPaneOpen(false, true);
+
+mobileLandscape.addEventListener('change', () => {
+  setInfoPaneOpen(!mobileLandscape.matches && urlParam('info') !== 'collapsed', true);
+});
 
 document.getElementById('btn-info-toggle').addEventListener('click', e => {
   const btn = e.currentTarget;

@@ -37,3 +37,35 @@ Verified in headless Chrome on a 1280×800 desktop, a 390×844 phone and an 844�
 Note: an issue that was already there before this change. On a phone the description can't wrap the long
 archive.org URL in Messiah's description, so the pane scrolls sideways. `min-width: 0` and `overflow-wrap: anywhere`
 on `#info-description` would fix it.
+
+## Ask
+
+On mobile devices, when the orientation is landscape, collapse info-pane
+
+## Answer
+
+On a mobile device in landscape, the info pane now collapses by itself, both when the page loads and when the device
+is turned. "Mobile device" uses the app's existing test, `(pointer: coarse) and (hover: none)`: phones and tablets,
+not a desktop window that is wide and short. The arrow still opens the pane in landscape.
+
+- **app.js**:
+  - `mobileLandscape = matchMedia('(orientation: landscape) and (pointer: coarse) and (hover: none)')`.
+  - On load, if it matches, the pane collapses. On a `change` event the pane collapses in landscape, and in
+    portrait it takes the state the `info` URL parameter says.
+  - `setInfoPaneOpen(open, keepUrl)` has a new `keepUrl` flag. The automatic collapse leaves the URL alone, so `info`
+    keeps the last choice made with the arrow. That choice is what portrait restores, and what a shared link opens
+    with on other devices.
+  - The VIEW OPTIONS IN URL comment for `info` mentions this.
+- **README.md**: the info pane bullet describes the landscape behavior.
+
+Verified in headless Chrome with touch emulation and no console errors:
+
+| Case | Result |
+|---|---|
+| Phone loaded in portrait | Open |
+| Rotated to landscape | Collapsed, URL still `info=open` |
+| Arrow tapped in landscape | Opens; tapped again, collapses and the URL becomes `collapsed` |
+| Rotated back to portrait | Collapsed, the last choice |
+| Loaded in landscape with `?info=open` | Collapsed; rotated to portrait, open |
+| Tablet (1024×768) in landscape | Collapsed |
+| Desktop window, including a short wide one (844×390, no touch) | Not affected |
