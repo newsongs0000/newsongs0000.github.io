@@ -69,8 +69,8 @@
         <div id="lyrics-shown" role="group" aria-label="Lyrics shown"
              title="Which lyrics and titles to show; at least one must be checked">
           <span id="lyrics-shown-label">Show:</span>
-          <label><input type="checkbox" value="original"    checked> Original</label>
-          <label><input type="checkbox" value="translation" checked> Translation</label>
+          <label title="Original"><input type="checkbox" value="original"    checked> Orig</label>
+          <label title="Translation"><input type="checkbox" value="translation" checked> Transltn</label>
         </div>
         <!-- On a mobile device the Mute box is hidden and the row is titled Font: instead (see common.css) -->
         <div id="audio-options" role="group" aria-labelledby="audio-options-label">
@@ -84,7 +84,7 @@
         </div>
         <!-- Behind the lyrics panel: the plain page color, graphics or a picture (see BACKGROUND in app.js) -->
         <div id="background-toggle" role="group" aria-label="Lyrics background">
-          <span id="background-toggle-label">Background:</span>
+          <span id="background-toggle-label" title="Background">BG:</span>
           <button class="ctrl-btn" data-bg="none"     title="Plain background">None</button>
           <button class="ctrl-btn" data-bg="graphics" title="Soft colored lights, drifting while the music plays">Graphics</button>
           <button class="ctrl-btn" data-bg="image"    title="The movement's picture, dimmed and blurred">Image</button>

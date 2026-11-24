@@ -2116,9 +2116,9 @@ document.getElementById('btn-ff-end').addEventListener('click', () => {
 });
 
 // Sync: back to the highlighted line (in auto mode the one being played), e.g. after scrolling the lyrics. The
-// playback controls' button, and the top bar's in maximized lyrics mode
+// playback controls' button, and the top bar's in maximized lyrics mode (index1.html has neither)
 ['btn-sync', 'btn-sync-max'].forEach(id => {
-  document.getElementById(id).addEventListener('click', e => {
+  document.getElementById(id)?.addEventListener('click', e => {
     e.currentTarget.blur();  // so Space doesn't re-activate the button
     centerCurrentLine();
   });
