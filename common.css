@@ -899,8 +899,12 @@ body {
 /* Max: a larger icon */
 #btn-maximize { padding: 3px 9px; font-size: 1rem; }
 
+/* The progress bar takes whatever room the buttons, the time and Max leave, down to 40px. width: 0 replaces the
+   range input's own width (about 129px), which would otherwise be the least the row can be: wider than the right
+   pane on a phone in landscape, pushing Max out of sight */
 #progress-bar {
-  flex: 1;
+  flex: 1 1 0;
+  width: 0;
   height: 3px;
   accent-color: var(--accent);
   cursor: pointer;
@@ -1134,7 +1138,8 @@ body {
    the spaces between them larger (which could push Max out of sight) ─── */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
   /* The six playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
-     portrait, and the right pane is wide enough in landscape); a little less space between them and around the row */
+     portrait, and in landscape it shrinks to leave them, the time and Max room); a little less space between them
+     and around the row */
   #playback-controls { padding: 6px 4px 6px 8px; gap: 3px; }
   #btn-maximize { padding: 2px 7px; font-size: 0.9rem; }
   #time-max { gap: 8px; }
