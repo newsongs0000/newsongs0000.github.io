@@ -150,12 +150,9 @@
       <!-- Thumbnail overlay: visible before playback, click to play. It covers exactly the lyrics panel(s) below it,
            and the picture uses its full width (both columns while the lyrics are bilingual) -->
       <div id="thumbnail-overlay" class="hidden">
-        <div class="thumbnail-panel"><img id="thumbnail-img" src="" alt=""></div>
-        <!-- The picture's title and painter (see PICTURE CAPTION in app.js), above the hint -->
-        <div id="thumbnail-labels">
-          <div id="picture-caption" hidden></div>
-          <div id="thumbnail-play-hint">&#9654; Click to play</div>
-        </div>
+        <img id="thumbnail-img" src="" alt="">
+        <!-- The picture's title and painter (see PICTURE CAPTION in app.js), below it -->
+        <div id="picture-caption" hidden></div>
       </div>
       <div id="manual-hint" hidden><span id="rec-indicator" hidden>&#9679; REC</span>&darr;&rarr; next &nbsp; &uarr;&larr; back &nbsp; (swipe: up = next, down = back)</div>
       <div id="lyrics-container">

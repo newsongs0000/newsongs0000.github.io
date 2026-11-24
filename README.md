@@ -197,18 +197,18 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It turns gold under the mouse. Double-click it to go back to 45% for the Chinese column. The new width belongs to
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
-  - **Picture.** The selection's picture covers the lyrics until playback starts, with "▶ Click to play": a selected
+  - **Picture.** The selection's picture covers the lyrics until playback starts (a click on it plays): a selected
     artist's `thumbnail` (a portrait of the composer; else its first work's), a selected work's `thumbnail` (a
     picture of the work itself, e.g. a page of its autograph score), or a selected movement's `background`
     (`background2` in image set 2), else its own
     `thumbnail`, else its work's (in the Image background mode, a movement's background picture fills the area
     instead: see **Background** below).
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins), and the picture uses
-    its full width, across both columns while the lyrics are bilingual, scaled to fit whole, with the caption and
-    "▶ Click to play" centered at the bottom. It is hidden while the music plays so it never makes the lyrics hard to
+    its full width, across both columns while the lyrics are bilingual, scaled to fit whole, with its caption right
+    below it (the two centered in the area together). It is hidden while the music plays so it never makes the lyrics hard to
     read.
-  - **Caption.** While the selection's picture is shown before playback (in either mode), a caption above
-    "▶ Click to play" names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
+  - **Caption.** While the selection's picture is shown before playback (in either mode), a caption below it
+    (in the Image background mode, over it at the bottom) names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
     Zurbarán. They come from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and
     `background2Painter` for image set 2), and for a thumbnail from `thumbnailTitle` and `thumbnailPainter` in
     `work.js` (a work's or a movement's) or `artist.js` (an artist's), e.g. *Wolfgang Amadeus Mozart* by Barbara
@@ -219,7 +219,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     - **None**: the plain page color.
     - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
       Their hue comes from the movement, so each movement has its own colors.
-    - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with "▶ Click to play" over it
+    - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with its caption over it at the bottom
       (instead of the thumbnail); when the music starts it blurs and darkens behind the lyrics. It is the `bg-image` URL
       parameter if given (one picture for
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`, else its work's. A

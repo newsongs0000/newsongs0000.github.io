@@ -1207,7 +1207,7 @@ lyricsBgImage.addEventListener('error', () => {
 /* ================================================================
    PICTURE BEFORE PLAYBACK
    Until playback starts, the thumbnail overlay covers the lyrics area
-   with the selection's picture and "▶ Click to play": a selected artist's
+   with the selection's picture (a click on it plays): a selected artist's
    thumbnail (see SELECT ARTIST), a selected work's thumbnail (see SELECT
    WORK), or a selected movement's background (of
    the image set picked, see PICTURE VERSIONS), else its thumbnail, else
@@ -1261,9 +1261,10 @@ function showPictureOverlay() {
 /* ================================================================
    PICTURE CAPTION
    While the selection's picture is shown before playback (in the overlay,
-   or filling the area in Image mode), a caption above "▶ Click to play"
-   names it: its title, then "by" its painter (or maker), from work.js or
-   artist.js — backgroundTitle and backgroundPainter for a movement's
+   or filling the area in Image mode), a caption below it (in Image mode
+   over it, at the bottom) names it: its title, then "by" its painter (or
+   maker), from work.js or artist.js — backgroundTitle and
+   backgroundPainter for a movement's
    background, background2Title and background2Painter for its background2
    (see PICTURE VERSIONS), and thumbnailTitle and thumbnailPainter for a
    movement's, work's or artist's thumbnail (a work's thumbnail keeps its
